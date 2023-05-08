@@ -1,0 +1,48 @@
+{
+  "guest": false,
+  "title": "",
+  "salutation": "not_specified",
+  "firstName": "N/A",
+  "lastName": "N/A",
+  "company": "Max Mustermann GmbH",
+  "email": "info@mustermann.de",
+  "password": "b2bsellers",
+  "accountType": "business",
+  "billingAddress": {
+    "country": "DE",
+    "street": "Hauptstraße 1",
+    "zipcode": "65663",
+    "city": "Hintertupfingen",
+    "firstName": "N/A",
+    "lastName": "N/A",
+    "company": "Max Mustermann GmbH",
+    "salutation": "not_specified"
+  },
+  "shippingAddress": {
+    "country": "DE",
+    "street": "Hauptstraße 1",
+    "zipcode": "65663",
+    "city": "Hintertupfingen",
+    "firstName": "N/A",
+    "lastName": "N/A",
+    "company": "Max Mustermann GmbH",
+    "salutation": "not_specified"
+  },
+  "customFields": {
+    "b2b_platform_access": true,
+    "b2b_sales_representative": false,
+    "b2b_supervisor": false
+  },
+  "customerEmployees": [
+    {
+      "salutation": "mr",
+      "firstName": "Anna",
+      "lastName": "Meister",
+      "department": "Administrator",
+      "email": "a.meister@mustermann.de",
+      "password": "b2bsellers",
+      "admin": true,
+      "showBonus": false
+    }
+  ]
+}

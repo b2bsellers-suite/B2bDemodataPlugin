@@ -1,0 +1,9 @@
+[*]
+insert_final_newline = true
+charset = utf-8
+
+[*.{yml,yaml,json}]
+tab_width = 2
+
+[*.xml]
+tab_width = 4

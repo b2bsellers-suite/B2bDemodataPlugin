@@ -1,0 +1,61 @@
+{
+  "name": "b2b/demodata",
+  "description": "The demo data plugin of the B2Bsellers Suite creates products, customers and employees to start and test directly with suitable data.",
+  "version": "1.0.0",
+  "type": "shopware-platform-plugin",
+  "license": "MIT",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "authors": [
+    {
+      "name": "B2Bsellers GmbH",
+      "email": "info@b2b-sellers.com",
+      "homepage": "https://b2b-sellers.com",
+      "role": "Contributor"
+    }
+  ],
+  "require": {
+    "php": "^8.0",
+    "shopware/core": "^6.4.16.0",
+    "b2b-sellers/core": "^1.0.4"
+  },
+  "require-dev": {
+    "k10r/codestyle": "^3.0",
+    "phpstan/phpstan": "^1.5",
+    "phpstan/phpstan-phpunit": "^1.1",
+    "phpunit/phpunit": "^9.5"
+  },
+  "extra": {
+    "shopware-plugin-class": "B2bDemodata\\B2bDemodata",
+    "copyright": "(c) B2Bsellers GmbH",
+    "label": {
+      "de-DE": "Demo data Seeder",
+      "en-GB": "Demo data Seeder"
+    },
+    "description": {
+      "de-DE": "The demo data plugin of the B2Bsellers Suite creates products, customers and employees to start and test directly with suitable data.",
+      "en-GB": "The demo data plugin of the B2Bsellers Suite creates products, customers and employees to start and test directly with suitable data."
+    },
+    "manufacturerLink": {
+      "de-DE": "https://www.b2b-sellers.com",
+      "en-GB": "https://www.b2b-sellers.com"
+    }
+  },
+  "autoload": {
+    "psr-4": {
+      "B2bDemodata\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "B2bDemodata\\Test\\": "tests/"
+    }
+  },
+  "config": {
+    "sort-packages": true
+  },
+  "scripts": {
+    "phpcs": "vendor/bin/php-cs-fixer fix",
+    "phpstan": "vendor/bin/phpstan analyse -c phpstan.neon src"
+  }
+}

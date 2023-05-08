@@ -1,0 +1,33 @@
+{
+  "guest": false,
+  "title": "",
+  "salutation": "mrs",
+  "firstName": "Celina",
+  "lastName": "Wagner",
+  "email": "c.wagner@web.de",
+  "password": "b2bsellers",
+  "accountType": "private",
+  "billingAddress": {
+    "country": "DE",
+    "street": "Nebenstraße 1",
+    "zipcode": "65663",
+    "city": "Hintertupfingen",
+    "firstName": "Celina",
+    "lastName": "Wagner",
+    "salutation": "mrs"
+  },
+  "shippingAddress": {
+    "country": "DE",
+    "street": "Nebenstraße 1",
+    "zipcode": "65663",
+    "city": "Hintertupfingen",
+    "firstName": "Celina",
+    "lastName": "Wagner",
+    "salutation": "mrs"
+  },
+  "customFields": {
+    "b2b_platform_access": false,
+    "b2b_sales_representative": false,
+    "b2b_supervisor": false
+  }
+}

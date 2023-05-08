@@ -1,0 +1,75 @@
+{
+  "id": "bab45584d9244662bb3fc3bc41dc0657",
+  "type": "product",
+  "parentId": null,
+  "parentVersionId": null,
+  "productManufacturerVersionId": null,
+  "unitId": null,
+  "taxId": "ab4336f01db8403cbb511369c6770ef0",
+  "productMediaVersionId": null,
+  "deliveryTimeId": null,
+  "canonicalProductId": null,
+  "cmsPageId": null,
+  "cmsPageVersionId": null,
+  "price": [
+    {
+      "currencyId": "b7d2554b0ce847cd82f3ac9bd1c0dfca",
+      "net": 8.4033613445378,
+      "gross": 10.0,
+      "linked": true,
+      "listPrice": {
+        "currencyId": "b7d2554b0ce847cd82f3ac9bd1c0dfca",
+        "net": 12.596638655462,
+        "gross": 14.99,
+        "linked": true,
+        "listPrice": null,
+        "percentage": null,
+        "regulationPrice": null,
+        "extensions": []
+      }
+    }
+  ],
+  "productNumber": "DEMO10137",
+  "stock": 800,
+  "restockTime": null,
+  "active": true,
+  "isCloseout": false,
+  "purchaseSteps": 1,
+  "maxPurchase": null,
+  "minPurchase": 1,
+  "purchaseUnit": null,
+  "referenceUnit": null,
+  "shippingFree": false,
+  "markAsTopseller": false,
+  "weight": 1.0,
+  "width": 400.0,
+  "height": 200.0,
+  "length": 100.0,
+  "categories": [
+    {"id":  "ac9c3a2b0c0d47e796247cf496c39ed8"}
+  ],
+  "customFieldSetSelectionActive": false,
+  "name": "Demo Anfrageartikel",
+  "description": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr",
+  "customFields": {
+    "b2b_rule_at_product": "3c60dc575a1f4e0c8fd57336cd0e012b",
+    "b2b_price_at_product": "withPriceAtProduct",
+    "b2b_product_request_enable": true
+  },
+  "slotConfig": null,
+  "customSearchKeywords": null,
+  "translated": {
+    "metaDescription": null,
+    "name": "Demo Anfrageartikel",
+    "keywords": null,
+    "description": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+    "metaTitle": null,
+    "packUnit": null,
+    "packUnitPlural": null,
+    "customFields": {
+      "b2b_rule_at_product": "3c60dc575a1f4e0c8fd57336cd0e012b",
+      "b2b_price_at_product": "withPriceAtProduct",
+      "b2b_product_request_enable": true
+    }
+  }
+}

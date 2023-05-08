@@ -1,0 +1,15 @@
+{
+  "name": "b2b/demodata",
+  "private": true,
+  "version": "1.0.0",
+  "description": "The demo data plugin of the B2Bsellers Suite creates products, customers and employees to start and test directly with suitable data.",
+  "author": "B2Bsellers GmbH",
+  "devDependencies": {
+    "@kellerkinder/eslint-config": "^2.0.0",
+    "@kellerkinder/stylelint-config": "^1.0.0",
+    "eslint": "^8.0.0",
+    "eslint-plugin-import": "^2.24.2",
+    "stylelint": "^13.13.1",
+    "stylelint-config-standard": "^22.0.0"
+  }
+}

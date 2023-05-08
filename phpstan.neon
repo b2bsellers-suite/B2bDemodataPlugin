@@ -1,0 +1,13 @@
+includes:
+    - vendor/phpstan/phpstan-phpunit/extension.neon
+
+parameters:
+    level: max
+    reportUnmatchedIgnoredErrors: true
+    inferPrivatePropertyTypeFromConstructor: true
+    checkMissingIterableValueType: false
+    bootstrapFiles:
+        - %currentWorkingDirectory%/phpstan-bootstrap.php
+        - %currentWorkingDirectory%/vendor/autoload.php
+    excludePaths:
+        - tests/Bootstrap.php

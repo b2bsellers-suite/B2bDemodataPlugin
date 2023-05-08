@@ -1,0 +1,49 @@
+{
+  "guest": false,
+  "title": "",
+  "salutation": "",
+  "firstName": "",
+  "lastName": "",
+  "company": "Ektek GmbH",
+  "email": "info@ektek.com",
+  "password": "",
+  "accountType": "business",
+  "customerNumber": "10002",
+  "billingAddress": {
+    "country": "DE",
+    "street": "Ektek-Platz 1",
+    "zipcode": "97070",
+    "city": "Würzburg",
+    "firstName": "N/A",
+    "lastName": "N/A",
+    "company": "Ektek GmbH",
+    "salutation": "mr"
+  },
+  "shippingAddress": {
+    "country": "DE",
+    "street": "Ektek-Platz 1",
+    "zipcode": "97070",
+    "city": "Würzburg",
+    "firstName": "N/A",
+    "lastName": "N/A",
+    "company": "Ektek GmbH",
+    "salutation": "mr"
+  },
+  "customFields": {
+    "b2b_platform_access": true,
+    "b2b_sales_representative": false,
+    "b2b_supervisor": false
+  },
+  "customerEmployees": [
+    {
+      "salutation": "mr",
+      "firstName": "Henk",
+      "lastName": "Becker",
+      "department": "CEO",
+      "email": "henk.becker@ektek.com",
+      "password": "b2bsellers",
+      "admin": true,
+      "showBonus": true
+    }
+  ]
+}

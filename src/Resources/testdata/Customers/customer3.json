@@ -1,0 +1,80 @@
+{
+  "guest": false,
+  "title": "",
+  "salutation": "not_specified",
+  "firstName": "N/A",
+  "lastName": "N/A",
+  "company": "Ektek Spare-Parts GmbH",
+  "email": "info@ektek-ersatzteile.com",
+  "password": "b2bsellers",
+  "accountType": "business",
+  "customerNumber": "10003",
+  "billingAddress": {
+    "country": "DE",
+    "street": "Dölitzerstraße 8",
+    "zipcode": "04277",
+    "city": "Leipzig",
+    "firstName": "N/A",
+    "lastName": "N/A",
+    "company": "Ektek Spare-Parts GmbH",
+    "salutation": "not_specified"
+  },
+  "shippingAddress": {
+    "country": "DE",
+    "street": "Dölitzerstraße 8",
+    "zipcode": "04277",
+    "city": "Leipzig",
+    "firstName": "N/A",
+    "lastName": "N/A",
+    "company": "Ektek Spare-Parts GmbH",
+    "salutation": "not_specified"
+  },
+  "customFields": {
+    "b2b_platform_access": true,
+    "b2b_sales_representative": false,
+    "b2b_supervisor": false
+  },
+  "customerEmployees": [
+    {
+      "salutation": "mr",
+      "firstName": "Henk",
+      "lastName": "Becker",
+      "department": "Administrator",
+      "email": "henk.becker@nodomain.com",
+      "password": "b2bsellers",
+      "admin": true,
+      "showBonus": true
+    },
+    {
+      "salutation": "mrs",
+      "firstName": "Mareike",
+      "lastName": "Schmidt",
+      "department": "Einkauf",
+      "email": "m.schmidt@ektek.com",
+      "password": "b2bsellers",
+      "admin": true,
+      "showBonus": false
+    },
+    {
+      "salutation": "mr",
+      "firstName": "Klaus",
+      "lastName": "Herpich",
+      "department": "Buchhaltung",
+      "email": "k.herpich@ektek.com",
+      "password": "b2bsellers",
+      "admin": true,
+      "showBonus": false,
+      "loginTarget": "invoice"
+    },
+    {
+      "salutation": "mr",
+      "firstName": "Martin",
+      "lastName": "Müller",
+      "department": "Monteur",
+      "email": "m.mueller@ektek.com",
+      "password": "b2bsellers",
+      "admin": true,
+      "showBonus": true
+    }
+  ]
+}

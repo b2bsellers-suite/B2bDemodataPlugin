@@ -1,0 +1,39 @@
+{
+  "guest": false,
+  "title": "",
+  "salutation": "mr",
+  "firstName": "Michael",
+  "lastName": "Sommer",
+  "company": "Luxon Blech-Großhandel AG",
+  "email": "m.sommer@luxon.de",
+  "password": "b2bsellers",
+  "accountType": "business",
+  "customerNumber": "4711",
+  "billingAddress": {
+    "country": "DE",
+    "street": "Hauptstraße 1",
+    "zipcode": "70001",
+    "city": "Musterstadt",
+    "firstName": "Michael",
+    "lastName": "Sommer",
+    "company": "Luxon Blech-Großhandel AG",
+    "salutation": "mr"
+  },
+  "shippingAddress": {
+    "country": "DE",
+    "street": "Hauptstraße 1",
+    "zipcode": "70001",
+    "city": "Musterstadt",
+    "firstName": "Michael",
+    "lastName": "Sommer",
+    "company": "Luxon Blech-Großhandel AG",
+    "salutation": "mr"
+  },
+  "customFields": {
+    "b2b_platform_access": false,
+    "b2b_sales_representative": true,
+    "b2b_supervisor": false
+  },
+  "customerEmployees": [
+  ]
+}

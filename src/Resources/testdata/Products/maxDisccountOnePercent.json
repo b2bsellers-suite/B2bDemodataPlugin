@@ -1,0 +1,59 @@
+{
+  "id": "fd244361aae040ca893ea417c2f840a5",
+  "type": "product",
+  "taxId": "ab4336f01db8403cbb511369c6770ef0",
+  "price": [
+    {
+      "currencyId": "b7d2554b0ce847cd82f3ac9bd1c0dfca",
+      "net": 10.0,
+      "gross": 11.9,
+      "linked": true,
+      "listPrice": null,
+      "percentage": null,
+      "regulationPrice": null,
+      "extensions": []
+    }
+  ],
+  "productNumber": "DEMO10154",
+  "stock": 800,
+  "isCloseout": false,
+  "variation": [],
+  "purchaseSteps": 1,
+  "maxPurchase": null,
+  "minPurchase": 1,
+  "purchaseUnit": 1.0,
+  "referenceUnit": 1.0,
+  "shippingFree": false,
+  "markAsTopseller": false,
+  "categories": [
+    {"id":  "ac9c3a2b0c0d47e796247cf496c39ed8"}
+  ],
+  "metaDescription": null,
+  "name": "Artikel mit max. Kundenrabatt von 1 %",
+  "keywords": null,
+  "description": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+  "customFields": {
+    "b2b_brass_amount": 0.0,
+    "b2b_follow_up_article": null,
+    "b2b_product_accessories": null,
+    "b2b_custom_comment_visible": false,
+    "b2b_event_article_location": null,
+    "b2b_product_accessories_on": false,
+    "b2b_product_discount_rate_max": 5.0
+  },
+  "translated": {
+    "metaDescription": null,
+    "name": "Artikel mit max. Kundenrabatt von 1 %",
+    "keywords": null,
+    "description": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+    "metaTitle": null,
+    "packUnit": null,
+    "packUnitPlural": null,
+    "customFields": {
+      "b2b_brass_amount": 0.0,
+      "b2b_custom_comment_visible": false,
+      "b2b_product_accessories_on": false,
+      "b2b_product_discount_rate_max": 5.0
+    }
+  }
+}
