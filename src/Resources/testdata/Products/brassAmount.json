@@ -1,77 +1,71 @@
 {
-  "id": "0972f332d46240ceb88f1b89d09797ac",
-  "type": "product",
-  "parentId": null,
-  "parentVersionId": null,
-  "productManufacturerVersionId": null,
-  "unitId": null,
-  "taxId": "ab4336f01db8403cbb511369c6770ef0",
-  "productMediaVersionId": null,
-  "deliveryTimeId": null,
-  "canonicalProductId": null,
-  "cmsPageId": null,
-  "cmsPageVersionId": null,
+  "active": true,
   "price": [
     {
-      "currencyId": "b7d2554b0ce847cd82f3ac9bd1c0dfca",
-      "net": 8.4033613445378,
-      "gross": 10.0,
+      "net": 10,
+      "gross": 11.9,
       "linked": true,
-      "listPrice": {
-        "currencyId": "b7d2554b0ce847cd82f3ac9bd1c0dfca",
-        "net": 12.596638655462,
-        "gross": 14.99,
-        "linked": true,
-        "listPrice": null,
-        "percentage": null,
-        "regulationPrice": null,
-        "extensions": []
-      }
+      "listPrice": null,
+      "percentage": null,
+      "regulationPrice": null,
+      "currencyCode": "EUR"
     }
   ],
-  "productNumber": "DEMO10139",
+  "productNumber": "B2B10139",
   "stock": 800,
-  "restockTime": null,
-  "active": true,
   "isCloseout": false,
   "purchaseSteps": 1,
-  "maxPurchase": null,
   "minPurchase": 1,
-  "purchaseUnit": null,
-  "referenceUnit": null,
+  "purchaseUnit": 1,
+  "referenceUnit": 1,
   "shippingFree": false,
-  "markAsTopseller": false,
-  "weight": 1.0,
-  "width": 400.0,
-  "height": 200.0,
-  "length": 100.0,
-  "categories": [
-    {"id":  "ac9c3a2b0c0d47e796247cf496c39ed8"}
+  "name": "Artikel mit Messingzuschlag ",
+  "description": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.&nbsp;<div><br><\/div><div>Hinterlegter Messinganteil: 0,7kg (1kg = 15\u20ac netto)<br><div><br><div><table class=\"sw-text-editor-table\"><tbody class=\"sw-text-editor-table__body\"><tr class=\"sw-text-editor-table__row\"><td class=\"sw-text-editor-table__col\">Bezeichnung<div class=\"sw-text-editor-table__col-selector\" style=\"height: 213px;\" contenteditable=\"false\"><\/div><\/td><td class=\"sw-text-editor-table__col\">Netto<div class=\"sw-text-editor-table__col-selector\" style=\"height: 213px;\" contenteditable=\"false\"><\/div><\/td><td class=\"sw-text-editor-table__col\" style=\"width: 188px;\">Brutto<div class=\"sw-text-editor-table__col-selector\" style=\"height: 213px;\" contenteditable=\"false\"><\/div><\/td><\/tr><tr class=\"sw-text-editor-table__row\"><td class=\"sw-text-editor-table__col\">Shopware Standard Artikelpreis  (Shopware Admin)<\/td><td class=\"sw-text-editor-table__col\">10\u20ac<\/td><td class=\"sw-text-editor-table__col\">11,90\u20ac<\/td><\/tr><tr class=\"sw-text-editor-table__row\"><td class=\"sw-text-editor-table__col\">+ Aufschlag f\u00fcr 0,7kg (=Custom Field Feld) Messing \n<br><br>Info: 1kg Messing von Artikel SW10131 - Messingzuschlag Artikel<br><\/td><td class=\"sw-text-editor-table__col\">10,50\u20ac<br><br>15\u20ac<\/td><td class=\"sw-text-editor-table__col\">12,495\u20ac<br><br>17,85\u20ac<\/td><\/tr><tr class=\"sw-text-editor-table__row\"><td class=\"sw-text-editor-table__col\">Angezeigter Preis im Storefront<\/td><td class=\"sw-text-editor-table__col\">20,50\u20ac<\/td><td class=\"sw-text-editor-table__col\">24,395\u20ac<\/td><\/tr><\/tbody><\/table><br><\/div><\/div><div>Der Messingszuschlagsartikel:&nbsp;<a rel=\"noopener\" href=\"https:\/\/luxon.demo.b2b-commerce-suite.com\/Messingzuschlag-Artikel\/SW10131\" target=\"_blank\">SW10131<\/a>, welcher im Shop nicht aufrufbar\/gelistet ist.&nbsp;<span style=\"letter-spacing: 0px;\">&nbsp;<\/span><\/div><\/div>",
+  "prices": [],
+  "translations": [
+    {
+      "versionId": null,
+      "productId": "0972f332d46240ceb88f1b89d09797ac",
+      "metaDescription": null,
+      "name": "Artikel mit Messingzuschlag ",
+      "keywords": null,
+      "description": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.&nbsp;<div><br><\/div><div>Hinterlegter Messinganteil: 0,7kg (1kg = 15\u20ac netto)<br><div><br><div><table class=\"sw-text-editor-table\"><tbody class=\"sw-text-editor-table__body\"><tr class=\"sw-text-editor-table__row\"><td class=\"sw-text-editor-table__col\">Bezeichnung<div class=\"sw-text-editor-table__col-selector\" style=\"height: 213px;\" contenteditable=\"false\"><\/div><\/td><td class=\"sw-text-editor-table__col\">Netto<div class=\"sw-text-editor-table__col-selector\" style=\"height: 213px;\" contenteditable=\"false\"><\/div><\/td><td class=\"sw-text-editor-table__col\" style=\"width: 188px;\">Brutto<div class=\"sw-text-editor-table__col-selector\" style=\"height: 213px;\" contenteditable=\"false\"><\/div><\/td><\/tr><tr class=\"sw-text-editor-table__row\"><td class=\"sw-text-editor-table__col\">Shopware Standard Artikelpreis  (Shopware Admin)<\/td><td class=\"sw-text-editor-table__col\">10\u20ac<\/td><td class=\"sw-text-editor-table__col\">11,90\u20ac<\/td><\/tr><tr class=\"sw-text-editor-table__row\"><td class=\"sw-text-editor-table__col\">+ Aufschlag f\u00fcr 0,7kg (=Custom Field Feld) Messing \n<br><br>Info: 1kg Messing von Artikel SW10131 - Messingzuschlag Artikel<br><\/td><td class=\"sw-text-editor-table__col\">10,50\u20ac<br><br>15\u20ac<\/td><td class=\"sw-text-editor-table__col\">12,495\u20ac<br><br>17,85\u20ac<\/td><\/tr><tr class=\"sw-text-editor-table__row\"><td class=\"sw-text-editor-table__col\">Angezeigter Preis im Storefront<\/td><td class=\"sw-text-editor-table__col\">20,50\u20ac<\/td><td class=\"sw-text-editor-table__col\">24,395\u20ac<\/td><\/tr><\/tbody><\/table><br><\/div><\/div><div>Der Messingszuschlagsartikel:&nbsp;<a rel=\"noopener\" href=\"https:\/\/luxon.demo.b2b-commerce-suite.com\/Messingzuschlag-Artikel\/SW10131\" target=\"_blank\">SW10131<\/a>, welcher im Shop nicht aufrufbar\/gelistet ist.&nbsp;<span style=\"letter-spacing: 0px;\">&nbsp;<\/span><\/div><\/div>",
+      "metaTitle": null,
+      "packUnit": null,
+      "packUnitPlural": null,
+      "customSearchKeywords": null,
+      "customFields": {
+        "b2b_brass_amount": 0.7,
+        "b2b_follow_up_article": null,
+        "b2b_product_accessories": null,
+        "b2b_custom_comment_visible": false,
+        "b2b_product_accessories_on": false
+      },
+      "productVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
+      "languageCode": "de-DE"
+    },
+    {
+      "versionId": null,
+      "productId": "0972f332d46240ceb88f1b89d09797ac",
+      "metaDescription": null,
+      "name": "Product with brass surcharge",
+      "keywords": null,
+      "description": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam<div><br><\/div><div>Brass portion: 0,7kg (1kg = 15\u20ac net)<br><div><br><div><table class=\"sw-text-editor-table\"><tbody class=\"sw-text-editor-table__body\"><tr class=\"sw-text-editor-table__row\"><td class=\"sw-text-editor-table__col\"><div class=\"sw-text-editor-table__col-selector\" style=\"height: 213px;\" contenteditable=\"false\"><\/div><\/td><td class=\"sw-text-editor-table__col\">Net<div class=\"sw-text-editor-table__col-selector\" style=\"height: 213px;\" contenteditable=\"false\"><\/div><\/td><td class=\"sw-text-editor-table__col\" style=\"width: 188px;\">Gross<div class=\"sw-text-editor-table__col-selector\" style=\"height: 213px;\" contenteditable=\"false\"><\/div><\/td><\/tr><tr class=\"sw-text-editor-table__row\"><td class=\"sw-text-editor-table__col\">Shopware Standard Item Price (Shopware Admin)&nbsp;<\/td><td class=\"sw-text-editor-table__col\">10\u20ac<\/td><td class=\"sw-text-editor-table__col\">11,90\u20ac<\/td><\/tr><tr class=\"sw-text-editor-table__row\"><td class=\"sw-text-editor-table__col\">+ Surcharge for 0,7kg (=Custom Field Field) Brass\n<br><br>Info: 1kg brass from item SW10131 - brass surcharge item\n<\/td><td class=\"sw-text-editor-table__col\">10,50\u20ac<br><br>15\u20ac<\/td><td class=\"sw-text-editor-table__col\">12,495\u20ac<br><br>17,85\u20ac<\/td><\/tr><tr class=\"sw-text-editor-table__row\"><td class=\"sw-text-editor-table__col\">Displayed price in storefront<\/td><td class=\"sw-text-editor-table__col\">20,50\u20ac<\/td><td class=\"sw-text-editor-table__col\">24,395\u20ac<\/td><\/tr><\/tbody><\/table><br><\/div><\/div><div>The brass surcharge article:&nbsp;<a rel=\"noopener\" href=\"https:\/\/luxon.demo.b2b-commerce-suite.com\/Messingzuschlag-Artikel\/SW10131\" target=\"_blank\">https:\/\/luxon.demo.b2b-commerce-suite.com\/Messingzuschlag-Artikel\/SW10131<\/a>, which is not callable\/listed in the store.&nbsp; &nbsp;<span style=\"letter-spacing: 0px;\">&nbsp;<\/span><\/div><\/div>",
+      "metaTitle": null,
+      "packUnit": null,
+      "packUnitPlural": null,
+      "customSearchKeywords": null,
+      "customFields": null,
+      "productVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
+      "languageCode": "en-GB"
+    }
   ],
-  "customFieldSetSelectionActive": false,
-  "name": "Artikel mit Messingzuschlag",
-  "description": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr",
+  "id": "0972f332d46240ceb88f1b89d09797ac",
   "customFields": {
     "b2b_brass_amount": 0.7,
-    "b2b_is_spare_part": true,
+    "b2b_follow_up_article": null,
+    "b2b_product_accessories": null,
     "b2b_custom_comment_visible": false,
     "b2b_product_accessories_on": false
-  },
-  "slotConfig": null,
-  "customSearchKeywords": null,
-  "translated": {
-    "metaDescription": null,
-    "name": "Artikel mit Messingzuschlag",
-    "keywords": null,
-    "description": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
-    "metaTitle": null,
-    "packUnit": null,
-    "packUnitPlural": null,
-    "customFields": {
-      "b2b_brass_amount": 0.7,
-      "b2b_is_spare_part": true,
-      "b2b_custom_comment_visible": false,
-      "b2b_product_accessories_on": false
-    }
   }
 }

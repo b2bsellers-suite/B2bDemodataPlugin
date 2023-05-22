@@ -4,29 +4,29 @@
   "salutation": "not_specified",
   "firstName": "N/A",
   "lastName": "N/A",
-  "company": "Ektek Spare-Parts GmbH",
-  "email": "info@ektek-ersatzteile.com",
+  "company": "Ektek Training Center GmbH",
+  "email": "info@ektek-training-solution.com",
   "password": "b2bsellers",
   "accountType": "business",
-  "customerNumber": "10003",
+  "customerNumber": "10005",
   "billingAddress": {
     "country": "DE",
-    "street": "Dölitzerstraße 8",
-    "zipcode": "04277",
-    "city": "Leipzig",
+    "street": "Stadtweg 34",
+    "zipcode": "90453",
+    "city": "Nürnberg",
     "firstName": "N/A",
     "lastName": "N/A",
-    "company": "Ektek Spare-Parts GmbH",
+    "company": "Ektek Training Center GmbH",
     "salutation": "not_specified"
   },
   "shippingAddress": {
     "country": "DE",
-    "street": "Dölitzerstraße 8",
-    "zipcode": "04277",
-    "city": "Leipzig",
+    "street": "Stadtweg 34",
+    "zipcode": "90453",
+    "city": "Nürnberg",
     "firstName": "N/A",
     "lastName": "N/A",
-    "company": "Ektek Spare-Parts GmbH",
+    "company": "Ektek Training Center GmbH",
     "salutation": "not_specified"
   },
   "customFields": {
@@ -39,21 +39,11 @@
       "salutation": "mr",
       "firstName": "Henk",
       "lastName": "Becker",
-      "department": "Administrator",
+      "department": "CEO",
       "email": "henk.becker@nodomain.com",
       "password": "b2bsellers",
       "admin": true,
       "showBonus": true
-    },
-    {
-      "salutation": "mrs",
-      "firstName": "Mareike",
-      "lastName": "Schmidt",
-      "department": "Einkauf",
-      "email": "m.schmidt@ektek.com",
-      "password": "b2bsellers",
-      "admin": true,
-      "showBonus": false
     },
     {
       "salutation": "mr",
@@ -62,19 +52,10 @@
       "department": "Buchhaltung",
       "email": "k.herpich@ektek.com",
       "password": "b2bsellers",
-      "admin": true,
+      "admin": false,
+      "role": "purchase",
       "showBonus": false,
       "loginTarget": "invoice"
-    },
-    {
-      "salutation": "mr",
-      "firstName": "Martin",
-      "lastName": "Müller",
-      "department": "Monteur",
-      "email": "m.mueller@ektek.com",
-      "password": "b2bsellers",
-      "admin": true,
-      "showBonus": true
     }
   ]
 }

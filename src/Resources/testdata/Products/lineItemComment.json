@@ -1,75 +1,63 @@
 {
-  "id": "c3d602c47a844732baf2cb58b775c860",
-  "type": "product",
-  "parentId": null,
-  "parentVersionId": null,
-  "productManufacturerVersionId": null,
-  "unitId": null,
-  "taxId": "ab4336f01db8403cbb511369c6770ef0",
-  "productMediaVersionId": null,
-  "deliveryTimeId": null,
-  "canonicalProductId": null,
-  "cmsPageId": null,
-  "cmsPageVersionId": null,
+  "active": true,
   "price": [
     {
-      "currencyId": "b7d2554b0ce847cd82f3ac9bd1c0dfca",
-      "net": 8.4033613445378,
-      "gross": 10.0,
+      "net": 4.1932773109244,
+      "gross": 4.99,
       "linked": true,
-      "listPrice": {
-        "currencyId": "b7d2554b0ce847cd82f3ac9bd1c0dfca",
-        "net": 12.596638655462,
-        "gross": 14.99,
-        "linked": true,
-        "listPrice": null,
-        "percentage": null,
-        "regulationPrice": null,
-        "extensions": []
-      }
+      "listPrice": null,
+      "percentage": null,
+      "regulationPrice": null,
+      "currencyCode": "EUR"
     }
   ],
-  "productNumber": "DEMO10136",
+  "productNumber": "B2B10136",
   "stock": 800,
-  "restockTime": null,
-  "active": true,
   "isCloseout": false,
   "purchaseSteps": 1,
-  "maxPurchase": null,
   "minPurchase": 1,
-  "purchaseUnit": null,
-  "referenceUnit": null,
+  "purchaseUnit": 1,
+  "referenceUnit": 1,
   "shippingFree": false,
-  "markAsTopseller": false,
-  "weight": 1.0,
-  "width": 400.0,
-  "height": 200.0,
-  "length": 100.0,
-  "categories": [
-    {"id":  "ac9c3a2b0c0d47e796247cf496c39ed8"}
-  ],
-  "customFieldSetSelectionActive": false,
-  "name": "Artikelkommentar (Bestellpositionskommentar)",
-  "description": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr",
-  "customFields": {
-    "b2b_product_accessories": "> Überschrift 1 \nSW10130\nSW10130\nSW10130\n> Überschrift 2\nSW10130; hinweis\nSW10130\nSW10130",
-    "b2b_custom_comment_visible": true,
-    "b2b_product_accessories_on": true
-  },
-  "slotConfig": null,
-  "customSearchKeywords": null,
-  "translated": {
-    "metaDescription": null,
-    "name": "Artikelkommentar (Bestellpositionskommentar)",
-    "keywords": null,
-    "description": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
-    "metaTitle": null,
-    "packUnit": null,
-    "packUnitPlural": null,
-    "customFields": {
-      "b2b_product_accessories": "> Überschrift 1 \nSW10130\nSW10130\nSW10130\n> Überschrift 2\nSW10130; hinweis\nSW10130\nSW10130",
-      "b2b_custom_comment_visible": true,
-      "b2b_product_accessories_on": true
+  "name": "Artikelkommentar an der Bestellposition",
+  "description": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+  "prices": [],
+  "translations": [
+    {
+      "versionId": null,
+      "productId": "c3d602c47a844732baf2cb58b775c860",
+      "metaDescription": null,
+      "name": "Artikelkommentar an der Bestellposition",
+      "keywords": null,
+      "description": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+      "metaTitle": null,
+      "packUnit": null,
+      "packUnitPlural": null,
+      "customSearchKeywords": null,
+      "customFields": {
+        "b2b_custom_comment_visible": true
+      },
+      "productVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
+      "languageCode": "de-DE"
+    },
+    {
+      "versionId": null,
+      "productId": "c3d602c47a844732baf2cb58b775c860",
+      "metaDescription": null,
+      "name": "Article comment at the order position",
+      "keywords": null,
+      "description": null,
+      "metaTitle": null,
+      "packUnit": null,
+      "packUnitPlural": null,
+      "customSearchKeywords": null,
+      "customFields": null,
+      "productVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
+      "languageCode": "en-GB"
     }
+  ],
+  "id": "c3d602c47a844732baf2cb58b775c860",
+  "customFields": {
+    "b2b_custom_comment_visible": true
   }
 }

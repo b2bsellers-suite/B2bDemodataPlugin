@@ -15,21 +15,24 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class TestDataSeederCommand extends Command
 {
-	protected static $defaultName = 'b2b:create:test-data';
+	protected static $defaultName = 'b2b:test-data:create';
 
 	private ContainerInterface $container;
 	private SystemConfigService $configService;
 	private AbstractSalesChannelContextFactory $contextFactory;
+	private Seeder $seeder;
 
 	public function __construct(
 		ContainerInterface                 $container,
 		SystemConfigService                $configService,
-		AbstractSalesChannelContextFactory $contextFactory
+		AbstractSalesChannelContextFactory $contextFactory,
+		Seeder                             $seeder
 	)
 	{
 		$this->container = $container;
 		$this->configService = $configService;
 		$this->contextFactory = $contextFactory;
+		$this->seeder = $seeder;
 
 		parent::__construct();
 	}
@@ -54,7 +57,7 @@ class TestDataSeederCommand extends Command
 
 		$ioHelper->section('Creating test data');
 		try {
-			(new Seeder($this->container, $this->contextFactory, Context::createDefaultContext()))->run();
+			$this->seeder->run();
 			$ioHelper->success('Completed!!');
 		} catch (\Exception $e) {
 			$ioHelper->error($e->getMessage());

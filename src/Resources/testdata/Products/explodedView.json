@@ -2,32 +2,45 @@
   "active": true,
   "price": [
     {
-      "net": 4.1932773109244,
-      "gross": 4.99,
+      "net": 8.4033613445378,
+      "gross": 10,
       "linked": true,
-      "listPrice": null,
-      "percentage": null,
+      "listPrice": {
+        "extensions": [],
+        "currencyId": "b7d2554b0ce847cd82f3ac9bd1c0dfca",
+        "net": 12.596638655462,
+        "gross": 14.99,
+        "linked": true,
+        "listPrice": null,
+        "percentage": null,
+        "regulationPrice": null
+      },
+      "percentage": {
+        "net": 33.29,
+        "gross": 33.29
+      },
       "regulationPrice": null,
       "currencyCode": "EUR"
     }
   ],
-  "productNumber": "B2B10135",
-  "stock": 800,
+  "productNumber": "B2B10127",
+  "stock": 10,
+  "deliveryTimeId": "330114b7f67b4ca5b19ec5ed9eb1ce7b",
   "isCloseout": false,
   "purchaseSteps": 1,
   "minPurchase": 1,
   "purchaseUnit": 1,
   "referenceUnit": 1,
   "shippingFree": false,
-  "name": "Nachfolger Artikel",
+  "name": "Schlagbohrmaschine (Explo)",
   "description": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
   "prices": [],
   "translations": [
     {
       "versionId": null,
-      "productId": "11da18da1aef43b1b5a516c497208db7",
+      "productId": "4f27316080e8412ba74d46ceddddafb7",
       "metaDescription": null,
-      "name": "Nachfolger Artikel",
+      "name": "Schlagbohrmaschine (Explo)",
       "keywords": null,
       "description": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
       "metaTitle": null,
@@ -35,17 +48,17 @@
       "packUnitPlural": null,
       "customSearchKeywords": null,
       "customFields": {
-        "b2b_follow_up_article": "0dacae81bc044860813a6fb974ce8dd4",
-        "b2b_custom_comment_visible": false
+        "b2b_product_accessories": "> Ersatzteile\nSW10110; TEST!\nSW10118\nSW10117; \u201eHinweis\u201c.\nSW10110; Bei Verwendung m\u00fcssen Sie ein weiteres Loch \u00d8 6 mm an der vorgesehenen Markierung bohren; Notice in \n> Werkzeuge\n> Verbrauchsstoffe\n> Pflege und Wartung",
+        "b2b_product_accessories_on": true
       },
       "productVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
       "languageCode": "de-DE"
     },
     {
       "versionId": null,
-      "productId": "11da18da1aef43b1b5a516c497208db7",
+      "productId": "4f27316080e8412ba74d46ceddddafb7",
       "metaDescription": null,
-      "name": "successor article",
+      "name": "Impact drill (Explo)",
       "keywords": null,
       "description": null,
       "metaTitle": null,
@@ -57,9 +70,9 @@
       "languageCode": "en-GB"
     }
   ],
-  "id": "11da18da1aef43b1b5a516c497208db7",
+  "id": "4f27316080e8412ba74d46ceddddafb7",
   "customFields": {
-    "b2b_follow_up_article": "0dacae81bc044860813a6fb974ce8dd4",
-    "b2b_custom_comment_visible": false
+    "b2b_product_accessories": "> Ersatzteile\nSW10110; TEST!\nSW10118\nSW10117; \u201eHinweis\u201c.\nSW10110; Bei Verwendung m\u00fcssen Sie ein weiteres Loch \u00d8 6 mm an der vorgesehenen Markierung bohren; Notice in \n> Werkzeuge\n> Verbrauchsstoffe\n> Pflege und Wartung",
+    "b2b_product_accessories_on": true
   }
 }

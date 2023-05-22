@@ -1,75 +1,89 @@
 {
-  "id": "bab45584d9244662bb3fc3bc41dc0657",
-  "type": "product",
-  "parentId": null,
-  "parentVersionId": null,
-  "productManufacturerVersionId": null,
-  "unitId": null,
-  "taxId": "ab4336f01db8403cbb511369c6770ef0",
-  "productMediaVersionId": null,
-  "deliveryTimeId": null,
-  "canonicalProductId": null,
-  "cmsPageId": null,
-  "cmsPageVersionId": null,
+  "active": true,
   "price": [
     {
-      "currencyId": "b7d2554b0ce847cd82f3ac9bd1c0dfca",
       "net": 8.4033613445378,
-      "gross": 10.0,
+      "gross": 10,
       "linked": true,
       "listPrice": {
+        "extensions": [],
         "currencyId": "b7d2554b0ce847cd82f3ac9bd1c0dfca",
         "net": 12.596638655462,
         "gross": 14.99,
         "linked": true,
         "listPrice": null,
         "percentage": null,
-        "regulationPrice": null,
-        "extensions": []
-      }
+        "regulationPrice": null
+      },
+      "percentage": {
+        "net": 33.29,
+        "gross": 33.29
+      },
+      "regulationPrice": null,
+      "currencyCode": "EUR"
     }
   ],
-  "productNumber": "DEMO10137",
+  "productNumber": "B2B10137",
   "stock": 800,
-  "restockTime": null,
-  "active": true,
   "isCloseout": false,
   "purchaseSteps": 1,
-  "maxPurchase": null,
   "minPurchase": 1,
-  "purchaseUnit": null,
-  "referenceUnit": null,
   "shippingFree": false,
-  "markAsTopseller": false,
-  "weight": 1.0,
-  "width": 400.0,
-  "height": 200.0,
-  "length": 100.0,
-  "categories": [
-    {"id":  "ac9c3a2b0c0d47e796247cf496c39ed8"}
-  ],
-  "customFieldSetSelectionActive": false,
-  "name": "Demo Anfrageartikel",
-  "description": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr",
-  "customFields": {
-    "b2b_rule_at_product": "3c60dc575a1f4e0c8fd57336cd0e012b",
-    "b2b_price_at_product": "withPriceAtProduct",
-    "b2b_product_request_enable": true
-  },
-  "slotConfig": null,
-  "customSearchKeywords": null,
-  "translated": {
-    "metaDescription": null,
-    "name": "Demo Anfrageartikel",
-    "keywords": null,
-    "description": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
-    "metaTitle": null,
-    "packUnit": null,
-    "packUnitPlural": null,
-    "customFields": {
-      "b2b_rule_at_product": "3c60dc575a1f4e0c8fd57336cd0e012b",
-      "b2b_price_at_product": "withPriceAtProduct",
-      "b2b_product_request_enable": true
+  "weight": 1,
+  "width": 400,
+  "height": 200,
+  "length": 100,
+  "name": "Anfrageartikel",
+  "description": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+  "prices": [],
+  "translations": [
+    {
+      "versionId": null,
+      "productId": "bab45584d9244662bb3fc3bc41dc0658",
+      "metaDescription": null,
+      "name": "Anfrageartikel",
+      "keywords": null,
+      "description": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+      "metaTitle": null,
+      "packUnit": null,
+      "packUnitPlural": null,
+      "customSearchKeywords": null,
+      "customFields": {
+        "b2b_rule_at_product": null,
+        "b2b_price_at_product": null,
+        "b2b_follow_up_article": "11da18da1aef43b1b5a516c497208db7",
+        "b2b_event_article_enabled": false,
+        "b2b_custom_comment_visible": true,
+        "b2b_product_request_enable": true,
+        "b2b_product_request_show_price": 1
+      },
+      "productVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
+      "languageCode": "de-DE"
+    },
+    {
+      "versionId": null,
+      "productId": "bab45584d9244662bb3fc3bc41dc0658",
+      "metaDescription": null,
+      "name": "Request article",
+      "keywords": null,
+      "description": null,
+      "metaTitle": null,
+      "packUnit": null,
+      "packUnitPlural": null,
+      "customSearchKeywords": null,
+      "customFields": null,
+      "productVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
+      "languageCode": "en-GB"
     }
+  ],
+  "id": "bab45584d9244662bb3fc3bc41dc0658",
+  "customFields": {
+    "b2b_rule_at_product": null,
+    "b2b_price_at_product": null,
+    "b2b_follow_up_article": "11da18da1aef43b1b5a516c497208db7",
+    "b2b_event_article_enabled": false,
+    "b2b_custom_comment_visible": true,
+    "b2b_product_request_enable": true,
+    "b2b_product_request_show_price": 1
   }
 }

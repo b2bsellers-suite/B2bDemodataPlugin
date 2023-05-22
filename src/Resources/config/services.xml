@@ -5,6 +5,7 @@
 
     <imports>
         <import resource="../../Command/DependencyInjection/services.xml"/>
+        <import resource="../../Components/**/DependencyInjection/services.xml"/>
     </imports>
 
 </container>

@@ -4,11 +4,11 @@
   "salutation": "not_specified",
   "firstName": "N/A",
   "lastName": "N/A",
-  "company": "Ektek Hausgeräte GmbH",
-  "email": "info@ektek.com",
+  "company": "Ektek Spare-Parts GmbH",
+  "email": "info@ektek-spareparts.com",
   "password": "b2bsellers",
   "accountType": "business",
-  "customerNumber": "10004",
+  "customerNumber": "10003",
   "billingAddress": {
     "country": "DE",
     "street": "Dölitzerstraße 8",
@@ -16,7 +16,7 @@
     "city": "Leipzig",
     "firstName": "N/A",
     "lastName": "N/A",
-    "company": "Ektek Hausgeräte GmbH",
+    "company": "Ektek Spare-Parts GmbH",
     "salutation": "not_specified"
   },
   "shippingAddress": {
@@ -39,8 +39,8 @@
       "salutation": "mr",
       "firstName": "Henk",
       "lastName": "Becker",
-      "department": "Administrator",
-      "email": "henk.becker@nodomain.com",
+      "department": "CEO",
+      "email": "henk.becker@ektek.com",
       "password": "b2bsellers",
       "admin": true,
       "showBonus": true
@@ -52,7 +52,8 @@
       "department": "Einkauf",
       "email": "m.schmidt@ektek.com",
       "password": "b2bsellers",
-      "admin": true,
+      "admin": false,
+      "role": "purchaser",
       "showBonus": false
     },
     {
@@ -65,6 +66,17 @@
       "admin": true,
       "showBonus": false,
       "loginTarget": "invoice"
+    },
+    {
+      "salutation": "mr",
+      "firstName": "Martin",
+      "lastName": "Müller",
+      "department": "Monteur",
+      "email": "m.mueller@ektek.com",
+      "password": "b2bsellers",
+      "admin": false,
+      "role": "purchaser",
+      "showBonus": true
     }
   ]
 }

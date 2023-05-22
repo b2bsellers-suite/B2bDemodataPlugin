@@ -14,7 +14,7 @@
       "extensions": []
     }
   ],
-  "productNumber": "DEMO10154",
+  "productNumber": "B2B10154",
   "stock": 800,
   "isCloseout": false,
   "variation": [],
@@ -39,21 +39,20 @@
     "b2b_custom_comment_visible": false,
     "b2b_event_article_location": null,
     "b2b_product_accessories_on": false,
-    "b2b_product_discount_rate_max": 5.0
+    "b2b_product_discount_rate_max": 1.0
   },
   "translated": {
     "metaDescription": null,
-    "name": "Artikel mit max. Kundenrabatt von 1 %",
+    "name": "Articles with max. customer discount of 1%.",
     "keywords": null,
     "description": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
     "metaTitle": null,
     "packUnit": null,
     "packUnitPlural": null,
     "customFields": {
-      "b2b_brass_amount": 0.0,
       "b2b_custom_comment_visible": false,
       "b2b_product_accessories_on": false,
-      "b2b_product_discount_rate_max": 5.0
+      "b2b_product_discount_rate_max": 1.0
     }
   }
 }

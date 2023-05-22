@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+
+
+        <service id="B2bDemodata\Components\Seeder\Seeder">
+            <argument type="service" id="Symfony\Component\DependencyInjection\ContainerInterface"/>
+            <argument type="service" id="Shopware\Core\System\SalesChannel\Context\SalesChannelContextFactory"/>
+            <argument type="service" id="B2bDemodata\Components\Seeder\Seeds\CategorySeeder"/>
+            <argument type="service" id="B2bDemodata\Components\Seeder\Seeds\CustomerSeeder"/>
+            <argument type="service" id="B2bDemodata\Components\Seeder\Seeds\ProductSeeder"/>
+        </service>
+
+        <service id="B2bDemodata\Components\Seeder\Seeds\CategorySeeder">
+            <argument type="service" id="Symfony\Component\DependencyInjection\ContainerInterface"/>
+            <argument type="service" id="Doctrine\DBAL\Connection"/>
+        </service>
+
+        <service id="B2bDemodata\Components\Seeder\Seeds\CustomerSeeder">
+            <argument type="service" id="Symfony\Component\DependencyInjection\ContainerInterface"/>
+            <argument type="service" id="Shopware\Core\System\SalesChannel\Context\SalesChannelContextFactory"/>
+        </service>
+
+        <service id="B2bDemodata\Components\Seeder\Seeds\ProductSeeder">
+            <argument type="service" id="Symfony\Component\DependencyInjection\ContainerInterface"/>
+            <argument type="service" id="Doctrine\DBAL\Connection"/>
+        </service>
+
+
+
+    </services>
+</container>

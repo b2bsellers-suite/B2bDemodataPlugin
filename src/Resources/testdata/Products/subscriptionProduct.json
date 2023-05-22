@@ -1,73 +1,63 @@
 {
-  "id": "b3f77713d0bd42898d9fb0cb5b9ae88e",
-  "type": "product",
-  "parentId": null,
-  "parentVersionId": null,
-  "productManufacturerVersionId": null,
-  "unitId": null,
-  "taxId": "ab4336f01db8403cbb511369c6770ef0",
-  "productMediaVersionId": null,
-  "deliveryTimeId": null,
-  "canonicalProductId": null,
-  "cmsPageId": null,
-  "cmsPageVersionId": null,
+  "active": true,
   "price": [
     {
-      "currencyId": "b7d2554b0ce847cd82f3ac9bd1c0dfca",
-      "net": 8.4033613445378,
-      "gross": 10.0,
+      "net": 16.806722689076,
+      "gross": 20,
       "linked": true,
-      "listPrice": {
-        "currencyId": "b7d2554b0ce847cd82f3ac9bd1c0dfca",
-        "net": 12.596638655462,
-        "gross": 14.99,
-        "linked": true,
-        "listPrice": null,
-        "percentage": null,
-        "regulationPrice": null,
-        "extensions": []
-      }
+      "listPrice": null,
+      "percentage": null,
+      "regulationPrice": null,
+      "currencyCode": "EUR"
     }
   ],
-  "productNumber": "DEMO10124",
-  "stock": 800,
-  "restockTime": null,
-  "active": true,
+  "productNumber": "B2B10124",
+  "stock": 267,
   "isCloseout": false,
   "purchaseSteps": 1,
-  "maxPurchase": null,
   "minPurchase": 1,
-  "purchaseUnit": null,
-  "referenceUnit": null,
   "shippingFree": false,
-  "markAsTopseller": false,
-  "weight": 1.0,
-  "width": 400.0,
-  "height": 200.0,
-  "length": 100.0,
-  "categories": [
-    {"id":  "ac9c3a2b0c0d47e796247cf496c39ed8"}
+  "name": "Geschirrsp\u00fchler ABO",
+  "description": "Auch gibt es niemanden, der den Schmerz an sich liebt, sucht oder w\u00fcnscht, nur, weil er Schmerz ist, es sei denn, es kommt zu zuf\u00e4lligen Umst\u00e4nden, in denen M\u00fchen und Schmerz ihm gro\u00dfe Freude bereiten k\u00f6nnen. Um ein triviales Beispiel zu nehmen, wer von uns unterzieht sich je anstrengender k\u00f6rperlicher Bet\u00e4tigung, au\u00dfer um Vorteile daraus zu ziehen? Aber wer hat irgend ein Recht, einen Menschen zu tadeln, der die Entscheidung trifft, eine Freude zu genie\u00dfen, die keine unangenehmen Folgen hat, oder einen, der Schmerz vermeidet, welcher keine daraus resultierende Freude nach sich zieht?",
+  "prices": [],
+  "translations": [
+    {
+      "versionId": null,
+      "productId": "b3f77713d0bd42898d9fb0cb5b9ae88e",
+      "metaDescription": null,
+      "name": "Geschirrsp\u00fchler ABO",
+      "keywords": null,
+      "description": "Auch gibt es niemanden, der den Schmerz an sich liebt, sucht oder w\u00fcnscht, nur, weil er Schmerz ist, es sei denn, es kommt zu zuf\u00e4lligen Umst\u00e4nden, in denen M\u00fchen und Schmerz ihm gro\u00dfe Freude bereiten k\u00f6nnen. Um ein triviales Beispiel zu nehmen, wer von uns unterzieht sich je anstrengender k\u00f6rperlicher Bet\u00e4tigung, au\u00dfer um Vorteile daraus zu ziehen? Aber wer hat irgend ein Recht, einen Menschen zu tadeln, der die Entscheidung trifft, eine Freude zu genie\u00dfen, die keine unangenehmen Folgen hat, oder einen, der Schmerz vermeidet, welcher keine daraus resultierende Freude nach sich zieht?",
+      "metaTitle": null,
+      "packUnit": null,
+      "packUnitPlural": null,
+      "customSearchKeywords": null,
+      "customFields": {
+        "b2b_subscription_enabled": true,
+        "b2b_subscription_discount": 15
+      },
+      "productVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
+      "languageCode": "de-DE"
+    },
+    {
+      "versionId": null,
+      "productId": "b3f77713d0bd42898d9fb0cb5b9ae88e",
+      "metaDescription": null,
+      "name": "Dishwasher (subscription)",
+      "keywords": null,
+      "description": "The European languages are members of the same family. Their separate existence is a myth. For science, music, sport, etc, Europe uses the same vocabulary. The languages only differ in their grammar, their pronunciation and their most common words. Everyone realizes why a new common language would be desirable: one could refuse to pay expensive translators. To achieve this, it would be necessary to have uniform grammar, pronunciation and more common words.",
+      "metaTitle": null,
+      "packUnit": null,
+      "packUnitPlural": null,
+      "customSearchKeywords": null,
+      "customFields": null,
+      "productVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
+      "languageCode": "en-GB"
+    }
   ],
-  "customFieldSetSelectionActive": false,
-  "name": "ABO-Artikel (B2B)",
-  "description": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr",
+  "id": "b3f77713d0bd42898d9fb0cb5b9ae88e",
   "customFields": {
     "b2b_subscription_enabled": true,
     "b2b_subscription_discount": 15
-  },
-  "slotConfig": null,
-  "customSearchKeywords": null,
-  "translated": {
-    "metaDescription": null,
-    "name": "ABO-Artikel (B2B)",
-    "keywords": null,
-    "description": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
-    "metaTitle": null,
-    "packUnit": null,
-    "packUnitPlural": null,
-    "customFields": {
-      "b2b_subscription_enabled": true,
-      "b2b_subscription_discount": 15
-    }
   }
 }

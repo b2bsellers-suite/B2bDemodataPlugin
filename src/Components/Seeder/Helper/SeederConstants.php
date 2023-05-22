@@ -1,6 +1,6 @@
 <?php
 
-namespace B2bDemodata\Components\Seeder;
+namespace B2bDemodata\Components\Seeder\Helper;
 
 class SeederConstants
 {

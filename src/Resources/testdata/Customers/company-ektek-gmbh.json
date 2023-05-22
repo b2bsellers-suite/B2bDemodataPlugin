@@ -1,12 +1,12 @@
 {
   "guest": false,
   "title": "",
-  "salutation": "",
-  "firstName": "",
-  "lastName": "",
+  "salutation": "not_specified",
+  "firstName": "N/A",
+  "lastName": "N/A",
   "company": "Ektek GmbH",
   "email": "info@ektek.com",
-  "password": "",
+  "password": "b2bsellers",
   "accountType": "business",
   "customerNumber": "10002",
   "billingAddress": {
