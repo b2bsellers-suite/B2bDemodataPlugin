@@ -51,23 +51,27 @@ class Deseeder
 		/*
 		 * Delete all customer & employee relevant test-data
 		 */
-		$this->deleteCustomersPartialAssortment();
-		$this->deleteCustomersBudgets();
-		$this->deleteCustomersActivities();
-		$this->deleteOffers();
-		$this->deleteCustomersCostCenters();
-		$this->deleteCustomersSpecificPrices();
-		$this->deleteCustomersOrderLists();
-		$this->deleteCustomersPasswordlessLogins();
-		$this->deleteCustomersAndEmployees();
+		try {
+			$this->deleteCustomersPartialAssortment();
+			$this->deleteCustomersBudgets();
+			$this->deleteCustomersActivities();
+			$this->deleteOffers();
+			$this->deleteCustomersCostCenters();
+			$this->deleteCustomersSpecificPrices();
+			$this->deleteCustomersOrderLists();
+			$this->deleteCustomersPasswordlessLogins();
+			$this->deleteCustomersAndEmployees();
 
-		/*
-		 * Delete all product relevant test-data
-		 */
-		$this->deleteCategory();
-		$this->deleteProducts();
-
-		return true;
+			/*
+			 * Delete all product relevant test-data
+			 */
+			$this->deleteCategory();
+			$this->deleteProducts();
+			return true;
+		} catch (\Exception $e) {
+			$this->ioHelper->error($e->getMessage());
+			return false;
+		}
 	}
 
 	/**
@@ -75,6 +79,7 @@ class Deseeder
 	 */
 	private function deleteCustomersAndEmployees(): void
 	{
+		$this->ioHelper->info('Start deleting customer Customers and employees');
 		$files = scandir(__DIR__ . self::TESTDATA_DIRECTORY . '/Customers');
 		$files = array_diff($files, ['.', '..']);
 		foreach ($files as $file) {
@@ -95,8 +100,13 @@ class Deseeder
 						echo $e->getMessage();
 					}
 				}
-				$this->connection->executeStatement("DELETE FROM `b2b_sales_representative_customer` WHERE `customer_id` = UNHEX('".$customerId."')");
-				$this->customerRepository->delete([['id' => $customerId]], Context::createDefaultContext());
+				$this->connection->executeStatement("DELETE FROM `b2b_sales_representative_customer` WHERE `customer_id` = UNHEX('" . $customerId . "')");
+				try {
+					$this->customerRepository->delete([['id' => $customerId]], Context::createDefaultContext());
+				} catch (\Exception $e) {
+					echo $e->getMessage();
+				}
+				$this->connection->executeStatement("DELETE FROM `customer` WHERE `id` = UNHEX('" . $customerId . "')");
 			}
 		}
 	}
@@ -133,6 +143,7 @@ class Deseeder
 
 	private function deleteProducts()
 	{
+		$this->ioHelper->info('Start deleting customer products');
 		$files = scandir(__DIR__ . self::TESTDATA_DIRECTORY . '/Products');
 		$files = array_diff($files, ['.', '..']);
 		foreach ($files as $file) {
@@ -140,6 +151,7 @@ class Deseeder
 			$product = $this->getProductByProductId($product['id']);
 			if ($product) {
 				$this->productRepository->delete([['id' => $product->getId()]], Context::createDefaultContext());
+				$this->connection->executeStatement("DELETE FROM `product_visibility` WHERE `product_id` = UNHEX('".$product->getId()."')");
 			}
 		}
 	}

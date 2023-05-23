@@ -288,6 +288,7 @@ class CustomerSeeder
 			$customerEmployee['salutationId'] = $this->getSalutation($customerEmployee['salutation'])->getId();
 			unset($customerEmployee['salutation']);
 
+			$this->createCustomerEmployee($customer->getId(), $customerEmployee);
 			echo " - Employee created/mapped: " . $customerEmployee['firstName'] . " " . $customerEmployee['lastName'] . " \n";
 		}
 	}

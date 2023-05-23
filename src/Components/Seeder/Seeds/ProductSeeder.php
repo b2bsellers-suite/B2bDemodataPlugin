@@ -88,17 +88,20 @@ class ProductSeeder
 	{
 		$productJson['taxId'] = $this->getDefaultId('tax');
 		$productJson['categories'] = [["id" => SeederConstants::DEMO_CATEGORY_UID]];
+
+		$salesChannelCriteria = (new Criteria())->addFilter(new EqualsFilter('typeId', Defaults::SALES_CHANNEL_TYPE_STOREFRONT));
 		$productJson['visibilities'] = [
 			[
-				"salesChannelId" => $this->getDefaultId('sales_channel'),
+				"salesChannelId" => $this->getDefaultId('sales_channel',$salesChannelCriteria),
 				"visibility" => 30 // there are 3 different visibility modes: Invisible, search only and all. The number 30 stands for all, 20 for search only and 10 for invisible.
 			]
 		];
 		return $productJson;
 	}
 
-	private function getDefaultId(string $repoName): string
+	private function getDefaultId(string $repoName, $criteria = null): string
 	{
+		$criteria = $criteria ?? new Criteria();
 		/** @var EntityRepositoryInterface $repository */
 		$productRepository = $this->container->get($repoName . '.repository');
 		return $productRepository->search((new Criteria()), $this->context)->first()->getId();
