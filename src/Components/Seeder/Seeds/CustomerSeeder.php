@@ -5,12 +5,16 @@ namespace B2bDemodata\Components\Seeder\Seeds;
 use B2bSellersCore\Components\Employee\Aggregate\EmployeeCustomer\EmployeeCustomerCollection;
 use B2bSellersCore\Components\Employee\EmployeeEntity;
 use DirectoryIterator;
+use Doctrine\DBAL\Connection;
 use PHPUnit\Util\Exception;
 use Shopware\Core\Checkout\Customer\CustomerEntity;
 use Shopware\Core\Checkout\Customer\SalesChannel\RegisterRoute;
+use Shopware\Core\Defaults;
 use Shopware\Core\Framework\Context;
+use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
+use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\AndFilter;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\Uuid\Uuid;
 use Shopware\Core\Framework\Validation\DataBag\RequestDataBag;
@@ -68,23 +72,33 @@ class CustomerSeeder
 
 	}
 
-	private function createCustomer($customerJson): void
+    /**
+     * @throws \Exception
+     */
+    private function createCustomer($customerJson): void
 	{
-		if ($this->customerExists($customerJson['email'])) {
-			return;
-		}
 		$dataBag = $this->createCustomerDataBag($customerJson);
-		$customerResponse = $this->registerRoute->register($dataBag, $this->salesChannelContext);
 
+		if ($this->customerExists($customerJson['email'])) {
+			echo "Customer already exists: " . $customerJson['email'] . " - Start updating...";
+			$customer = $this->getCustomerByEmail($customerJson['email']);
+			$customer = $this->updateCustomer($customer, $dataBag);
+		} else {
+			echo "Creating customer: " . $customerJson['email'] . " ";
+			$customerResponse = $this->registerRoute->register($dataBag, $this->salesChannelContext);
+			$customer = $customerResponse->getCustomer();
+		}
+		if(!$customer){
+			throw new \Exception('Customer not created');
+		}
 
 		$name = $customerJson['firstName'] . ' ' . $customerJson['lastName'];
 		if (isset($customerJson['company']) && $customerJson['company'] != '') {
 			$name = $customerJson['company'];
 		}
-		echo "Customer created: " . $name . "\n";
 
-		$this->updateCustomerCustomFields($customerResponse->getCustomer()->getId(), $dataBag->all()['customFields']);
-		$customer = $customerResponse->getCustomer();
+		$this->updateCustomerCustomFields($customer->getId(), $dataBag->all()['customFields']);
+		echo "✅ \n";
 
 		$this->createCustomerEmployees($customer, $customerJson);
 		$this->createSalesRepRelations($customer, $customerJson);
@@ -135,30 +149,29 @@ class CustomerSeeder
 
 	private function getCustomerByCustomerNumber(string $customerNumber): ?CustomerEntity
 	{
-
 		/** @var EntityRepositoryInterface $repository */
 		$repository = $this->container->get('customer.repository');
 
 		return $repository->search((new Criteria())->addFilter(new EqualsFilter('customerNumber', $customerNumber)), $this->context)->first();
 	}
 
-	private function createCustomerEmployee($customerId, $data)
+	private function createEmployee($employee)
 	{
-		/** @var EntityRepositoryInterface $repository */
-		$repository = $this->container->get('b2b_employee.repository');
+		/** @var EntityRepository $repository */
+		$employeeRepository = $this->container->get('b2b_employee.repository');
+		$employeeRepository->upsert([$employee], $this->context);
 
-		$result = $repository->search((new Criteria())->addFilter(new EqualsFilter('email', $data['email'])), $this->context)->first();
+	}
 
-		if (!empty($result)) {
-			$this->addCustomerEmployee($customerId, $data['email'], $data['admin'], $data['showBonus']);
-			return;
+	private function createEmployee2Customer($employee2Customer)
+	{
+		if (empty($employee2Customer['customerId']) || empty($employee2Customer['employeeId'])) {
+			dd($employee2Customer);
 		}
+		/** @var EntityRepository $repository */
+		$employee2CustomerRepository = $this->container->get('b2b_employee_customer.repository');
+		$employee2CustomerRepository->upsert([$employee2Customer], $this->context);
 
-		$data['languageId'] = $this->getLanguage()->getId();
-		$data['customFields'] = ['b2b_url_login_authentication_hash' => Uuid::randomHex()];
-		$repository->create([$data], $this->context);
-
-		$this->addCustomerEmployee($customerId, $data['email'], $data['admin'], $data['showBonus']);
 	}
 
 	private function updateCustomerCustomFields($id, $customFields)
@@ -173,7 +186,7 @@ class CustomerSeeder
 
 	}
 
-	private function addCustomerEmployee($customerId, $email, $admin = false, $showBonus = false)
+	private function addCustomerEmployee($customerId, $email, $admin = false, $roleId = null, $customFields = null)
 	{
 		/** @var EntityRepositoryInterface $repository */
 		$repository = $this->container->get('b2b_employee.repository');
@@ -203,8 +216,10 @@ class CustomerSeeder
 		$data = [
 			'employeeId' => $customerEmployee->getId(),
 			'customerId' => $customerId,
+			'active' => true,
 			'admin' => $admin,
-			'customFields' => ['b2b_show_bonus' => $showBonus]
+			'roleId' => $admin,
+			'customFields' => $customFields
 		];
 
 		$assignedCustomerEmployeesRepository->create([$data], $this->context);
@@ -279,20 +294,26 @@ class CustomerSeeder
 		]);
 	}
 
-	private function createCustomerEmployees(CustomerEntity $customer, $customerJson): void
+    /**
+     * @throws \Exception
+     */
+    private function createCustomerEmployees(CustomerEntity $customer, $customerJson): void
 	{
 		if (!array_key_exists('customerEmployees', $customerJson) or !is_array($customerJson['customerEmployees'])) {
 			return;
 		}
 		foreach ($customerJson['customerEmployees'] as $customerEmployee) {
-			$customerEmployee['salutationId'] = $this->getSalutation($customerEmployee['salutation'])->getId();
-			unset($customerEmployee['salutation']);
 
-			$this->createCustomerEmployee($customer->getId(), $customerEmployee);
-			echo " - Employee created/mapped: " . $customerEmployee['firstName'] . " " . $customerEmployee['lastName'] . " \n";
+			$employee = $this->prepareEmployee($customerEmployee);
+			$this->createEmployee($employee);
+			echo " - Employee created: " . $customerEmployee['firstName'] . " " . $customerEmployee['lastName'] . " ✅ \n";
+
+			$customerEmployee = $this->prepareEmployee2Customer($customerEmployee, $customer->getId());
+			$this->createEmployee2Customer($customerEmployee);
+			echo " - Employee mapped to customer: " . $employee['firstName'] . " " . $employee['lastName'] . " ✅ \n";
+
 		}
 	}
-
 	private function createSalesRepRelations(CustomerEntity $customer, $customerJson)
 	{
 
@@ -305,6 +326,113 @@ class CustomerSeeder
 				}
 			}
 		}
+	}
+
+    /**
+     * @throws \Exception
+     */
+    private function prepareEmployee2Customer(array $customerEmployee, string $customerId): array
+    {
+		$employee= $this->getEmployeeByEmail($customerEmployee['email']);
+
+		$id = Uuid::randomHex();
+		if ($employee){
+			/** @var EntityRepository $repository */
+			$employee2CustomerRepository = $this->container->get('b2b_employee_customer.repository');
+			$result = $employee2CustomerRepository->search((new Criteria())->addFilter(
+				new EqualsFilter('customerId', $customerId),
+				new EqualsFilter('employeeId', $employee->getId())
+			), $this->context)->first();
+			if ($result){
+				$id = $result->getId();
+			}
+		} else {
+			throw new \Exception('Employee with email ' . $customerEmployee['email'] . ' not found! Cant create employee2customer relation!');
+		}
+
+		$customerEmployee = [
+			'id' => $id,
+			'customerId' => $customerId,
+			'employeeId' => $employee->getId(),
+			'admin' => $customerEmployee['admin'] ?? false,
+			'active' => $customerEmployee['active'] ?? true,
+			'roleId' => $this->getRoleId($customerEmployee['role'] ?? null) ?? null,
+			'customFields' => [
+				'b2b_show_bonus' => $customerEmployee['showBonus'] ?? false
+			]
+		];
+
+		return $customerEmployee;
+	}
+
+    /**
+     * @throws \Exception
+     */
+    private function getRoleId(?string $name)
+	{
+		if (empty($name) || $name == null || !is_string($name)) {
+			return null;
+		}
+		/** @var EntityRepositoryInterface $repository */
+		$repository = $this->container->get('b2b_employee_role.repository');
+
+		$criteria = new Criteria();
+		$criteria->addAssociation('translated');
+		$criteria->addFilter(new AndFilter([
+			new EqualsFilter('customerId', NULL),
+			new EqualsFilter('name', $name)
+		]));
+
+		$result = $repository->search($criteria, $this->context)->first();
+		if(!$result) {
+			throw new \Exception('Role with name ' . $name . ' not found!');
+		}
+		return $result->getId();
+
+	}
+
+	private function prepareEmployee(array $customerEmployee): array
+    {
+		$employee = $this->getEmployeeByEmail($customerEmployee['email']);
+
+		$employee = [
+			'id' => $employee ? $employee->getId() : Uuid::randomHex(),
+			'firstName' => $customerEmployee['firstName'],
+			'lastName' => $customerEmployee['lastName'],
+			'email' => $customerEmployee['email'],
+			'password' => $customerEmployee['password'],
+			'languageId' => $this->getLanguage()->getId() ?? null,
+			'title' => $customerEmployee['title'] ?? null,
+			'department' => $customerEmployee['department'] ?? null,
+			'phoneNumber' => $customerEmployee['phoneNumber'] ?? null,
+			'loginTarget' => $customerEmployee['loginTarget'] ?? null,
+			'trackActivity' => $customerEmployee['trackActivity'] ?? true,
+			'salutationId' => ($this->getSalutation($customerEmployee['salutation']) ? $this->getSalutation($customerEmployee['salutation'])->getId() : null),
+			'boundSalesChannelId' => $customerEmployee['boundSalesChannelId'] ?? null,
+			'customFields' => [
+				'b2b_url_login_authentication_hash' => Uuid::randomHex()
+			]
+		];
+		return $employee;
+	}
+
+	private function getEmployeeByEmail(string $email): ?EmployeeEntity
+	{
+		/** @var EntityRepository $repository */
+		$employeeRepository = $this->container->get('b2b_employee.repository');
+
+		return $employeeRepository->search((new Criteria())->addFilter(new EqualsFilter('email', $email)), $this->context)->first();
+	}
+
+	private function updateCustomer(?CustomerEntity $customer, RequestDataBag $dataBag): ?CustomerEntity
+    {
+		$dataBag->set('id', $customer->getId());
+
+		/** @var EntityRepository $repository */
+		$customerRepository = $this->container->get('customer.repository');
+		$customerRepository->update([$dataBag->all()], $this->context);
+
+		return $this->getCustomerByEmail($customer->getEmail());
 	}
 
 

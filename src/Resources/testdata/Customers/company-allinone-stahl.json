@@ -8,6 +8,7 @@
   "email": "info@allinone-stahl.de",
   "password": "b2bsellers",
   "accountType": "business",
+  "customerNumber": "100859",
   "billingAddress": {
     "country": "DE",
     "street": "Hauptstraße 1",

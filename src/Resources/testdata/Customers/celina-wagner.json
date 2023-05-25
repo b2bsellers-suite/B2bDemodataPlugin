@@ -6,6 +6,7 @@
   "lastName": "Wagner",
   "email": "c.wagner@web.de",
   "password": "b2bsellers",
+  "customerNumber": "100922",
   "accountType": "private",
   "billingAddress": {
     "country": "DE",

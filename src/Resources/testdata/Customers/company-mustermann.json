@@ -7,6 +7,7 @@
   "company": "Max Mustermann GmbH",
   "email": "info@mustermann.de",
   "password": "b2bsellers",
+  "customerNumber": "100861",
   "accountType": "business",
   "billingAddress": {
     "country": "DE",

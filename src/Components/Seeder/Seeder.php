@@ -5,6 +5,7 @@ namespace B2bDemodata\Components\Seeder;
 use B2bDemodata\Components\Seeder\Seeds\CategorySeeder;
 use B2bDemodata\Components\Seeder\Seeds\CustomerSeeder;
 use B2bDemodata\Components\Seeder\Seeds\ProductSeeder;
+use Exception;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\System\SalesChannel\Context\AbstractSalesChannelContextFactory;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -34,6 +35,9 @@ class Seeder
         $this->context = Context::createDefaultContext();
     }
 
+    /**
+     * @throws Exception
+     */
     public function run()
     {
 

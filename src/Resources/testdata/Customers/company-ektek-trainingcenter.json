@@ -40,7 +40,7 @@
       "firstName": "Henk",
       "lastName": "Becker",
       "department": "CEO",
-      "email": "henk.becker@nodomain.com",
+      "email": "henk.becker@ektek.com",
       "password": "b2bsellers",
       "admin": true,
       "showBonus": true
@@ -53,7 +53,7 @@
       "email": "k.herpich@ektek.com",
       "password": "b2bsellers",
       "admin": false,
-      "role": "purchase",
+      "role": "fitter",
       "showBonus": false,
       "loginTarget": "invoice"
     }

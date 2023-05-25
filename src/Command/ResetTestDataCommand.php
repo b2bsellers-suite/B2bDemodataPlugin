@@ -46,8 +46,8 @@ class ResetTestDataCommand extends Command
 		$this->addOption('force', 'f', InputOption::VALUE_NONE, 'Force delete of all test data');
 	}
 
-	protected function execute(InputInterface $input, OutputInterface $output)
-	{
+	protected function execute(InputInterface $input, OutputInterface $output): int
+    {
 		$ioHelper = new SymfonyStyle($input, $output);
 		$isForce = $input->getOption('force') ?? false;
 

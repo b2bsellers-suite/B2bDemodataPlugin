@@ -53,7 +53,7 @@
       "email": "m.schmidt@ektek.com",
       "password": "b2bsellers",
       "admin": false,
-      "role": "purchaser",
+      "role": "fitter",
       "showBonus": false
     },
     {
@@ -75,7 +75,7 @@
       "email": "m.mueller@ektek.com",
       "password": "b2bsellers",
       "admin": false,
-      "role": "purchaser",
+      "role": "fitter",
       "showBonus": true
     }
   ]

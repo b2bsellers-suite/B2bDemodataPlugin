@@ -42,8 +42,8 @@ class TestDataSeederCommand extends Command
 	 * 	1. add option -f / force
 	 */
 
-	protected function execute(InputInterface $input, OutputInterface $output)
-	{
+	protected function execute(InputInterface $input, OutputInterface $output): int
+    {
 		$ioHelper = new SymfonyStyle($input, $output);
 		$delivery = $this->configService->get('core.mailerSettings.disableDelivery');
 

@@ -8,10 +8,12 @@ use Doctrine\DBAL\Connection;
 use Exception;
 use Shopware\Core\Defaults;
 use Shopware\Core\Framework\Context;
+use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Framework\Uuid\Uuid;
+use Shopware\Core\System\SalesChannel\SalesChannelEntity;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ProductSeeder
@@ -38,7 +40,10 @@ class ProductSeeder
 		$this->createProducts();
 	}
 
-	private function createProducts(): void
+    /**
+     * @throws Exception
+     */
+    private function createProducts(): void
 	{
 		$resourceDir = $this->container->get('kernel')->locateResource('@B2bDemodata/Resources');
 		$dir = new DirectoryIterator($resourceDir . '/testdata/Products/');
@@ -64,16 +69,13 @@ class ProductSeeder
 		$productJson = $this->replaceLanguageCodes($productJson);
 		$productJson = $this->replaceCurrencyCodes($productJson);
 
-		//dd($productJson);
-
-
 		$productRepository->upsert([
 			$productJson
 		],
 			$this->context
 		);
 
-		echo "Created product: " . $productJson['name'] . "\n";
+		echo "Created product: " . $productJson['name'] . " ✅ \n";
 
 	}
 
@@ -90,12 +92,15 @@ class ProductSeeder
 		$productJson['categories'] = [["id" => SeederConstants::DEMO_CATEGORY_UID]];
 
 		$salesChannelCriteria = (new Criteria())->addFilter(new EqualsFilter('typeId', Defaults::SALES_CHANNEL_TYPE_STOREFRONT));
-		$productJson['visibilities'] = [
-			[
-				"salesChannelId" => $this->getDefaultId('sales_channel',$salesChannelCriteria),
-				"visibility" => 30 // there are 3 different visibility modes: Invisible, search only and all. The number 30 stands for all, 20 for search only and 10 for invisible.
-			]
-		];
+		if (!$this->isVisibleInSalesChannel($productJson,$this->getDefaultSalesChannel())){
+			$productJson['visibilities'] = [
+				[
+					"salesChannelId" => $this->getDefaultId('sales_channel',$salesChannelCriteria),
+					"visibility" => 30 // there are 3 different visibility modes: Invisible, search only and all. The number 30 stands for all, 20 for search only and 10 for invisible.
+				]
+			];
+		}
+
 		return $productJson;
 	}
 
@@ -107,8 +112,8 @@ class ProductSeeder
 		return $productRepository->search((new Criteria()), $this->context)->first()->getId();
 	}
 
-	private function replaceLanguageCodes(array $productJson)
-	{
+	private function replaceLanguageCodes(array $productJson): array
+    {
 		if (!isset($productJson['translations'])) {
 			return $productJson;
 		}
@@ -120,8 +125,11 @@ class ProductSeeder
 		return $productJson;
 	}
 
-	private function replaceCurrencyCodes(array $productJson)
-	{
+    /**
+     * @throws Exception
+     */
+    private function replaceCurrencyCodes(array $productJson): array
+    {
 
 		if (!isset($productJson['price'])) {
 			return $productJson;
@@ -139,8 +147,11 @@ class ProductSeeder
 		return $productJson;
 	}
 
-	private function getCurrentCurrencyId($currencyCode)
-	{
+    /**
+     * @throws \Doctrine\DBAL\Exception
+     */
+    private function getCurrentCurrencyId($currencyCode): string
+    {
 		/** @var string|null $currencyId */
 		$currencyId = $this->connection->fetchOne('
         SELECT HEX(`currency`.`id`) FROM `currency` WHERE `currency`.`iso_code` = :currencyCode LIMIT 1
@@ -153,6 +164,36 @@ class ProductSeeder
 		$currencyId = strtolower($currencyId);
 
 		return $currencyId;
+	}
+
+	private function getDefaultSalesChannel(): ?SalesChannelEntity
+	{
+		$criteria = new Criteria();
+		$criteria->addFilter(new EqualsFilter('active', true));
+		$criteria->addFilter(new EqualsFilter('typeId', Defaults::SALES_CHANNEL_TYPE_STOREFRONT));
+		$criteria->setLimit(1);
+		$criteria->addAssociation('domains');
+		$criteria->addAssociation('type');
+
+		/** @var EntityRepository $repository */
+		$salesChannelRepository = $this->container->get('sales_channel.repository');
+		return $salesChannelRepository->search($criteria, $this->context)->first();
+	}
+
+	private function isVisibleInSalesChannel(array $productJson, SalesChannelEntity $salesChannel): bool
+    {
+		if ($productJson['id'] && $salesChannel->getId()){
+			$criteria = new Criteria();
+			$criteria->addFilter(new EqualsFilter('productId', $productJson['id']));
+			$criteria->addFilter(new EqualsFilter('salesChannelId', $salesChannel->getId()));
+
+			/** @var EntityRepository $repository */
+			$productVisibilityRepository = $this->container->get('product_visibility.repository');
+			if ($productVisibilityRepository->search($criteria, $this->context)->first()){
+				return true;
+			}
+		}
+		return false;
 	}
 
 
