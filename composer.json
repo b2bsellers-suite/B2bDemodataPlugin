@@ -1,5 +1,5 @@
 {
-  "name": "b2b/demodata",
+  "name": "b2b-sellers/demodata",
   "description": "The demo data plugin of the B2Bsellers Suite creates products, customers and employees to start and test directly with suitable data.",
   "version": "1.0.0",
   "type": "shopware-platform-plugin",
