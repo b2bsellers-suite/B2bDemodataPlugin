@@ -67,8 +67,6 @@ class ProductSeeder
 		$productJson = $this->replaceLanguageCodes($productJson);
 		$productJson = $this->replaceCurrencyCodes($productJson);
 
-        dd($productJson);
-
 		$productRepository->upsert([
 			$productJson
 		],
