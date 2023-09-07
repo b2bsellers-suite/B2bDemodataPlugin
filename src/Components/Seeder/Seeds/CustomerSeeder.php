@@ -5,14 +5,11 @@ namespace B2bDemodata\Components\Seeder\Seeds;
 use B2bSellersCore\Components\Employee\Aggregate\EmployeeCustomer\EmployeeCustomerCollection;
 use B2bSellersCore\Components\Employee\EmployeeEntity;
 use DirectoryIterator;
-use Doctrine\DBAL\Connection;
 use PHPUnit\Util\Exception;
 use Shopware\Core\Checkout\Customer\CustomerEntity;
 use Shopware\Core\Checkout\Customer\SalesChannel\RegisterRoute;
-use Shopware\Core\Defaults;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\AndFilter;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
@@ -25,9 +22,6 @@ use Shopware\Core\System\SalesChannel\Aggregate\SalesChannelDomain\SalesChannelD
 use Shopware\Core\System\SalesChannel\Context\AbstractSalesChannelContextFactory;
 use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Shopware\Core\System\Salutation\SalutationEntity;
-use Symfony\Component\Console\Input\Input;
-use Symfony\Component\Console\Output\Output;
-use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class CustomerSeeder
@@ -106,7 +100,7 @@ class CustomerSeeder
 
 	private function getSalesChannelDomain(): SalesChannelDomainEntity
 	{
-		/** @var EntityRepositoryInterface $repository */
+		/** @var EntityRepository $repository */
 		$repository = $this->container->get('sales_channel_domain.repository');
 
 		return $repository->search(new Criteria(), $this->context)->first();
@@ -114,7 +108,7 @@ class CustomerSeeder
 
 	private function getSalutation($salutationKey = 'mr'): ?SalutationEntity
 	{
-		/** @var EntityRepositoryInterface $repository */
+		/** @var EntityRepository $repository */
 		$repository = $this->container->get('salutation.repository');
 
 		return $repository->search((new Criteria())->addFilter(new EqualsFilter('salutationKey', $salutationKey)), $this->context)->first();
@@ -122,7 +116,7 @@ class CustomerSeeder
 
 	private function getCountry($iso = 'DE'): CountryEntity
 	{
-		/** @var EntityRepositoryInterface $repository */
+		/** @var EntityRepository $repository */
 		$repository = $this->container->get('country.repository');
 		$country = $repository->search((new Criteria())->addFilter(new EqualsFilter('iso', $iso)), $this->context)->first();
 		if (!$country) {
@@ -133,7 +127,7 @@ class CustomerSeeder
 
 	private function getLanguage($name = 'Deutsch'): LanguageEntity
 	{
-		/** @var EntityRepositoryInterface $repository */
+		/** @var EntityRepository $repository */
 		$repository = $this->container->get('language.repository');
 
 		return $repository->search((new Criteria())->addFilter(new EqualsFilter('name', $name)), $this->context)->first();
@@ -141,7 +135,7 @@ class CustomerSeeder
 
 	private function getCustomerByEmail($email): ?CustomerEntity
 	{
-		/** @var EntityRepositoryInterface $repository */
+		/** @var EntityRepository $repository */
 		$repository = $this->container->get('customer.repository');
 
 		return $repository->search((new Criteria())->addFilter(new EqualsFilter('email', $email)), $this->context)->first();
@@ -149,7 +143,7 @@ class CustomerSeeder
 
 	private function getCustomerByCustomerNumber(string $customerNumber): ?CustomerEntity
 	{
-		/** @var EntityRepositoryInterface $repository */
+		/** @var EntityRepository $repository */
 		$repository = $this->container->get('customer.repository');
 
 		return $repository->search((new Criteria())->addFilter(new EqualsFilter('customerNumber', $customerNumber)), $this->context)->first();
@@ -176,7 +170,7 @@ class CustomerSeeder
 
 	private function updateCustomerCustomFields($id, $customFields)
 	{
-		/** @var EntityRepositoryInterface $repository */
+		/** @var EntityRepository $repository */
 		$repository = $this->container->get('customer.repository');
 
 		$repository->update([[
@@ -188,7 +182,7 @@ class CustomerSeeder
 
 	private function addCustomerEmployee($customerId, $email, $admin = false, $roleId = null, $customFields = null)
 	{
-		/** @var EntityRepositoryInterface $repository */
+		/** @var EntityRepository $repository */
 		$repository = $this->container->get('b2b_employee.repository');
 
 
@@ -210,7 +204,7 @@ class CustomerSeeder
 			return;
 		}
 
-		/** @var EntityRepositoryInterface $repository */
+		/** @var EntityRepository $repository */
 		$assignedCustomerEmployeesRepository = $this->container->get('b2b_employee_customer.repository');
 
 		$data = [
@@ -227,7 +221,7 @@ class CustomerSeeder
 
 	private function addSalesRepCustomer($salesRepId, $customerId)
 	{
-		/** @var EntityRepositoryInterface $repository */
+		/** @var EntityRepository $repository */
 		$repository = $this->container->get('b2b_sales_representative_customer.repository');
 
 		$criteria = new Criteria();
@@ -373,7 +367,7 @@ class CustomerSeeder
 		if (empty($name) || $name == null || !is_string($name)) {
 			return null;
 		}
-		/** @var EntityRepositoryInterface $repository */
+		/** @var EntityRepository $repository */
 		$repository = $this->container->get('b2b_employee_role.repository');
 
 		$criteria = new Criteria();

@@ -6,7 +6,7 @@
 
 
         <service id="B2bDemodata\Components\Seeder\Seeder">
-            <argument type="service" id="Symfony\Component\DependencyInjection\ContainerInterface"/>
+            <argument type="service" id="service_container"/>
             <argument type="service" id="Shopware\Core\System\SalesChannel\Context\SalesChannelContextFactory"/>
             <argument type="service" id="B2bDemodata\Components\Seeder\Seeds\CategorySeeder"/>
             <argument type="service" id="B2bDemodata\Components\Seeder\Seeds\CustomerSeeder"/>
@@ -14,17 +14,17 @@
         </service>
 
         <service id="B2bDemodata\Components\Seeder\Seeds\CategorySeeder">
-            <argument type="service" id="Symfony\Component\DependencyInjection\ContainerInterface"/>
+            <argument type="service" id="service_container"/>
             <argument type="service" id="Doctrine\DBAL\Connection"/>
         </service>
 
         <service id="B2bDemodata\Components\Seeder\Seeds\CustomerSeeder">
-            <argument type="service" id="Symfony\Component\DependencyInjection\ContainerInterface"/>
+            <argument type="service" id="service_container"/>
             <argument type="service" id="Shopware\Core\System\SalesChannel\Context\SalesChannelContextFactory"/>
         </service>
 
         <service id="B2bDemodata\Components\Seeder\Seeds\ProductSeeder">
-            <argument type="service" id="Symfony\Component\DependencyInjection\ContainerInterface"/>
+            <argument type="service" id="service_container"/>
             <argument type="service" id="Doctrine\DBAL\Connection"/>
         </service>
 

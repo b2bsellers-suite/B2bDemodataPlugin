@@ -7,7 +7,6 @@ use Doctrine\DBAL\Connection;
 use Shopware\Core\Defaults;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\System\SalesChannel\SalesChannelEntity;
@@ -46,14 +45,14 @@ class CategorySeeder
 
 	private function demoCategoryExist(): bool
 	{
-		/** @var EntityRepositoryInterface $repository */
+		/** @var EntityRepository $repository */
 		$categoryRepository = $this->container->get('category.repository');
 		return null !== $categoryRepository->search((new Criteria())->addFilter(new EqualsFilter('id', SeederConstants::DEMO_CATEGORY_UID)), $this->context)->first();
 	}
 
 	private function createDemoCategory(): void
 	{
-		/** @var EntityRepositoryInterface $repository */
+		/** @var EntityRepository $repository */
 		$categoryRepository = $this->container->get('category.repository');
 
 		$categoryRepository->create([

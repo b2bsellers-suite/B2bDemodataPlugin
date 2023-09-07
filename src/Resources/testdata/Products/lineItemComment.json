@@ -51,7 +51,9 @@
       "packUnit": null,
       "packUnitPlural": null,
       "customSearchKeywords": null,
-      "customFields": null,
+      "customFields": {
+        "b2b_custom_comment_visible": true
+      },
       "productVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
       "languageCode": "en-GB"
     }

@@ -1,7 +1,7 @@
 {
   "name": "b2b/demodata",
   "description": "The demo data plugin of the B2Bsellers Suite creates products, customers and employees to start and test directly with suitable data.",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "shopware-platform-plugin",
   "license": "MIT",
   "minimum-stability": "dev",
@@ -16,8 +16,8 @@
   ],
   "require": {
     "php": "^8.0",
-    "shopware/core": "^6.4.16.0",
-    "b2b-sellers/core": "^1.0.4"
+    "shopware/core": "^6.5.1.0",
+    "b2b-sellers/core": "^1.2.0"
   },
   "require-dev": {
     "k10r/codestyle": "^3.0",

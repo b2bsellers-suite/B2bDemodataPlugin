@@ -9,10 +9,8 @@ use Exception;
 use Shopware\Core\Defaults;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
-use Shopware\Core\Framework\DataAbstractionLayer\EntityRepositoryInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
-use Shopware\Core\Framework\Uuid\Uuid;
 use Shopware\Core\System\SalesChannel\SalesChannelEntity;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -62,12 +60,14 @@ class ProductSeeder
 
 	private function createProduct($productJson): void
 	{
-		/** @var EntityRepositoryInterface $productRepository */
+		/** @var EntityRepository $productRepository */
 		$productRepository = $this->container->get('product.repository');
 
 		$productJson = $this->replaceKnownIds($productJson);
 		$productJson = $this->replaceLanguageCodes($productJson);
 		$productJson = $this->replaceCurrencyCodes($productJson);
+
+        dd($productJson);
 
 		$productRepository->upsert([
 			$productJson
@@ -81,7 +81,7 @@ class ProductSeeder
 
 	private function productExists(string $id): bool
 	{
-		/** @var EntityRepositoryInterface $repository */
+		/** @var EntityRepository $repository */
 		$productRepository = $this->container->get('product.repository');
 		return null !== $productRepository->search((new Criteria())->addFilter(new EqualsFilter('id', $id)), $this->context)->first();
 	}
@@ -107,7 +107,7 @@ class ProductSeeder
 	private function getDefaultId(string $repoName, $criteria = null): string
 	{
 		$criteria = $criteria ?? new Criteria();
-		/** @var EntityRepositoryInterface $repository */
+		/** @var EntityRepository $repository */
 		$productRepository = $this->container->get($repoName . '.repository');
 		return $productRepository->search((new Criteria()), $this->context)->first()->getId();
 	}

@@ -53,7 +53,10 @@
       "packUnit": null,
       "packUnitPlural": null,
       "customSearchKeywords": null,
-      "customFields": null,
+      "customFields": {
+        "b2b_product_accessories": "> \u00dcberschrift 1 \nSW10130\nSW10130\nSW10130\n> \u00dcberschrift 2\nSW10130; hinweis\nSW10130\nSW10130",
+        "b2b_product_accessories_on": true
+      },
       "productVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
       "languageCode": "en-GB"
     }

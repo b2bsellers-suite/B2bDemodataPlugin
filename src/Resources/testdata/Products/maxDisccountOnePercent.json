@@ -41,18 +41,30 @@
     "b2b_product_accessories_on": false,
     "b2b_product_discount_rate_max": 1.0
   },
-  "translated": {
-    "metaDescription": null,
-    "name": "Articles with max. customer discount of 1%.",
-    "keywords": null,
-    "description": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
-    "metaTitle": null,
-    "packUnit": null,
-    "packUnitPlural": null,
-    "customFields": {
-      "b2b_custom_comment_visible": false,
-      "b2b_product_accessories_on": false,
-      "b2b_product_discount_rate_max": 1.0
+  "translations": [
+    {
+      "name": "Artikel mit max. Kundenrabatt von 1 %",
+      "description": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+      "customFields": {
+        "b2b_brass_amount": 0.0,
+        "b2b_follow_up_article": null,
+        "b2b_product_accessories": null,
+        "b2b_custom_comment_visible": false,
+        "b2b_event_article_location": null,
+        "b2b_product_accessories_on": false,
+        "b2b_product_discount_rate_max": 1.0
+      },
+      "languageCode": "de-DE"
+    },
+    {
+      "name": "Articles with max. customer discount of 1%.",
+      "description": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+      "customFields": {
+        "b2b_custom_comment_visible": false,
+        "b2b_product_accessories_on": false,
+        "b2b_product_discount_rate_max": 1.0
+      },
+      "languageCode": "en-GB"
     }
-  }
+  ]
 }

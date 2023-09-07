@@ -1,65 +1,68 @@
 {
-    "active": true,
-    "price": [
-        {
-            "net": 4.1932773109244,
-            "gross": 4.99,
-            "linked": true,
-            "listPrice": null,
-            "percentage": null,
-            "regulationPrice": null,
-            "currencyCode": "EUR"
-        }
-    ],
-    "productNumber": "B2B10132",
-    "stock": 800,
-    "isCloseout": false,
-    "purchaseSteps": 1,
-    "minPurchase": 1,
-    "purchaseUnit": 1,
-    "referenceUnit": 1,
-    "shippingFree": false,
-    "name": "mehrdimensionale Zubeh\u00f6rgruppen",
-    "description": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
-    "prices": [],
-    "translations": [
-        {
-            "versionId": null,
-            "productId": "159dab2cdc9d4488917ad96f2ed986d8",
-            "metaDescription": null,
-            "name": "mehrdimensionale Zubeh\u00f6rgruppen",
-            "keywords": null,
-            "description": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
-            "metaTitle": null,
-            "packUnit": null,
-            "packUnitPlural": null,
-            "customSearchKeywords": null,
-            "customFields": {
-                "b2b_product_accessories": "> \u00dcberschrift 1 \nSW10130\nSW10130\nSW10130\n> \u00dcberschrift 2\nSW10130; hinweis\nSW10130\nSW10130",
-                "b2b_product_accessories_on": true
-            },
-            "productVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-            "languageCode": "de-DE"
-        },
-        {
-            "versionId": null,
-            "productId": "159dab2cdc9d4488917ad96f2ed986d8",
-            "metaDescription": null,
-            "name": "multidimensional accessories groups",
-            "keywords": null,
-            "description": null,
-            "metaTitle": null,
-            "packUnit": null,
-            "packUnitPlural": null,
-            "customSearchKeywords": null,
-            "customFields": null,
-            "productVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
-            "languageCode": "en-GB"
-        }
-    ],
-    "id": "159dab2cdc9d4488917ad96f2ed986d8",
-    "customFields": {
+  "active": true,
+  "price": [
+    {
+      "net": 4.1932773109244,
+      "gross": 4.99,
+      "linked": true,
+      "listPrice": null,
+      "percentage": null,
+      "regulationPrice": null,
+      "currencyCode": "EUR"
+    }
+  ],
+  "productNumber": "B2B10132",
+  "stock": 800,
+  "isCloseout": false,
+  "purchaseSteps": 1,
+  "minPurchase": 1,
+  "purchaseUnit": 1,
+  "referenceUnit": 1,
+  "shippingFree": false,
+  "name": "mehrdimensionale Zubeh\u00f6rgruppen",
+  "description": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+  "prices": [],
+  "translations": [
+    {
+      "versionId": null,
+      "productId": "159dab2cdc9d4488917ad96f2ed986d8",
+      "metaDescription": null,
+      "name": "mehrdimensionale Zubeh\u00f6rgruppen",
+      "keywords": null,
+      "description": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+      "metaTitle": null,
+      "packUnit": null,
+      "packUnitPlural": null,
+      "customSearchKeywords": null,
+      "customFields": {
         "b2b_product_accessories": "> \u00dcberschrift 1 \nSW10130\nSW10130\nSW10130\n> \u00dcberschrift 2\nSW10130; hinweis\nSW10130\nSW10130",
         "b2b_product_accessories_on": true
+      },
+      "productVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
+      "languageCode": "de-DE"
+    },
+    {
+      "versionId": null,
+      "productId": "159dab2cdc9d4488917ad96f2ed986d8",
+      "metaDescription": null,
+      "name": "multidimensional accessories groups",
+      "keywords": null,
+      "description": null,
+      "metaTitle": null,
+      "packUnit": null,
+      "packUnitPlural": null,
+      "customSearchKeywords": null,
+      "customFields": {
+        "b2b_product_accessories": "> \u00dcberschrift 1 \nSW10130\nSW10130\nSW10130\n> \u00dcberschrift 2\nSW10130; hinweis\nSW10130\nSW10130",
+        "b2b_product_accessories_on": true
+      },
+      "productVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
+      "languageCode": "en-GB"
     }
+  ],
+  "id": "159dab2cdc9d4488917ad96f2ed986d8",
+  "customFields": {
+    "b2b_product_accessories": "> \u00dcberschrift 1 \nSW10130\nSW10130\nSW10130\n> \u00dcberschrift 2\nSW10130; hinweis\nSW10130\nSW10130",
+    "b2b_product_accessories_on": true
+  }
 }

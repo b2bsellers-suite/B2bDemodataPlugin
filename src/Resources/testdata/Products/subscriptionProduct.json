@@ -50,7 +50,10 @@
       "packUnit": null,
       "packUnitPlural": null,
       "customSearchKeywords": null,
-      "customFields": null,
+      "customFields": {
+        "b2b_subscription_enabled": true,
+        "b2b_subscription_discount": 15
+      },
       "productVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
       "languageCode": "en-GB"
     }

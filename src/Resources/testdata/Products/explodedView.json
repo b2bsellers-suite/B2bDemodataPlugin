@@ -65,7 +65,10 @@
       "packUnit": null,
       "packUnitPlural": null,
       "customSearchKeywords": null,
-      "customFields": null,
+      "customFields": {
+        "b2b_product_accessories": "> Ersatzteile\nSW10110; TEST!\nSW10118\nSW10117; \u201eHinweis\u201c.\nSW10110; Bei Verwendung m\u00fcssen Sie ein weiteres Loch \u00d8 6 mm an der vorgesehenen Markierung bohren; Notice in \n> Werkzeuge\n> Verbrauchsstoffe\n> Pflege und Wartung",
+        "b2b_product_accessories_on": true
+      },
       "productVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
       "languageCode": "en-GB"
     }
