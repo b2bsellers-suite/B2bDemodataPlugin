@@ -17,7 +17,7 @@
   "require": {
     "php": "^8.0",
     "shopware/core": "^6.5.1.0",
-    "b2b-sellers/core": "^1.2.0"
+    "b2b-sellers/core": "^2.0.0"
   },
   "require-dev": {
     "k10r/codestyle": "^3.0",
