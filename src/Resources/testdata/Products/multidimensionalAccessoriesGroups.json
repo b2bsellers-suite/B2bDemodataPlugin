@@ -35,7 +35,7 @@
       "packUnitPlural": null,
       "customSearchKeywords": null,
       "customFields": {
-        "b2b_product_accessories": "> \u00dcberschrift 1 \nSW10130\nSW10130\nSW10130\n> \u00dcberschrift 2\nSW10130; hinweis\nSW10130\nSW10130",
+        "b2b_product_accessories": "> \u00dcberschrift 1 \nB2B10139\nB2B10137\nB2B10139\n> \u00dcberschrift 2\nB2B10137; my custom hint for this product connection\nB2B10136\nB2B10139",
         "b2b_product_accessories_on": true
       },
       "productVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
