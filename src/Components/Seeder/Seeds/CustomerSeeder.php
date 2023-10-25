@@ -374,7 +374,7 @@ class CustomerSeeder
 		$criteria->addAssociation('translated');
 		$criteria->addFilter(new AndFilter([
 			new EqualsFilter('customerId', NULL),
-			new EqualsFilter('name', $name)
+			new EqualsFilter('translations.name', $name)
 		]));
 
 		$result = $repository->search($criteria, $this->context)->first();
