@@ -64,7 +64,7 @@ class EventSeeder
     private function createEvent($eventJson): void
     {
         /** @var EntityRepository $eventRepository */
-        $eventRepository = $this->container->get('b2b_event.repository');
+        $eventRepository = $this->container->get('b2bsellers_event.repository');
 
         $eventRepository->upsert([
             $eventJson

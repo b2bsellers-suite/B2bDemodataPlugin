@@ -90,7 +90,7 @@
     "b2b_price_at_product": null,
     "b2b_follow_up_article": "11da18da1aef43b1b5a516c497208db7",
     "b2b_event_article_enabled": false,
-    "b2b_custom_comment_visible": true,
+    "b2b_custom_comment_visible": false,
     "b2b_product_request_enable": true,
     "b2b_product_request_show_price": 1
   }

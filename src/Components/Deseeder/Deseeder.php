@@ -108,7 +108,7 @@ class Deseeder
                         echo $e->getMessage();
                     }
                 }
-                $this->connection->executeStatement("DELETE FROM `b2b_sales_representative_customer` WHERE `customer_id` = UNHEX('" . $customerId . "')");
+                $this->connection->executeStatement("DELETE FROM `b2bsellers_sales_representative_customer` WHERE `customer_id` = UNHEX('" . $customerId . "')");
                 try {
                     $this->customerRepository->delete([['id' => $customerId]], Context::createDefaultContext());
                 } catch (\Exception $e) {
@@ -189,7 +189,7 @@ class Deseeder
 
             if ($customer) {
                 $customerId = $customer->getId();
-                $this->connection->executeStatement("DELETE FROM `b2b_customer_partial_assortment_extension` WHERE `customer_id` = UNHEX('" . $customerId . "')");
+                $this->connection->executeStatement("DELETE FROM `b2bsellers_customer_partial_assortment_extension` WHERE `customer_id` = UNHEX('" . $customerId . "')");
             }
         }
     }
@@ -209,8 +209,8 @@ class Deseeder
 
             if ($customer) {
                 $customerId = $customer->getId();
-                $this->connection->executeStatement("DELETE FROM `b2b_offer` WHERE `offer_customer_id` = UNHEX('" . $customerId . "')");
-                $this->connection->executeStatement("DELETE FROM `b2b_offer` WHERE `editor_id` = UNHEX('" . $customerId . "')");
+                $this->connection->executeStatement("DELETE FROM `b2bsellers_offer` WHERE `offer_customer_id` = UNHEX('" . $customerId . "')");
+                $this->connection->executeStatement("DELETE FROM `b2bsellers_offer` WHERE `editor_id` = UNHEX('" . $customerId . "')");
             }
         }
     }
@@ -230,7 +230,7 @@ class Deseeder
 
             if ($customer) {
                 $customerId = $customer->getId();
-                $this->connection->executeStatement("DELETE FROM `b2b_budget` WHERE `customer_id` = UNHEX('" . $customerId . "')");
+                $this->connection->executeStatement("DELETE FROM `b2bsellers_budget` WHERE `customer_id` = UNHEX('" . $customerId . "')");
             }
         }
     }
@@ -250,7 +250,7 @@ class Deseeder
 
             if ($customer) {
                 $customerId = $customer->getId();
-                $this->connection->executeStatement("DELETE FROM `b2b_customer_activity` WHERE `customer_id` = UNHEX('" . $customerId . "')");
+                $this->connection->executeStatement("DELETE FROM `b2bsellers_customer_activity` WHERE `customer_id` = UNHEX('" . $customerId . "')");
             }
         }
     }
@@ -270,7 +270,7 @@ class Deseeder
 
             if ($customer) {
                 $customerId = $customer->getId();
-                $this->connection->executeStatement("DELETE FROM `b2b_customer_cost_center` WHERE `customer_id` = UNHEX('" . $customerId . "')");
+                $this->connection->executeStatement("DELETE FROM `b2bsellers_customer_cost_center` WHERE `customer_id` = UNHEX('" . $customerId . "')");
             }
         }
     }
@@ -290,7 +290,7 @@ class Deseeder
 
             if ($customer) {
                 $customerId = $customer->getId();
-                $this->connection->executeStatement("DELETE FROM `b2b_customer_price` WHERE `customer_id` = UNHEX('" . $customerId . "')");
+                $this->connection->executeStatement("DELETE FROM `b2bsellers_customer_price` WHERE `customer_id` = UNHEX('" . $customerId . "')");
             }
         }
     }
@@ -310,7 +310,7 @@ class Deseeder
 
             if ($customer) {
                 $customerId = $customer->getId();
-                $this->connection->executeStatement("DELETE FROM `b2b_passwordless_login` WHERE `customer_id` = UNHEX('" . $customerId . "')");
+                $this->connection->executeStatement("DELETE FROM `b2bsellers_passwordless_login` WHERE `customer_id` = UNHEX('" . $customerId . "')");
             }
         }
     }
@@ -330,7 +330,7 @@ class Deseeder
 
             if ($customer) {
                 $customerId = $customer->getId();
-                $this->connection->executeStatement("DELETE FROM `b2b_product_list` WHERE `customer_id` = UNHEX('" . $customerId . "')");
+                $this->connection->executeStatement("DELETE FROM `b2bsellers_product_list` WHERE `customer_id` = UNHEX('" . $customerId . "')");
             }
         }
     }
@@ -344,7 +344,7 @@ class Deseeder
 
             $event = json_decode(file_get_contents(__DIR__ . self::TESTDATA_DIRECTORY . '/Events/' . $file), true);
             if (!empty($event['id'])) {
-                $this->connection->executeStatement("DELETE FROM `b2b_event` WHERE `id` = UNHEX('" . $event['id'] . "')");
+                $this->connection->executeStatement("DELETE FROM `b2bsellers_event` WHERE `id` = UNHEX('" . $event['id'] . "')");
             }
         }
     }
