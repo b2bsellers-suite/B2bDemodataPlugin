@@ -66,6 +66,18 @@ class EventSeeder
         /** @var EntityRepository $eventRepository */
         $eventRepository = $this->container->get('b2bsellers_event.repository');
 
+		$eventJson['eventFormatId'] = $this->getEventFormatId($eventJson['eventFormatName']);
+		$eventJson['eventLocationId'] = $this->getEventLocationId($eventJson['eventLocationName']);
+		$eventJson['eventLevelId'] = $this->getEventLevelId($eventJson['eventLevelName']);
+		$eventJson['stateId'] = $this->getEventStateId($eventJson['stateName'], 'b2bsellers_event.state');
+
+		foreach ($eventJson['eventParticipants'] as $key => $eventParticipant) {
+			$eventJson['eventParticipants'][$key]['stateId'] = $this->getEventStateId($eventParticipant['stateName'], 'b2bsellers_event_participant.state');
+			$eventJson['eventParticipants'][$key]['paymentStateId'] = $this->getEventStateId($eventParticipant['paymentStateName'], 'b2bsellers_event_participant_payment.state');
+		}
+
+	//	dd($eventJson);
+
         $eventRepository->upsert([
             $eventJson
         ],
@@ -109,4 +121,67 @@ class EventSeeder
         $criteria->addFilter(new EqualsFilter('email', $email));
         return $customerRepository->search($criteria, Context::createDefaultContext())->getEntities()->first();
     }
+
+	private function getEventFormatId(mixed $eventFormatName): string
+	{
+		$idResult = $this->connection->fetchOne('SELECT HEX(`b2bsellers_event_format_id`) FROM `b2bsellers_event_format_translation` WHERE `name` = :name', [
+			'name' => $eventFormatName
+		]);
+
+		if ($idResult) {
+			return strtolower($idResult);
+		}
+
+		throw new \Exception('unable to find event format id for Event creation ' . $eventFormatName . ' not found');
+	}
+
+	private function getEventLocationId(mixed $eventLocationName)
+	{
+		$idResult = $this->connection->fetchOne('SELECT HEX(`b2bsellers_event_location_id`) FROM `b2bsellers_event_location_translation` WHERE `name` = :name', [
+			'name' => $eventLocationName
+		]);
+
+		if ($idResult) {
+			return strtolower($idResult);
+		}
+
+		throw new \Exception('unable to find event location id for Event creation ' . $eventLocationName . ' not found');
+	}
+
+	private function getEventLevelId(mixed $eventLevelName)
+	{
+		$idResult = $this->connection->fetchOne('SELECT HEX(`b2bsellers_event_level_id`) FROM `b2bsellers_event_level_translation` WHERE `name` = :name', [
+			'name' => $eventLevelName
+		]);
+
+		if ($idResult) {
+			return strtolower($idResult);
+		}
+
+		throw new \Exception('unable to find event level id for Event creation ' . $eventLevelName . ' not found');
+	}
+
+	private function getEventStateId(mixed $stateName, string $stateMaschineName)
+	{
+		$stateMaschineId = $this->connection->fetchOne('SELECT HEX(`id`) FROM `state_machine` WHERE `technical_name` = :name', [
+			'name' => $stateMaschineName
+		]);
+
+
+		if (!$stateMaschineId) {
+			throw new \Exception('unable to find state maschine id for Event creation '.$stateMaschineName.' not found');
+		}
+
+		$idResult = $this->connection->fetchOne('SELECT HEX(`id`) FROM `state_machine_state` WHERE `state_machine_id` = UNHEX(:stateMaschineId) AND `technical_name` = :name', [
+			'stateMaschineId' => $stateMaschineId,
+			'name' => $stateName
+		]);
+
+		if ($idResult) {
+			return strtolower($idResult);
+		}
+
+		throw new \Exception('unable to find event state id for Event creation ' . $stateName . ' not found');
+
+	}
 }
