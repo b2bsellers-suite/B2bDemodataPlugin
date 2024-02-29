@@ -258,8 +258,8 @@ class CustomerSeeder
 		$data->set('company', array_key_exists('company', $customerJson) ? (string)$customerJson['company'] : '');
 		$data->set('customerNumber', array_key_exists('customerNumber', $customerJson) ? (string)$customerJson['customerNumber'] : '');
 		$data->set('salutationId', $this->getSalutation($customerJson['salutation']) ? $this->getSalutation($customerJson['salutation'])->getId() : null);
-			$data->set('firstName', $customerJson['firstName']) ?? null;
-			$data->set('lastName', $customerJson['lastName']) ?? null;
+		$data->set('firstName', $customerJson['firstName'] ?? null);
+		$data->set('lastName', $customerJson['lastName'] ?? null);
 		$data->set('email', $customerJson['email']);
 		$data->set('password', $customerJson['password']);
 		$data->set('storefrontUrl', $this->salesChannelContext->getSalesChannel()->getDomains()->first()->getUrl());
@@ -270,7 +270,10 @@ class CustomerSeeder
 
 		$data->set('billingAddress', $this->getAddress($customerJson['billingAddress']));
 		$data->set('shippingAddress', $this->getAddress($customerJson['shippingAddress']));
-		$data->set('customFields', new RequestDataBag($customerJson['customFields']));
+
+        $customerJson['customFields']['b2b_url_login_authentication_hash'] = Uuid::randomHex();
+        $data->set('customFields', new RequestDataBag($customerJson['customFields']));
+
 		return $data;
 	}
 
