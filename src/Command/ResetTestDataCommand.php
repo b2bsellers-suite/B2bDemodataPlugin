@@ -3,7 +3,6 @@
 namespace B2bDemodata\Command;
 
 use B2bDemodata\Components\Deseeder\Deseeder;
-use B2bDemodata\Components\Seeder\Seeder;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\System\SalesChannel\Context\AbstractSalesChannelContextFactory;
@@ -20,23 +19,14 @@ class ResetTestDataCommand extends Command
 {
 	protected static $defaultName = 'b2b:test-data:reset';
 
-	private EntityRepository $customerRepository;
-	private EntityRepository $employeeRepository;
-	private EntityRepository $employeeCustomerRepository;
-	private EntityRepository $productRepository;
-
 	public function __construct(
-		EntityRepository $customerRepository,
-		EntityRepository $employeeRepository,
-		EntityRepository $employeeCustomerRepository,
-		EntityRepository $productRepository
+        private EntityRepository $customerRepository,
+        private EntityRepository $employeeRepository,
+        private EntityRepository $employeeCustomerRepository,
+        private EntityRepository $productRepository,
+        private ContainerInterface $container,
 	)
 	{
-		$this->customerRepository = $customerRepository;
-		$this->employeeRepository = $employeeRepository;
-		$this->employeeCustomerRepository = $employeeCustomerRepository;
-		$this->productRepository = $productRepository;
-
 		parent::__construct();
 	}
 
@@ -66,7 +56,9 @@ class ResetTestDataCommand extends Command
 				$this->employeeRepository,
 				$this->employeeCustomerRepository,
 				$this->productRepository,
-				$ioHelper
+				$ioHelper,
+                $this->container
+
 			))->run();
 			$ioHelper->success('Completed!!');
 		} catch (\Exception $e) {

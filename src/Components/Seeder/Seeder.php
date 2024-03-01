@@ -15,30 +15,19 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class Seeder
 {
     use B2bLicenceTrait;
-	private AbstractSalesChannelContextFactory $contextFactory;
-    private ContainerInterface $container;
-	private CategorySeeder $categorySeeder;
-	private CustomerSeeder $customerSeeder;
-	private ProductSeeder $productSeeder;
+
     private Context $context;
-    private EventSeeder $eventSeeder;
 
     public function __construct(
-		ContainerInterface $container,
-		AbstractSalesChannelContextFactory $contextFactory,
-		CategorySeeder	$categorySeeder,
-		CustomerSeeder $customerSeeder,
-		ProductSeeder $productSeeder,
-        EventSeeder $eventSeeder
+		private ContainerInterface $container,
+        private AbstractSalesChannelContextFactory $contextFactory,
+        private CategorySeeder	$categorySeeder,
+        private CustomerSeeder $customerSeeder,
+        private ProductSeeder $productSeeder,
+        private EventSeeder $eventSeeder
 	)
     {
-        $this->contextFactory = $contextFactory;
-        $this->container = $container;
-		$this->categorySeeder = $categorySeeder;
-		$this->customerSeeder = $customerSeeder;
-		$this->productSeeder = $productSeeder;
         $this->context = Context::createDefaultContext();
-        $this->eventSeeder = $eventSeeder;
     }
 
     /**

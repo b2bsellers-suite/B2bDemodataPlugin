@@ -17,35 +17,25 @@ use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Kernel;
 use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class Deseeder
 {
     use B2bLicenceTrait;
 
     const TESTDATA_DIRECTORY = '/../../Resources/testdata';
-
-    private EntityRepository $customerRepository;
-    private EntityRepository $employeeRepository;
-    private EntityRepository $employeeCustomerRepository;
-    private EntityRepository $productRepository;
-    private SymfonyStyle $ioHelper;
     private Connection $connection;
 
 
     public function __construct(
-        EntityRepository $customerRepository,
-        EntityRepository $employeeRepository,
-        EntityRepository $employeeCustomerRepository,
-        EntityRepository $productRepository,
-        SymfonyStyle     $ioHelper
-
+        private EntityRepository $customerRepository,
+        private EntityRepository $employeeRepository,
+        private EntityRepository $employeeCustomerRepository,
+        private EntityRepository $productRepository,
+        private SymfonyStyle     $ioHelper,
+        private ContainerInterface $container
     )
     {
-        $this->customerRepository = $customerRepository;
-        $this->employeeRepository = $employeeRepository;
-        $this->employeeCustomerRepository = $employeeCustomerRepository;
-        $this->productRepository = $productRepository;
-        $this->ioHelper = $ioHelper;
         $this->connection = Kernel::getConnection();
     }
 
