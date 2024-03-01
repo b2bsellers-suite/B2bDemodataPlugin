@@ -15,19 +15,16 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class CategorySeeder
 {
 
-	private ContainerInterface $container;
 	private Context $context;
-	private Connection $connection;
+
 	private array $cachedLanguages = [];
 
 
 	public function __construct(
-		ContainerInterface $container,
-		Connection         $connection
+        private ContainerInterface $container,
+        private Connection         $connection
 	)
 	{
-		$this->container = $container;
-		$this->connection = $connection;
 		$this->context = Context::createDefaultContext();
 	}
 

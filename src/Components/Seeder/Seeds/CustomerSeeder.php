@@ -27,15 +27,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class CustomerSeeder
 {
 	private SalesChannelContext $salesChannelContext;
-	private ContainerInterface $container;
-	private AbstractSalesChannelContextFactory $contextFactory;
 	private Context $context;
 	private RegisterRoute $registerRoute;
 
-	public function __construct(ContainerInterface $container, AbstractSalesChannelContextFactory $contextFactory)
+	public function __construct(
+        private ContainerInterface $container,
+        private AbstractSalesChannelContextFactory $contextFactory)
 	{
-		$this->contextFactory = $contextFactory;
-		$this->container = $container;
 		$this->context = Context::createDefaultContext();
 		$this->registerRoute = $container->get(RegisterRoute::class);
 		$this->salesChannelContext = $this->contextFactory->create(Uuid::randomHex(), $this->getSalesChannelDomain()->getSalesChannelId());
