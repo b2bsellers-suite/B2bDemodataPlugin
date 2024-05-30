@@ -74,8 +74,6 @@ class EventSeeder
 			$eventJson['eventParticipants'][$key]['paymentStateId'] = $this->getEventStateId($eventParticipant['paymentStateName'], 'b2bsellers_event_participant_payment.state');
 		}
 
-	//	dd($eventJson);
-
         $eventRepository->upsert([
             $eventJson
         ],

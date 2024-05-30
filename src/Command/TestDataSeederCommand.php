@@ -6,6 +6,7 @@ use B2bDemodata\Components\Seeder\Seeder;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\System\SalesChannel\Context\AbstractSalesChannelContextFactory;
 use Shopware\Core\System\SystemConfig\SystemConfigService;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -13,14 +14,13 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
+#[AsCommand(
+	name: 'b2b:test-data:create',
+)]
 class TestDataSeederCommand extends Command
 {
-	protected static $defaultName = 'b2b:test-data:create';
-
 	public function __construct(
-		private ContainerInterface                 $container,
         private SystemConfigService                $configService,
-        private AbstractSalesChannelContextFactory $contextFactory,
         private Seeder                             $seeder
 	)
 	{
