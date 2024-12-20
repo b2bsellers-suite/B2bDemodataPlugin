@@ -22,5 +22,13 @@
             <tag name="console.command"/>
         </service>
 
+        <service id="B2bDemodata\Command\ProductListGenerateCommand">
+            <argument type="service" id="b2bsellers_product_list.repository"/>
+            <argument type="service" id="b2bsellers_product_list_type.repository"/>
+            <argument type="service" id="product.repository"/>
+
+            <tag name="console.command"/>
+        </service>
+
     </services>
 </container>
