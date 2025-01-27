@@ -1,0 +1,73 @@
+{
+  "active": true,
+  "price": [
+    {
+      "net": 4.1932773109244,
+      "gross": 4.99,
+      "linked": true,
+      "listPrice": null,
+      "percentage": null,
+      "regulationPrice": null,
+      "currencyCode": "EUR"
+    }
+  ],
+  "purchasePrices": [
+    {
+      "net": 1.68,
+      "gross": 2,
+      "linked": true,
+      "listPrice": null,
+      "percentage": null,
+      "regulationPrice": null,
+      "currencyCode": "EUR"
+    }
+  ],
+  "productNumber": "B2B10136",
+  "stock": 800,
+  "isCloseout": false,
+  "purchaseSteps": 1,
+  "minPurchase": 1,
+  "purchaseUnit": 1,
+  "referenceUnit": 1,
+  "shippingFree": false,
+  "name": "Artikel mit Einkaufspreis",
+  "description": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+  "prices": [],
+  "translations": [
+    {
+      "versionId": null,
+      "productId": "c3d602c47a844732baf2cb58b775c860",
+      "metaDescription": null,
+      "name": "Artikel mit Einkaufspreis",
+      "keywords": null,
+      "description": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+      "metaTitle": null,
+      "packUnit": null,
+      "packUnitPlural": null,
+      "customSearchKeywords": null,
+      "productVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
+      "languageCode": "de-DE"
+    },
+    {
+      "versionId": null,
+      "productId": "c3d602c47a844732baf2cb58b775c860",
+      "metaDescription": null,
+      "name": "Article with purchase-price",
+      "keywords": null,
+      "description": null,
+      "metaTitle": null,
+      "packUnit": null,
+      "packUnitPlural": null,
+      "customSearchKeywords": null,
+      "customFields": {
+        "b2b_custom_comment_visible": true
+      },
+      "productVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
+      "languageCode": "en-GB"
+    }
+  ],
+  "id": "c3d602c47a844732baf2cb58b775c860",
+  "customFields": {
+    "b2b_custom_comment_visible": true
+  }
+}

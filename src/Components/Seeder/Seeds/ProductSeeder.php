@@ -18,6 +18,11 @@ class ProductSeeder
 {
 	private Context $context;
 
+    const PRICE_FIELDS = [
+        'price',
+        'purchasePrices'
+    ];
+
 	public function __construct(
         private ContainerInterface $container,
         private Connection $connection)
@@ -130,14 +135,20 @@ class ProductSeeder
 			return $productJson;
 		}
 
-		foreach ($productJson['price'] as $key => $price) {
-			if (!isset($price['currencyCode'])) {
-				continue;
-			}
+        foreach (self::PRICE_FIELDS as $field) {
+            if(!key_exists($field, $productJson)){
+                continue;
+            }
 
-			$productJson['price'][$key]["currencyId"] = $this->getCurrentCurrencyId($price['currencyCode']);
-			unset($productJson['price'][$key]["currencyCode"]);
-		}
+            foreach ($productJson[$field] as $key => $price) {
+                if (!isset($price['currencyCode'])) {
+                    continue;
+                }
+
+                $productJson[$field][$key]["currencyId"] = $this->getCurrentCurrencyId($price['currencyCode']);
+                unset($productJson[$field][$key]["currencyCode"]);
+            }
+        }
 
 		return $productJson;
 	}
