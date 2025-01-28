@@ -89,7 +89,7 @@ class ProductSeeder
 	private function replaceKnownIds(array $productJson): array
 	{
 		$productJson['taxId'] = $this->getDefaultId('tax');
-		$productJson['categories'] = [["id" => SeederConstants::DEMO_CATEGORY_UID]];
+		$productJson['categories'] = [['id' => SeederConstants::DEMO_CATEGORY_UID]];
 
 		$salesChannelCriteria = (new Criteria())->addFilter(new EqualsFilter('typeId', Defaults::SALES_CHANNEL_TYPE_STOREFRONT));
 		if (!$this->isVisibleInSalesChannel($productJson,$this->getDefaultSalesChannel())){
@@ -136,7 +136,7 @@ class ProductSeeder
 		}
 
         foreach (self::PRICE_FIELDS as $field) {
-            if(!key_exists($field, $productJson)){
+            if(!array_key_exists($field, $productJson)){
                 continue;
             }
 
@@ -145,8 +145,8 @@ class ProductSeeder
                     continue;
                 }
 
-                $productJson[$field][$key]["currencyId"] = $this->getCurrentCurrencyId($price['currencyCode']);
-                unset($productJson[$field][$key]["currencyCode"]);
+                $productJson[$field][$key]['currencyId'] = $this->getCurrentCurrencyId($price['currencyCode']);
+                unset($productJson[$field][$key]['currencyCode']);
             }
         }
 
