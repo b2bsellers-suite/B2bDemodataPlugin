@@ -152,7 +152,7 @@ class CustomerSeeder
 	private function createEmployee($employee)
 	{
 		/** @var EntityRepository $repository */
-		$employeeRepository = $this->container->get('b2b_employee.repository');
+		$employeeRepository = $this->container->get('b2bsellers_employee.repository');
 		$employeeRepository->upsert([$employee], $this->context);
 
 	}
@@ -163,7 +163,7 @@ class CustomerSeeder
 			dd($employee2Customer);
 		}
 		/** @var EntityRepository $repository */
-		$employee2CustomerRepository = $this->container->get('b2b_employee_customer.repository');
+		$employee2CustomerRepository = $this->container->get('b2bsellers_employee_customer.repository');
 		$employee2CustomerRepository->upsert([$employee2Customer], $this->context);
 
 	}
@@ -183,7 +183,7 @@ class CustomerSeeder
 	private function addCustomerEmployee($customerId, $email, $admin = false, $roleId = null, $customFields = null)
 	{
 		/** @var EntityRepository $repository */
-		$repository = $this->container->get('b2b_employee.repository');
+		$repository = $this->container->get('b2bsellers_employee.repository');
 
 
 		$criteria = new Criteria();
@@ -205,7 +205,7 @@ class CustomerSeeder
 		}
 
 		/** @var EntityRepository $repository */
-		$assignedCustomerEmployeesRepository = $this->container->get('b2b_employee_customer.repository');
+		$assignedCustomerEmployeesRepository = $this->container->get('b2bsellers_employee_customer.repository');
 
 		$data = [
 			'employeeId' => $customerEmployee->getId(),
@@ -222,7 +222,7 @@ class CustomerSeeder
 	private function addSalesRepCustomer($salesRepId, $customerId)
 	{
 		/** @var EntityRepository $repository */
-		$repository = $this->container->get('b2b_sales_representative_customer.repository');
+		$repository = $this->container->get('b2bsellers_sales_representative_customer.repository');
 
 		$criteria = new Criteria();
 		$criteria->addFilter(new EqualsFilter('salesRepId', $salesRepId));
@@ -332,7 +332,7 @@ class CustomerSeeder
 		$id = Uuid::randomHex();
 		if ($employee){
 			/** @var EntityRepository $repository */
-			$employee2CustomerRepository = $this->container->get('b2b_employee_customer.repository');
+			$employee2CustomerRepository = $this->container->get('b2bsellers_employee_customer.repository');
 			$result = $employee2CustomerRepository->search((new Criteria())->addFilter(
 				new EqualsFilter('customerId', $customerId),
 				new EqualsFilter('employeeId', $employee->getId())
@@ -368,7 +368,7 @@ class CustomerSeeder
 			return null;
 		}
 		/** @var EntityRepository $repository */
-		$repository = $this->container->get('b2b_employee_role.repository');
+		$repository = $this->container->get('b2bsellers_employee_role.repository');
 
 		$criteria = new Criteria();
 		$criteria->addAssociation('translated');
@@ -413,7 +413,7 @@ class CustomerSeeder
 	private function getEmployeeByEmail(string $email): ?EmployeeEntity
 	{
 		/** @var EntityRepository $repository */
-		$employeeRepository = $this->container->get('b2b_employee.repository');
+		$employeeRepository = $this->container->get('b2bsellers_employee.repository');
 
 		return $employeeRepository->search((new Criteria())->addFilter(new EqualsFilter('email', $email)), $this->context)->first();
 	}

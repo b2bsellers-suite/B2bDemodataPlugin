@@ -15,8 +15,8 @@
 
         <service id="B2bDemodata\Command\ResetTestDataCommand">
             <argument type="service" id="customer.repository"/>
-            <argument type="service" id="b2b_employee.repository"/>
-            <argument type="service" id="b2b_employee_customer.repository"/>
+            <argument type="service" id="b2bsellers_employee.repository"/>
+            <argument type="service" id="b2bsellers_employee_customer.repository"/>
             <argument type="service" id="product.repository"/>
 
             <tag name="console.command"/>
