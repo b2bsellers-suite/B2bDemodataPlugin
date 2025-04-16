@@ -12,118 +12,110 @@ use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\System\SalesChannel\SalesChannelEntity;
+use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ProductSeeder
 {
-	private Context $context;
+    private Context $context;
 
-    const PRICE_FIELDS = [
+    private const PRICE_FIELDS = [
         'price',
         'purchasePrices'
     ];
 
-	public function __construct(
-        private ContainerInterface $container,
-        private Connection $connection)
-	{
-		$this->context = Context::createDefaultContext();
-	}
+    public function __construct(
+        private readonly ContainerInterface $container,
+        private readonly Connection         $connection)
+    {
+        $this->context = Context::createDefaultContext();
+    }
 
-	/**
-	 * @return void
-	 * @throws \Exception
-	 */
-	public function run()
-	{
-		echo "\n\nCreating products...\n";
-		$this->createProducts();
-	}
+    /**
+     * @throws \Exception
+     */
+    public function run(OutputInterface $output): void
+    {
+        $output->writeln('Creating products...');
+
+        $this->createProducts($output);
+    }
 
     /**
      * @throws Exception
      */
-    private function createProducts(): void
-	{
-		$resourceDir = $this->container->get('kernel')->locateResource('@B2bDemodata/Resources');
-		$dir = new DirectoryIterator($resourceDir . '/testdata/Products/');
-
-		foreach ($dir as $fileInfo) {
-			if (!$fileInfo->isDot()) {
-				try {
-					$productJson = json_decode(file_get_contents($fileInfo->getRealPath()), true);
-					$this->createProduct($productJson);
-				} catch (\Exception $e) {
-					throw new \Exception('error handling ' . $fileInfo->getFilename() . ' ' . $e->getMessage());
-				}
-			}
-		}
-	}
-
-	private function createProduct($productJson): void
-	{
-		/** @var EntityRepository $productRepository */
-		$productRepository = $this->container->get('product.repository');
-
-		$productJson = $this->replaceKnownIds($productJson);
-		$productJson = $this->replaceLanguageCodes($productJson);
-		$productJson = $this->replaceCurrencyCodes($productJson);
-
-		$productRepository->upsert([
-			$productJson
-		],
-			$this->context
-		);
-
-		echo "Created product: " . $productJson['name'] . " ✅ \n";
-
-	}
-
-	private function productExists(string $id): bool
-	{
-		/** @var EntityRepository $repository */
-		$productRepository = $this->container->get('product.repository');
-		return null !== $productRepository->search((new Criteria())->addFilter(new EqualsFilter('id', $id)), $this->context)->first();
-	}
-
-	private function replaceKnownIds(array $productJson): array
-	{
-		$productJson['taxId'] = $this->getDefaultId('tax');
-		$productJson['categories'] = [['id' => SeederConstants::DEMO_CATEGORY_UID]];
-
-		$salesChannelCriteria = (new Criteria())->addFilter(new EqualsFilter('typeId', Defaults::SALES_CHANNEL_TYPE_STOREFRONT));
-		if (!$this->isVisibleInSalesChannel($productJson,$this->getDefaultSalesChannel())){
-			$productJson['visibilities'] = [
-				[
-					"salesChannelId" => $this->getDefaultId('sales_channel',$salesChannelCriteria),
-					"visibility" => 30 // there are 3 different visibility modes: Invisible, search only and all. The number 30 stands for all, 20 for search only and 10 for invisible.
-				]
-			];
-		}
-
-		return $productJson;
-	}
-
-	private function getDefaultId(string $repoName, $criteria = null): string
-	{
-		$criteria = $criteria ?? new Criteria();
-		/** @var EntityRepository $repository */
-		$productRepository = $this->container->get($repoName . '.repository');
-		return $productRepository->search((new Criteria()), $this->context)->first()->getId();
-	}
-
-	private function replaceLanguageCodes(array $productJson): array
+    private function createProducts(OutputInterface $output): void
     {
-		if (!isset($productJson['translations'])) {
-			return $productJson;
-		}
-		$newTranslations = [];
-		foreach ($productJson['translations'] as $translation) {
-			$newTranslations[$translation['languageCode']] = $translation;
-		}
-		$productJson['translations'] = $newTranslations;
-		return $productJson;
-	}
+        $resourceDir = $this->container->get('kernel')->locateResource('@B2bDemodata/Resources');
+        $dir = new DirectoryIterator($resourceDir . '/testdata/Products/');
+
+        foreach ($dir as $fileInfo) {
+            if (!$fileInfo->isDot()) {
+                try {
+                    $productJson = json_decode(file_get_contents($fileInfo->getRealPath()), true);
+                    $this->createProduct($productJson);
+
+                    $output->writeln(sprintf('Created product: %s ✅', $productJson['name']));
+                } catch (\Exception $e) {
+                    throw new \Exception('error handling ' . $fileInfo->getFilename() . ' ' . $e->getMessage());
+                }
+            }
+        }
+    }
+
+    private function createProduct($productJson): void
+    {
+        /** @var EntityRepository $productRepository */
+        $productRepository = $this->container->get('product.repository');
+
+        $productJson = $this->replaceKnownIds($productJson);
+        $productJson = $this->replaceLanguageCodes($productJson);
+        $productJson = $this->replaceCurrencyCodes($productJson);
+
+        $productRepository->upsert([
+            $productJson
+        ],
+            $this->context
+        );
+    }
+
+    private function replaceKnownIds(array $productJson): array
+    {
+        $productJson['taxId'] = $this->getDefaultId('tax');
+        $productJson['categories'] = [['id' => SeederConstants::DEMO_CATEGORY_UID]];
+
+        $salesChannelCriteria = (new Criteria())->addFilter(new EqualsFilter('typeId', Defaults::SALES_CHANNEL_TYPE_STOREFRONT));
+        if (!$this->isVisibleInSalesChannel($productJson, $this->getDefaultSalesChannel())) {
+            $productJson['visibilities'] = [
+                [
+                    "salesChannelId" => $this->getDefaultId('sales_channel'),
+                    "visibility" => 30 // there are 3 different visibility modes: Invisible, search only and all. The number 30 stands for all, 20 for search only and 10 for invisible.
+                ]
+            ];
+        }
+
+        return $productJson;
+    }
+
+    private function getDefaultId(string $repoName): string
+    {
+        /** @var EntityRepository $repository */
+        $productRepository = $this->container->get($repoName . '.repository');
+        return $productRepository->search((new Criteria()), $this->context)->first()->getId();
+    }
+
+    private function replaceLanguageCodes(array $productJson): array
+    {
+        if (!isset($productJson['translations'])) {
+            return $productJson;
+        }
+        $newTranslations = [];
+        foreach ($productJson['translations'] as $translation) {
+            $newTranslations[$translation['languageCode']] = $translation;
+        }
+        $productJson['translations'] = $newTranslations;
+        return $productJson;
+    }
 
     /**
      * @throws Exception
@@ -131,12 +123,12 @@ class ProductSeeder
     private function replaceCurrencyCodes(array $productJson): array
     {
 
-		if (!isset($productJson['price'])) {
-			return $productJson;
-		}
+        if (!isset($productJson['price'])) {
+            return $productJson;
+        }
 
         foreach (self::PRICE_FIELDS as $field) {
-            if(!array_key_exists($field, $productJson)){
+            if (!array_key_exists($field, $productJson)) {
                 continue;
             }
 
@@ -150,57 +142,57 @@ class ProductSeeder
             }
         }
 
-		return $productJson;
-	}
+        return $productJson;
+    }
 
     /**
      * @throws \Doctrine\DBAL\Exception
      */
     private function getCurrentCurrencyId($currencyCode): string
     {
-		/** @var string|null $currencyId */
-		$currencyId = $this->connection->fetchOne('
+        /** @var string|null $currencyId */
+        $currencyId = $this->connection->fetchOne('
         SELECT HEX(`currency`.`id`) FROM `currency` WHERE `currency`.`iso_code` = :currencyCode LIMIT 1
         ', ['currencyCode' => $currencyCode]);
 
-		if (!$currencyId) {
-			throw new Exception("Currency with code $currencyCode not found");
-		}
-		// write all uppercase to small characters currencyid
-		$currencyId = strtolower($currencyId);
+        if (!$currencyId) {
+            throw new Exception("Currency with code $currencyCode not found");
+        }
+        // write all uppercase to small characters currencyid
+        $currencyId = strtolower($currencyId);
 
-		return $currencyId;
-	}
+        return $currencyId;
+    }
 
-	private function getDefaultSalesChannel(): ?SalesChannelEntity
-	{
-		$criteria = new Criteria();
-		$criteria->addFilter(new EqualsFilter('active', true));
-		$criteria->addFilter(new EqualsFilter('typeId', Defaults::SALES_CHANNEL_TYPE_STOREFRONT));
-		$criteria->setLimit(1);
-		$criteria->addAssociation('domains');
-		$criteria->addAssociation('type');
-
-		/** @var EntityRepository $repository */
-		$salesChannelRepository = $this->container->get('sales_channel.repository');
-		return $salesChannelRepository->search($criteria, $this->context)->first();
-	}
-
-	private function isVisibleInSalesChannel(array $productJson, SalesChannelEntity $salesChannel): bool
+    private function getDefaultSalesChannel(): ?SalesChannelEntity
     {
-		if ($productJson['id'] && $salesChannel->getId()){
-			$criteria = new Criteria();
-			$criteria->addFilter(new EqualsFilter('productId', $productJson['id']));
-			$criteria->addFilter(new EqualsFilter('salesChannelId', $salesChannel->getId()));
+        $criteria = new Criteria();
+        $criteria->addFilter(new EqualsFilter('active', true));
+        $criteria->addFilter(new EqualsFilter('typeId', Defaults::SALES_CHANNEL_TYPE_STOREFRONT));
+        $criteria->setLimit(1);
+        $criteria->addAssociation('domains');
+        $criteria->addAssociation('type');
 
-			/** @var EntityRepository $repository */
-			$productVisibilityRepository = $this->container->get('product_visibility.repository');
-			if ($productVisibilityRepository->search($criteria, $this->context)->first()){
-				return true;
-			}
-		}
-		return false;
-	}
+        /** @var EntityRepository $repository */
+        $salesChannelRepository = $this->container->get('sales_channel.repository');
+        return $salesChannelRepository->search($criteria, $this->context)->first();
+    }
+
+    private function isVisibleInSalesChannel(array $productJson, SalesChannelEntity $salesChannel): bool
+    {
+        if ($productJson['id'] && $salesChannel->getId()) {
+            $criteria = new Criteria();
+            $criteria->addFilter(new EqualsFilter('productId', $productJson['id']));
+            $criteria->addFilter(new EqualsFilter('salesChannelId', $salesChannel->getId()));
+
+            /** @var EntityRepository $repository */
+            $productVisibilityRepository = $this->container->get('product_visibility.repository');
+            if ($productVisibilityRepository->search($criteria, $this->context)->first()) {
+                return true;
+            }
+        }
+        return false;
+    }
 
 
 }
