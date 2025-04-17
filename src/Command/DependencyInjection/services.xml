@@ -35,6 +35,9 @@
             <argument type="service" id="b2bsellers_employee.repository"/>
             <argument type="service" id="b2bsellers_employee_customer.repository"/>
             <argument type="service" id="b2bsellers_sales_representative_customer.repository"/>
+            <argument type="service" id="sales_channel_domain.repository"/>
+            <argument type="service" id="country.repository"/>
+            <argument type="service" id="salutation.repository"/>
 
             <tag name="console.command"/>
         </service>
