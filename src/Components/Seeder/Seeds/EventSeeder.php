@@ -64,14 +64,24 @@ class EventSeeder
         /** @var EntityRepository $eventRepository */
         $eventRepository = $this->container->get('b2bsellers_event.repository');
 
-        $eventJson['eventFormatId'] = $this->getEventFormatId($eventJson['eventFormatName']);
+        $eventJson['eventFormatId']   = $this->getEventFormatId($eventJson['eventFormatName']);
         $eventJson['eventLocationId'] = $this->getEventLocationId($eventJson['eventLocationName']);
-        $eventJson['eventLevelId'] = $this->getEventLevelId($eventJson['eventLevelName']);
-        $eventJson['stateId'] = $this->getEventStateId($eventJson['stateName'], 'b2bsellers_event.state');
+        $eventJson['eventLevelId']    = $this->getEventLevelId($eventJson['eventLevelName']);
+        $eventJson['stateId']         = $this->getEventStateId(
+            $eventJson['stateName'],
+            'b2bsellers_event.state'
+        );
 
         foreach ($eventJson['eventParticipants'] as $key => $eventParticipant) {
-            $eventJson['eventParticipants'][$key]['stateId'] = $this->getEventStateId($eventParticipant['stateName'], 'b2bsellers_event_participant.state');
-            $eventJson['eventParticipants'][$key]['paymentStateId'] = $this->getEventStateId($eventParticipant['paymentStateName'], 'b2bsellers_event_participant_payment.state');
+            $eventJson['eventParticipants'][$key]['stateId']        = $this->getEventStateId(
+                $eventParticipant['stateName'],
+                'b2bsellers_event_participant.state'
+            );
+
+            $eventJson['eventParticipants'][$key]['paymentStateId'] = $this->getEventStateId(
+                $eventParticipant['paymentStateName'],
+                'b2bsellers_event_participant_payment.state'
+            );
         }
 
         $eventRepository->upsert([
@@ -98,9 +108,11 @@ class EventSeeder
     {
         if ($this->defaultCustomerId == '') {
             $customer = $this->getCustomerByEmail(SeederConstants::DEFAULT_CUSTOMER_EMAIL);
+
             if (!$customer) {
                 throw new \Exception('unable to find default customer for Event creation');
             }
+
             $this->defaultCustomerId = $customer->getId();
         }
         return $this->defaultCustomerId;
@@ -117,9 +129,16 @@ class EventSeeder
 
     private function getEventFormatId(mixed $eventFormatName): string
     {
-        $idResult = $this->connection->fetchOne('SELECT HEX(`b2bsellers_event_format_id`) FROM `b2bsellers_event_format_translation` WHERE `name` = :name', [
-            'name' => $eventFormatName
-        ]);
+        $idResult = $this->connection->fetchOne(
+            <<<SQL
+                SELECT HEX(`b2bsellers_event_format_id`) 
+                FROM `b2bsellers_event_format_translation` 
+                WHERE `name` = :name
+            SQL,
+            [
+                'name' => $eventFormatName
+            ]
+        );
 
         if ($idResult) {
             return strtolower($idResult);
@@ -130,9 +149,16 @@ class EventSeeder
 
     private function getEventLocationId(mixed $eventLocationName)
     {
-        $idResult = $this->connection->fetchOne('SELECT HEX(`b2bsellers_event_location_id`) FROM `b2bsellers_event_location_translation` WHERE `name` = :name', [
-            'name' => $eventLocationName
-        ]);
+        $idResult = $this->connection->fetchOne(
+            <<<SQL
+                SELECT HEX(`b2bsellers_event_location_id`) 
+                FROM `b2bsellers_event_location_translation` 
+                WHERE `name` = :name
+            SQL,
+            [
+                'name' => $eventLocationName
+            ]
+        );
 
         if ($idResult) {
             return strtolower($idResult);
@@ -143,9 +169,16 @@ class EventSeeder
 
     private function getEventLevelId(mixed $eventLevelName)
     {
-        $idResult = $this->connection->fetchOne('SELECT HEX(`b2bsellers_event_level_id`) FROM `b2bsellers_event_level_translation` WHERE `name` = :name', [
-            'name' => $eventLevelName
-        ]);
+        $idResult = $this->connection->fetchOne(
+            <<<SQL
+                SELECT HEX(`b2bsellers_event_level_id`) 
+                FROM `b2bsellers_event_level_translation` 
+                WHERE `name` = :name
+            SQL,
+            [
+                'name' => $eventLevelName
+            ]
+        );
 
         if ($idResult) {
             return strtolower($idResult);
@@ -154,21 +187,36 @@ class EventSeeder
         throw new \Exception('unable to find event level id for Event creation ' . $eventLevelName . ' not found');
     }
 
-    private function getEventStateId(mixed $stateName, string $stateMaschineName)
+    private function getEventStateId(mixed $stateName, string $stateMachineName)
     {
-        $stateMaschineId = $this->connection->fetchOne('SELECT HEX(`id`) FROM `state_machine` WHERE `technical_name` = :name', [
-            'name' => $stateMaschineName
-        ]);
+        $stateMachineId = $this->connection->fetchOne(
+            <<<SQL
+                SELECT HEX(`id`) 
+                FROM `state_machine` 
+                WHERE `technical_name` = :name
+            SQL,
+            [
+                'name' => $stateMachineName
+            ]
+        );
 
 
-        if (!$stateMaschineId) {
-            throw new \Exception('unable to find state maschine id for Event creation ' . $stateMaschineName . ' not found');
+        if (!$stateMachineId) {
+            throw new \Exception('unable to find state maschine id for Event creation ' . $stateMachineName . ' not found');
         }
 
-        $idResult = $this->connection->fetchOne('SELECT HEX(`id`) FROM `state_machine_state` WHERE `state_machine_id` = UNHEX(:stateMaschineId) AND `technical_name` = :name', [
-            'stateMaschineId' => $stateMaschineId,
-            'name' => $stateName
-        ]);
+        $idResult = $this->connection->fetchOne(
+            <<<SQL
+                SELECT HEX(`id`) 
+                FROM `state_machine_state`
+                WHERE `state_machine_id` = UNHEX(:stateMachineId) 
+                  AND `technical_name` = :name
+            SQL,
+            [
+                'stateMachineId' => $stateMachineId,
+                'name' => $stateName
+            ]
+        );
 
         if ($idResult) {
             return strtolower($idResult);

@@ -45,7 +45,7 @@ class TestDataSeederCommand extends Command
 
         $ioHelper->section('Creating test data');
         try {
-            $this->seeder->run();
+            $this->seeder->run($output);
             $ioHelper->success('Completed!!');
         } catch (\Exception $e) {
             $ioHelper->error($e->getMessage());

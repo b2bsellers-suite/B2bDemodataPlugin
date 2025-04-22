@@ -44,7 +44,15 @@ class CategorySeeder
     {
         /** @var EntityRepository $repository */
         $categoryRepository = $this->container->get('category.repository');
-        return null !== $categoryRepository->search((new Criteria())->addFilter(new EqualsFilter('id', SeederConstants::DEMO_CATEGORY_UID)), $this->context)->first();
+        $criteria = (new Criteria())
+            ->addFilter(
+                new EqualsFilter(
+                    'id',
+                    SeederConstants::DEMO_CATEGORY_UID
+                )
+            );
+
+        return null !== $categoryRepository->search($criteria, $this->context)->first();
     }
 
     private function createDemoCategory(): void
@@ -52,7 +60,8 @@ class CategorySeeder
         /** @var EntityRepository $repository */
         $categoryRepository = $this->container->get('category.repository');
 
-        $categoryRepository->create([
+        $categoryRepository->create(
+            [
                 [
                     'id' => SeederConstants::DEMO_CATEGORY_UID,
                     'parentId' => $this->getDefaultSalesChannel()->getNavigationCategoryId(),
@@ -81,8 +90,8 @@ class CategorySeeder
                     ]
 
                 ]
-            ]
-            , $this->context
+            ],
+            $this->context
         );
     }
 
@@ -93,13 +102,22 @@ class CategorySeeder
         }
 
         /** @var string|null $langId */
-        $langId = $this->connection->fetchOne('
-        SELECT HEX(`language`.`id`) FROM `language` INNER JOIN `locale` ON `language`.`locale_id` = `locale`.`id` WHERE `code` = :code LIMIT 1
-        ', ['code' => $code]);
+        $langId = $this->connection->fetchOne(
+            <<<SQL
+                SELECT HEX(`language`.`id`) 
+                FROM `language` 
+                    INNER JOIN `locale` 
+                    ON `language`.`locale_id` = `locale`.`id` 
+                WHERE `code` = :code 
+                LIMIT 1
+            SQL,
+            ['code' => $code]
+        );
 
         if (!$langId) {
             return null;
         }
+
         $this->cachedLanguages[$code] = $langId;
 
         return $langId;

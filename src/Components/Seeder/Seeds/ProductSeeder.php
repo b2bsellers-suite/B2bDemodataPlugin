@@ -6,6 +6,7 @@ use B2bDemodata\Components\Seeder\Helper\SeederConstants;
 use DirectoryIterator;
 use Doctrine\DBAL\Connection;
 use Exception;
+use Shopware\Core\Content\Product\Aggregate\ProductVisibility\ProductVisibilityDefinition;
 use Shopware\Core\Defaults;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
@@ -26,7 +27,8 @@ class ProductSeeder
 
     public function __construct(
         private readonly ContainerInterface $container,
-        private readonly Connection         $connection)
+        private readonly Connection         $connection,
+    )
     {
         $this->context = Context::createDefaultContext();
     }
@@ -84,12 +86,11 @@ class ProductSeeder
         $productJson['taxId'] = $this->getDefaultId('tax');
         $productJson['categories'] = [['id' => SeederConstants::DEMO_CATEGORY_UID]];
 
-        $salesChannelCriteria = (new Criteria())->addFilter(new EqualsFilter('typeId', Defaults::SALES_CHANNEL_TYPE_STOREFRONT));
         if (!$this->isVisibleInSalesChannel($productJson, $this->getDefaultSalesChannel())) {
             $productJson['visibilities'] = [
                 [
                     "salesChannelId" => $this->getDefaultId('sales_channel'),
-                    "visibility" => 30 // there are 3 different visibility modes: Invisible, search only and all. The number 30 stands for all, 20 for search only and 10 for invisible.
+                    "visibility" => ProductVisibilityDefinition::VISIBILITY_ALL
                 ]
             ];
         }
@@ -151,17 +152,23 @@ class ProductSeeder
     private function getCurrentCurrencyId($currencyCode): string
     {
         /** @var string|null $currencyId */
-        $currencyId = $this->connection->fetchOne('
-        SELECT HEX(`currency`.`id`) FROM `currency` WHERE `currency`.`iso_code` = :currencyCode LIMIT 1
-        ', ['currencyCode' => $currencyCode]);
+        $currencyId = $this->connection->fetchOne(
+            <<<SQL
+                SELECT HEX(`currency`.`id`) 
+                FROM `currency` 
+                WHERE `currency`.`iso_code` = :currencyCode 
+                LIMIT 1
+            SQL,
+            [
+                'currencyCode' => $currencyCode
+            ]
+        );
 
         if (!$currencyId) {
             throw new Exception("Currency with code $currencyCode not found");
         }
-        // write all uppercase to small characters currencyid
-        $currencyId = strtolower($currencyId);
 
-        return $currencyId;
+        return strtolower($currencyId);
     }
 
     private function getDefaultSalesChannel(): ?SalesChannelEntity

@@ -2,15 +2,12 @@
 
 namespace B2bDemodata\Command;
 
-use B2bSellersCore\Components\SalesRepresentative\SalesRepresentativeCustomerCollection;
-use B2bSellersCore\Components\SalesRepresentative\SalesRepresentativeCustomerEntity;
 use Faker\Factory;
 use Faker\Generator;
 use Maltyxx\ImagesGenerator\ImagesGeneratorProvider;
 use Shopware\Core\Checkout\Customer\CustomerCollection;
 use Shopware\Core\Checkout\Customer\CustomerEntity;
 use Shopware\Core\Checkout\Customer\SalesChannel\AbstractRegisterRoute;
-use Shopware\Core\Defaults;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
@@ -25,7 +22,6 @@ use Shopware\Core\System\SalesChannel\SalesChannelContext;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressBar;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -58,13 +54,22 @@ class CustomerGenerateCommand extends Command
         $this->addOption('employee-amount', null, InputOption::VALUE_OPTIONAL, 'How many employees should be generated', 50);
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function execute(
+        InputInterface  $input,
+        OutputInterface $output
+    ): int
     {
         $io = new SymfonyStyle($input, $output);
 
         $defaultContext = Context::createDefaultContext();
         $domains = $this->salesChannelDomainRepository->search(new Criteria(), $defaultContext)->getEntities();
-        $salesReps = $this->customerRepository->search((new Criteria())->addFilter(new EqualsFilter('customFields.b2b_sales_representative', true)), $defaultContext)->getEntities();
+        $salesReps = $this->customerRepository->search(
+            (new Criteria())
+                ->addFilter(
+                    new EqualsFilter('customFields.b2b_sales_representative', true)
+                ),
+            $defaultContext
+        )->getEntities();
         $countries = $this->countryRepository->searchIds(new Criteria(), $defaultContext)->getIds();
         $salutations = $this->salutationRepository->searchIds(new Criteria(), $defaultContext)->getIds();
 
@@ -85,8 +90,15 @@ class CustomerGenerateCommand extends Command
         );
 
         $io->writeln('Updating custom fields and setting sales rep');
-        $this->updateCustomerCustomFields($customerIds, $context->getContext());
-        $this->addSalesRepCustomer($salesRepId, $customerIds, $context->getContext());
+        $this->updateCustomerCustomFields(
+            $customerIds,
+            $context->getContext()
+        );
+        $this->addSalesRepCustomer(
+            $salesRepId,
+            $customerIds,
+            $context->getContext()
+        );
 
         $io->writeln('Creating employees');
 
@@ -99,7 +111,11 @@ class CustomerGenerateCommand extends Command
         );
 
         $io->writeln('Mapping employees to customers');
-        $this->mapEmployeesToCustomers($customerIds, $employees, $context);
+        $this->mapEmployeesToCustomers(
+            $customerIds,
+            $employees,
+            $context
+        );
 
         $io->success('Finished');
 
@@ -107,10 +123,10 @@ class CustomerGenerateCommand extends Command
     }
 
     private function createCustomers(
-        int $limit,
-        string $storefrontUrl,
-        array $countries,
-        ProgressBar $progress,
+        int                 $limit,
+        string              $storefrontUrl,
+        array               $countries,
+        ProgressBar         $progress,
         SalesChannelContext $context
     ): array
     {
@@ -143,7 +159,12 @@ class CustomerGenerateCommand extends Command
         return $customerIds;
     }
 
-    private function createEmployees(int $limit, array $salutations, ProgressBar $progress, SalesChannelContext $context): array
+    private function createEmployees(
+        int                 $limit,
+        array               $salutations,
+        ProgressBar         $progress,
+        SalesChannelContext $context
+    ): array
     {
         $progress->start();
 
@@ -160,7 +181,11 @@ class CustomerGenerateCommand extends Command
         return $employees;
     }
 
-    private function mapEmployeesToCustomers(array $customerIds, array $employees, SalesChannelContext $context): void
+    private function mapEmployeesToCustomers(
+        array               $customerIds,
+        array               $employees,
+        SalesChannelContext $context
+    ): void
     {
         $mapping = [];
 
@@ -179,12 +204,7 @@ class CustomerGenerateCommand extends Command
                             ]
                         ];
                     },
-                    array_map(
-                        function (array $employee) {
-                            return $employee['id'];
-                        },
-                        $employees
-                    )
+                    array_column($employees, 'id'),
                 ),
                 $mapping
             );
@@ -193,7 +213,10 @@ class CustomerGenerateCommand extends Command
         $this->employeeCustomerRepository->upsert($mapping, $context->getContext());
     }
 
-    private function getStorefrontUrl(SymfonyStyle $io, SalesChannelDomainCollection $domains): string
+    private function getStorefrontUrl(
+        SymfonyStyle                 $io,
+        SalesChannelDomainCollection $domains
+    ): string
     {
         return $io->choice(
             'Select storefront URL',
@@ -203,7 +226,10 @@ class CustomerGenerateCommand extends Command
         );
     }
 
-    private function getSalesRep(SymfonyStyle $io, CustomerCollection $salesReps): string
+    private function getSalesRep(
+        SymfonyStyle       $io,
+        CustomerCollection $salesReps
+    ): string
     {
         return $io->choice(
             'Select sales rep',
@@ -213,21 +239,31 @@ class CustomerGenerateCommand extends Command
         );
     }
 
-    private function getSalesRepId(string $email, CustomerCollection $salesReps): string
+    private function getSalesRepId(
+        string             $email,
+        CustomerCollection $salesReps
+    ): string
     {
         return $salesReps->filter(function (CustomerEntity $salesRep) use ($email) {
             return $salesRep->getEmail() === $email;
         })->first()->getId();
     }
 
-    private function getSalesChannelId(string $url, SalesChannelDomainCollection $domains): string
+    private function getSalesChannelId(
+        string                       $url,
+        SalesChannelDomainCollection $domains
+    ): string
     {
         return $domains->filter(function (SalesChannelDomainEntity $domain) use ($url) {
             return $domain->getUrl() === $url;
         })->first()->getSalesChannelId();
     }
 
-    private function addSalesRepCustomer(string $salesRepId, array $customerIds, Context $context): void
+    private function addSalesRepCustomer(
+        string  $salesRepId,
+        array   $customerIds,
+        Context $context
+    ): void
     {
         $this->salesRepresentativeCustomerRepository->create(
             array_map(
@@ -259,7 +295,10 @@ class CustomerGenerateCommand extends Command
         ];
     }
 
-    private function updateCustomerCustomFields(array $ids, Context $context): void
+    private function updateCustomerCustomFields(
+        array   $ids,
+        Context $context
+    ): void
     {
         $this->customerRepository->update(
             array_map(
@@ -279,7 +318,10 @@ class CustomerGenerateCommand extends Command
         );
     }
 
-    private function createCustomerDataBag(string $storefrontUrl, string $countryId): RequestDataBag
+    private function createCustomerDataBag(
+        string $storefrontUrl,
+        string $countryId
+    ): RequestDataBag
     {
         $faker = $this->getFaker();
         $data = new RequestDataBag();
@@ -297,12 +339,25 @@ class CustomerGenerateCommand extends Command
         $data->set('storefrontUrl', $storefrontUrl);
         $data->set('accountType', CustomerEntity::ACCOUNT_TYPE_BUSINESS);
 
-        $data->set('billingAddress', $this->getAddress($countryId, $firstName, $lastName, $company));
+        $data->set(
+            'billingAddress',
+            $this->getAddress(
+                $countryId,
+                $firstName,
+                $lastName,
+                $company
+            )
+        );
 
         return $data;
     }
 
-    private function getAddress(string $countryId, string $firstName, string $lastName, string $company): RequestDataBag
+    private function getAddress(
+        string $countryId,
+        string $firstName,
+        string $lastName,
+        string $company
+    ): RequestDataBag
     {
         $faker = $this->getFaker();
 

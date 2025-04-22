@@ -91,7 +91,7 @@ class CustomerSeeder
 
         $output->writeln('✅');
 
-        $this->createCustomerEmployees($customer, $customerJson);
+        $this->createCustomerEmployees($customer, $customerJson, $output);
         $this->createSalesRepRelations($customer, $customerJson);
     }
 
