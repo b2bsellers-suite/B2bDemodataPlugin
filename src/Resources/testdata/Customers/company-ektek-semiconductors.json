@@ -52,7 +52,8 @@
       "department": "Einkauf",
       "email": "m.schmidt@ektek.com",
       "password": "b2bsellers",
-      "admin": true,
+      "admin": false,
+      "role": "purchasing",
       "showBonus": false
     },
     {
@@ -62,8 +63,9 @@
       "department": "Buchhaltung",
       "email": "k.herpich@ektek.com",
       "password": "b2bsellers",
-      "admin": true,
+      "admin": false,
       "showBonus": false,
+      "role": "accounting",
       "loginTarget": "invoice"
     }
   ]
