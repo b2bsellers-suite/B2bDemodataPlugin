@@ -15,15 +15,13 @@
     }
   ],
   "require": {
-    "php": "^8.2",
-    "shopware/core": "^6.6.0.0",
-    "b2b-sellers/core": "^3.0.0"
+    "php": "^8.2"
   },
   "require-dev": {
+    "frosh/shopware-rector": "^0.5.0",
     "k10r/codestyle": "^3.0",
-    "phpstan/phpstan": "^1.5",
-    "phpstan/phpstan-phpunit": "^1.1",
-    "phpunit/phpunit": "^9.5"
+    "phpstan/phpstan": "^2.0",
+    "rector/rector": "^2.0"
   },
   "extra": {
     "shopware-plugin-class": "B2bDemodata\\B2bDemodata",

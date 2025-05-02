@@ -23,11 +23,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class ResetTestDataCommand extends Command
 {
 	public function __construct(
-        private EntityRepository $customerRepository,
-        private EntityRepository $employeeRepository,
-        private EntityRepository $employeeCustomerRepository,
-        private EntityRepository $productRepository,
-        private ContainerInterface $container,
+        private readonly EntityRepository $customerRepository,
+        private readonly EntityRepository $employeeRepository,
+        private readonly EntityRepository $employeeCustomerRepository,
+        private readonly EntityRepository $productRepository,
+        private readonly ContainerInterface $container,
 	)
 	{
 		parent::__construct();

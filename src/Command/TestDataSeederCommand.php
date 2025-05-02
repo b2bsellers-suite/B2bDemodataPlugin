@@ -20,8 +20,8 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class TestDataSeederCommand extends Command
 {
 	public function __construct(
-        private SystemConfigService                $configService,
-        private Seeder                             $seeder
+        private readonly SystemConfigService                $configService,
+        private readonly Seeder                             $seeder
 	)
 	{
 		parent::__construct();

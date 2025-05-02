@@ -19,11 +19,11 @@ class EventSeeder
 
     private string $defaultCustomerId = '';
 
-    private Context $context;
+    private readonly Context $context;
 
     public function __construct(
-        private ContainerInterface $container,
-        private Connection $connection)
+        private readonly ContainerInterface $container,
+        private readonly Connection $connection)
     {
         $this->context = Context::createDefaultContext();
     }
@@ -53,7 +53,7 @@ class EventSeeder
                     $eventJson = $this->replaceKnownIds($eventJson);
                     $this->createEvent($eventJson);
                 } catch (\Exception $e) {
-                    throw new \Exception('error handling ' . $fileInfo->getFilename() . ' ' . $e->getMessage());
+                    throw new \Exception('error handling ' . $fileInfo->getFilename() . ' ' . $e->getMessage(), $e->getCode(), $e);
                 }
             }
         }
@@ -99,9 +99,9 @@ class EventSeeder
 
     private function getDefaultCustomer(): string
     {
-        if ($this->defaultCustomerId == '') {
+        if ($this->defaultCustomerId === '') {
             $customer = $this->getCustomerByEmail(SeederConstants::DEFAULT_CUSTOMER_EMAIL);
-            if(!$customer){
+            if(!$customer instanceof CustomerEntity){
                 throw new \Exception('unable to find default customer for Event creation');
             }
             $this->defaultCustomerId = $customer->getId();

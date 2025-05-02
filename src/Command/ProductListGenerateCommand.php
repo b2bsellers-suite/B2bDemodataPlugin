@@ -83,12 +83,10 @@ class ProductListGenerateCommand extends Command
         $items = [];
 
         for ($i = 0; $i < count($productIds) * 5; $i++) {
-            $items = array_merge($items, array_map(function (string $productId) {
-                return [
-                    'id' => Uuid::randomHex(),
-                    'productId' => $productId,
-                ];
-            }, $productIds));
+            $items = array_merge($items, array_map(fn(string $productId) => [
+                'id' => Uuid::randomHex(),
+                'productId' => $productId,
+            ], $productIds));
         }
 
         return $items;
