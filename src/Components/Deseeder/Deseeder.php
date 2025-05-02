@@ -3,9 +3,9 @@
 namespace B2bDemodata\Components\Deseeder;
 
 
+use B2bDemodata\Components\Seeder\Helper\B2bLicenceTrait;
 use B2bDemodata\Components\Seeder\Helper\SeederConstants;
-use B2bSellersCore\Components\B2bConfiguration\Traits\B2bLicenceTrait;
-use B2bSellersCore\Components\Employee\EmployeeEntity;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use Shopware\Core\Checkout\Customer\CustomerEntity;
 use Shopware\Core\Content\Product\ProductEntity;
@@ -15,7 +15,6 @@ use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Kernel;
-use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 

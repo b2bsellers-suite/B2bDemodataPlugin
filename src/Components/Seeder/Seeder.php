@@ -2,11 +2,11 @@
 
 namespace B2bDemodata\Components\Seeder;
 
+use B2bDemodata\Components\Seeder\Helper\B2bLicenceTrait;
 use B2bDemodata\Components\Seeder\Seeds\CategorySeeder;
 use B2bDemodata\Components\Seeder\Seeds\CustomerSeeder;
 use B2bDemodata\Components\Seeder\Seeds\EventSeeder;
 use B2bDemodata\Components\Seeder\Seeds\ProductSeeder;
-use B2bSellersCore\Components\B2bConfiguration\Traits\B2bLicenceTrait;
 use Exception;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\System\SalesChannel\Context\AbstractSalesChannelContextFactory;
