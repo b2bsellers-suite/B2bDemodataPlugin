@@ -3,9 +3,9 @@
 namespace B2bDemodata\Components\Deseeder;
 
 
+use B2bDemodata\Components\Seeder\Helper\B2bLicenceTrait;
 use B2bDemodata\Components\Seeder\Helper\SeederConstants;
-use B2bSellersCore\Components\B2bConfiguration\Traits\B2bLicenceTrait;
-use B2bSellersCore\Components\Employee\EmployeeEntity;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use Shopware\Core\Checkout\Customer\CustomerEntity;
 use Shopware\Core\Content\Product\ProductEntity;
@@ -15,7 +15,6 @@ use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Kernel;
-use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -72,7 +71,6 @@ class Deseeder
     }
 
     /**
-     * @return void
      * @throws Exception
      */
     private function deleteCustomersAndEmployees(): void
@@ -85,7 +83,7 @@ class Deseeder
             $customer = json_decode(file_get_contents(__DIR__ . self::TESTDATA_DIRECTORY . '/Customers/' . $file), true);
             $customer = $this->getCustomerByEmail($customer['email']);
 
-            if ($customer) {
+            if ($customer instanceof CustomerEntity) {
                 $customerId = $customer->getId();
                 $employees = $this->getEmployees($customerId);
                 foreach ($employees as $employee) {
@@ -117,13 +115,6 @@ class Deseeder
         return $this->customerRepository->search($criteria, Context::createDefaultContext())->getEntities()->first();
     }
 
-    private function getEmployeeByEmail(string $email): ?EmployeeEntity
-    {
-        $criteria = new Criteria();
-        $criteria->addFilter(new EqualsFilter('email', $email));
-        return $this->employeeRepository->search($criteria, Context::createDefaultContext())->getEntities()->first();
-    }
-
     private function getProductByProductId(string $productId): ?ProductEntity
     {
         $criteria = new Criteria();
@@ -147,7 +138,7 @@ class Deseeder
         foreach ($files as $file) {
             $product = json_decode(file_get_contents(__DIR__ . self::TESTDATA_DIRECTORY . '/Products/' . $file), true);
             $product = $this->getProductByProductId($product['id']);
-            if ($product) {
+            if ($product instanceof ProductEntity) {
                 $this->productRepository->delete([['id' => $product->getId()]], Context::createDefaultContext());
                 $this->connection->executeStatement("DELETE FROM `product_visibility` WHERE `product_id` = UNHEX('" . $product->getId() . "')");
             }
@@ -177,7 +168,7 @@ class Deseeder
             $customer = json_decode(file_get_contents(__DIR__ . self::TESTDATA_DIRECTORY . '/Customers/' . $file), true);
             $customer = $this->getCustomerByEmail($customer['email']);
 
-            if ($customer) {
+            if ($customer instanceof CustomerEntity) {
                 $customerId = $customer->getId();
                 $this->connection->executeStatement("DELETE FROM `b2bsellers_customer_partial_assortment_extension` WHERE `customer_id` = UNHEX('" . $customerId . "')");
             }
@@ -197,7 +188,7 @@ class Deseeder
             $customer = json_decode(file_get_contents(__DIR__ . self::TESTDATA_DIRECTORY . '/Customers/' . $file), true);
             $customer = $this->getCustomerByEmail($customer['email']);
 
-            if ($customer) {
+            if ($customer instanceof CustomerEntity) {
                 $customerId = $customer->getId();
                 $this->connection->executeStatement("DELETE FROM `b2bsellers_offer` WHERE `offer_customer_id` = UNHEX('" . $customerId . "')");
                 $this->connection->executeStatement("DELETE FROM `b2bsellers_offer` WHERE `editor_id` = UNHEX('" . $customerId . "')");
@@ -218,7 +209,7 @@ class Deseeder
             $customer = json_decode(file_get_contents(__DIR__ . self::TESTDATA_DIRECTORY . '/Customers/' . $file), true);
             $customer = $this->getCustomerByEmail($customer['email']);
 
-            if ($customer) {
+            if ($customer instanceof CustomerEntity) {
                 $customerId = $customer->getId();
                 $this->connection->executeStatement("DELETE FROM `b2bsellers_budget` WHERE `customer_id` = UNHEX('" . $customerId . "')");
             }
@@ -238,7 +229,7 @@ class Deseeder
             $customer = json_decode(file_get_contents(__DIR__ . self::TESTDATA_DIRECTORY . '/Customers/' . $file), true);
             $customer = $this->getCustomerByEmail($customer['email']);
 
-            if ($customer) {
+            if ($customer instanceof CustomerEntity) {
                 $customerId = $customer->getId();
                 $this->connection->executeStatement("DELETE FROM `b2bsellers_customer_activity` WHERE `customer_id` = UNHEX('" . $customerId . "')");
             }
@@ -258,7 +249,7 @@ class Deseeder
             $customer = json_decode(file_get_contents(__DIR__ . self::TESTDATA_DIRECTORY . '/Customers/' . $file), true);
             $customer = $this->getCustomerByEmail($customer['email']);
 
-            if ($customer) {
+            if ($customer instanceof CustomerEntity) {
                 $customerId = $customer->getId();
                 $this->connection->executeStatement("DELETE FROM `b2bsellers_customer_cost_center` WHERE `customer_id` = UNHEX('" . $customerId . "')");
             }
@@ -278,7 +269,7 @@ class Deseeder
             $customer = json_decode(file_get_contents(__DIR__ . self::TESTDATA_DIRECTORY . '/Customers/' . $file), true);
             $customer = $this->getCustomerByEmail($customer['email']);
 
-            if ($customer) {
+            if ($customer instanceof CustomerEntity) {
                 $customerId = $customer->getId();
                 $this->connection->executeStatement("DELETE FROM `b2bsellers_customer_price` WHERE `customer_id` = UNHEX('" . $customerId . "')");
             }
@@ -298,7 +289,7 @@ class Deseeder
             $customer = json_decode(file_get_contents(__DIR__ . self::TESTDATA_DIRECTORY . '/Customers/' . $file), true);
             $customer = $this->getCustomerByEmail($customer['email']);
 
-            if ($customer) {
+            if ($customer instanceof CustomerEntity) {
                 $customerId = $customer->getId();
                 $this->connection->executeStatement("DELETE FROM `b2bsellers_passwordless_login` WHERE `customer_id` = UNHEX('" . $customerId . "')");
             }
@@ -318,7 +309,7 @@ class Deseeder
             $customer = json_decode(file_get_contents(__DIR__ . self::TESTDATA_DIRECTORY . '/Customers/' . $file), true);
             $customer = $this->getCustomerByEmail($customer['email']);
 
-            if ($customer) {
+            if ($customer instanceof CustomerEntity) {
                 $customerId = $customer->getId();
                 $this->connection->executeStatement("DELETE FROM `b2bsellers_product_list` WHERE `customer_id` = UNHEX('" . $customerId . "')");
             }

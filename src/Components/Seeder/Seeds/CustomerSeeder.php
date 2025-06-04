@@ -26,13 +26,13 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class CustomerSeeder
 {
-	private SalesChannelContext $salesChannelContext;
-	private Context $context;
-	private RegisterRoute $registerRoute;
+	private readonly SalesChannelContext $salesChannelContext;
+	private readonly Context $context;
+	private readonly RegisterRoute $registerRoute;
 
 	public function __construct(
-        private ContainerInterface $container,
-        private AbstractSalesChannelContextFactory $contextFactory)
+        private readonly ContainerInterface $container,
+        private readonly AbstractSalesChannelContextFactory $contextFactory)
 	{
 		$this->context = Context::createDefaultContext();
 		$this->registerRoute = $container->get(RegisterRoute::class);
@@ -55,9 +55,9 @@ class CustomerSeeder
 					$customerJson = json_decode(file_get_contents($fileInfo->getRealPath()), true);
 					$this->createCustomer($customerJson);
 				} catch (ConstraintViolationException $e) {
-					throw new \Exception('error handling ' . $fileInfo->getFilename() . ' ' . $e->getViolations());
+					throw new \Exception('error handling ' . $fileInfo->getFilename() . ' ' . $e->getViolations(), $e->getCode(), $e);
 				} catch (\Exception $e) {
-					throw new \Exception('error handling ' . $fileInfo->getFilename() . ' ' . $e->getMessage());
+					throw new \Exception('error handling ' . $fileInfo->getFilename() . ' ' . $e->getMessage(), $e->getCode(), $e);
 				}
 			}
 		}
@@ -149,7 +149,6 @@ class CustomerSeeder
 
 	private function createEmployee($employee)
 	{
-		/** @var EntityRepository $repository */
 		$employeeRepository = $this->container->get('b2bsellers_employee.repository');
 		$employeeRepository->upsert([$employee], $this->context);
 
@@ -160,7 +159,6 @@ class CustomerSeeder
 		if (empty($employee2Customer['customerId']) || empty($employee2Customer['employeeId'])) {
 			dd($employee2Customer);
 		}
-		/** @var EntityRepository $repository */
 		$employee2CustomerRepository = $this->container->get('b2bsellers_employee_customer.repository');
 		$employee2CustomerRepository->upsert([$employee2Customer], $this->context);
 
@@ -176,45 +174,6 @@ class CustomerSeeder
 			'customFields' => $customFields
 		]], $this->context);
 
-	}
-
-	private function addCustomerEmployee($customerId, $email, $admin = false, $roleId = null, $customFields = null)
-	{
-		/** @var EntityRepository $repository */
-		$repository = $this->container->get('b2bsellers_employee.repository');
-
-
-		$criteria = new Criteria();
-		$criteria->addFilter(new EqualsFilter('email', $email));
-		$criteria->addAssociation('customers');
-
-		/** @var EmployeeEntity $customerEmployee */
-		$customerEmployee = $repository->search($criteria, $this->context)->first();
-
-		if (empty($customerEmployee)) {
-			return;
-		}
-
-		/** @var EmployeeCustomerCollection $customers */
-		$collection = $customerEmployee->getCustomers();
-
-		if ($collection->filterByProperty('customerId', $customerId)->count() > 0) {
-			return;
-		}
-
-		/** @var EntityRepository $repository */
-		$assignedCustomerEmployeesRepository = $this->container->get('b2bsellers_employee_customer.repository');
-
-		$data = [
-			'employeeId' => $customerEmployee->getId(),
-			'customerId' => $customerId,
-			'active' => true,
-			'admin' => $admin,
-			'roleId' => $admin,
-			'customFields' => $customFields
-		];
-
-		$assignedCustomerEmployeesRepository->create([$data], $this->context);
 	}
 
 	private function addSalesRepCustomer($salesRepId, $customerId)
@@ -244,7 +203,7 @@ class CustomerSeeder
 	{
 		$customer = $this->getCustomerByEmail($email);
 
-		return !empty($customer);
+		return $customer instanceof CustomerEntity;
 	}
 
 	private function createCustomerDataBag($customerJson): RequestDataBag
@@ -255,7 +214,7 @@ class CustomerSeeder
 		$data->set('title', array_key_exists('title', $customerJson) ? (string)$customerJson['title'] : '');
 		$data->set('company', array_key_exists('company', $customerJson) ? (string)$customerJson['company'] : '');
 		$data->set('customerNumber', array_key_exists('customerNumber', $customerJson) ? (string)$customerJson['customerNumber'] : '');
-		$data->set('salutationId', $this->getSalutation($customerJson['salutation']) ? $this->getSalutation($customerJson['salutation'])->getId() : null);
+		$data->set('salutationId', $this->getSalutation($customerJson['salutation']) instanceof SalutationEntity ? $this->getSalutation($customerJson['salutation'])->getId() : null);
 		$data->set('firstName', $customerJson['firstName'] ?? null);
 		$data->set('lastName', $customerJson['lastName'] ?? null);
 		$data->set('email', $customerJson['email']);
@@ -285,7 +244,7 @@ class CustomerSeeder
 			'firstName' => $addressJson['firstName'] ?? '',
 			'lastName' => $addressJson['lastName'] ?? '',
 			'company' => $addressJson['company'] ?? '',
-			'salutationId' => $this->getSalutation($addressJson['salutation']) ? $this->getSalutation($addressJson['salutation'])->getId() : null,
+			'salutationId' => $this->getSalutation($addressJson['salutation']) instanceof SalutationEntity ? $this->getSalutation($addressJson['salutation'])->getId() : null,
 		]);
 	}
 
@@ -294,7 +253,7 @@ class CustomerSeeder
      */
     private function createCustomerEmployees(CustomerEntity $customer, $customerJson): void
 	{
-		if (!array_key_exists('customerEmployees', $customerJson) or !is_array($customerJson['customerEmployees'])) {
+		if (!array_key_exists('customerEmployees', $customerJson) || !is_array($customerJson['customerEmployees'])) {
 			return;
 		}
 		foreach ($customerJson['customerEmployees'] as $customerEmployee) {
@@ -316,7 +275,7 @@ class CustomerSeeder
 
 			foreach ($customerJson['isSalesRepOf'] as $salesRepRelation) {
 				$relatedCustomer = $this->getCustomerByCustomerNumber($salesRepRelation['customerNumber']);
-				if ($relatedCustomer) {
+				if ($relatedCustomer instanceof CustomerEntity) {
 					$this->addSalesRepCustomer($customer->getId(), $relatedCustomer->getId());
 				}
 			}
@@ -331,8 +290,7 @@ class CustomerSeeder
 		$employee= $this->getEmployeeByEmail($customerEmployee['email']);
 
 		$id = Uuid::randomHex();
-		if ($employee){
-			/** @var EntityRepository $repository */
+		if ($employee instanceof EmployeeEntity){
 			$employee2CustomerRepository = $this->container->get('b2bsellers_employee_customer.repository');
 			$result = $employee2CustomerRepository->search((new Criteria())->addFilter(
 				new EqualsFilter('customerId', $customerId),
@@ -345,7 +303,7 @@ class CustomerSeeder
 			throw new \Exception('Employee with email ' . $customerEmployee['email'] . ' not found! Cant create employee2customer relation!');
 		}
 
-		$customerEmployee = [
+		return [
 			'id' => $id,
 			'customerId' => $customerId,
 			'employeeId' => $employee->getId(),
@@ -356,8 +314,6 @@ class CustomerSeeder
 				'b2b_show_bonus' => $customerEmployee['showBonus'] ?? false
 			]
 		];
-
-		return $customerEmployee;
 	}
 
     /**
@@ -365,7 +321,7 @@ class CustomerSeeder
      */
     private function getRoleId(?string $name)
 	{
-		if (empty($name) || $name == null || !is_string($name)) {
+		if ($name === null || $name === '' || $name === '0' || $name == null || !is_string($name)) {
 			return null;
 		}
 		/** @var EntityRepository $repository */
@@ -389,9 +345,8 @@ class CustomerSeeder
 	private function prepareEmployee(array $customerEmployee): array
     {
 		$employee = $this->getEmployeeByEmail($customerEmployee['email']);
-
-		$employee = [
-			'id' => $employee ? $employee->getId() : Uuid::randomHex(),
+		return [
+			'id' => $employee instanceof EmployeeEntity ? $employee->getId() : Uuid::randomHex(),
 			'firstName' => $customerEmployee['firstName'],
 			'lastName' => $customerEmployee['lastName'],
 			'email' => $customerEmployee['email'],
@@ -402,18 +357,16 @@ class CustomerSeeder
 			'phoneNumber' => $customerEmployee['phoneNumber'] ?? null,
 			'loginTarget' => $customerEmployee['loginTarget'] ?? null,
 			'trackActivity' => $customerEmployee['trackActivity'] ?? true,
-			'salutationId' => ($this->getSalutation($customerEmployee['salutation']) ? $this->getSalutation($customerEmployee['salutation'])->getId() : null),
+			'salutationId' => ($this->getSalutation($customerEmployee['salutation']) instanceof SalutationEntity ? $this->getSalutation($customerEmployee['salutation'])->getId() : null),
 			'boundSalesChannelId' => $customerEmployee['boundSalesChannelId'] ?? null,
 			'customFields' => [
 				'b2b_url_login_authentication_hash' => Uuid::randomHex()
 			]
 		];
-		return $employee;
 	}
 
 	private function getEmployeeByEmail(string $email): ?EmployeeEntity
 	{
-		/** @var EntityRepository $repository */
 		$employeeRepository = $this->container->get('b2bsellers_employee.repository');
 
 		return $employeeRepository->search((new Criteria())->addFilter(new EqualsFilter('email', $email)), $this->context)->first();
@@ -423,7 +376,6 @@ class CustomerSeeder
     {
 		$dataBag->set('id', $customer->getId());
 
-		/** @var EntityRepository $repository */
 		$customerRepository = $this->container->get('customer.repository');
 		$customerRepository->update([$dataBag->all()], $this->context);
 

@@ -16,7 +16,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ProductSeeder
 {
-	private Context $context;
+	private readonly Context $context;
 
     const PRICE_FIELDS = [
         'price',
@@ -24,8 +24,8 @@ class ProductSeeder
     ];
 
 	public function __construct(
-        private ContainerInterface $container,
-        private Connection $connection)
+        private readonly ContainerInterface $container,
+        private readonly Connection $connection)
 	{
 		$this->context = Context::createDefaultContext();
 	}
@@ -54,7 +54,7 @@ class ProductSeeder
 					$productJson = json_decode(file_get_contents($fileInfo->getRealPath()), true);
 					$this->createProduct($productJson);
 				} catch (\Exception $e) {
-					throw new \Exception('error handling ' . $fileInfo->getFilename() . ' ' . $e->getMessage());
+					throw new \Exception('error handling ' . $fileInfo->getFilename() . ' ' . $e->getMessage(), $e->getCode(), $e);
 				}
 			}
 		}
@@ -79,13 +79,6 @@ class ProductSeeder
 
 	}
 
-	private function productExists(string $id): bool
-	{
-		/** @var EntityRepository $repository */
-		$productRepository = $this->container->get('product.repository');
-		return null !== $productRepository->search((new Criteria())->addFilter(new EqualsFilter('id', $id)), $this->context)->first();
-	}
-
 	private function replaceKnownIds(array $productJson): array
 	{
 		$productJson['taxId'] = $this->getDefaultId('tax');
@@ -106,8 +99,7 @@ class ProductSeeder
 
 	private function getDefaultId(string $repoName, $criteria = null): string
 	{
-		$criteria = $criteria ?? new Criteria();
-		/** @var EntityRepository $repository */
+		$criteria ?? new Criteria();
 		$productRepository = $this->container->get($repoName . '.repository');
 		return $productRepository->search((new Criteria()), $this->context)->first()->getId();
 	}
@@ -181,7 +173,6 @@ class ProductSeeder
 		$criteria->addAssociation('domains');
 		$criteria->addAssociation('type');
 
-		/** @var EntityRepository $repository */
 		$salesChannelRepository = $this->container->get('sales_channel.repository');
 		return $salesChannelRepository->search($criteria, $this->context)->first();
 	}
@@ -193,7 +184,6 @@ class ProductSeeder
 			$criteria->addFilter(new EqualsFilter('productId', $productJson['id']));
 			$criteria->addFilter(new EqualsFilter('salesChannelId', $salesChannel->getId()));
 
-			/** @var EntityRepository $repository */
 			$productVisibilityRepository = $this->container->get('product_visibility.repository');
 			if ($productVisibilityRepository->search($criteria, $this->context)->first()){
 				return true;

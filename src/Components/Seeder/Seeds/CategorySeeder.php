@@ -15,14 +15,11 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 class CategorySeeder
 {
 
-	private Context $context;
-
-	private array $cachedLanguages = [];
+	private readonly Context $context;
 
 
 	public function __construct(
-        private ContainerInterface $container,
-        private Connection         $connection
+        private readonly ContainerInterface $container
 	)
 	{
 		$this->context = Context::createDefaultContext();
@@ -42,14 +39,12 @@ class CategorySeeder
 
 	private function demoCategoryExist(): bool
 	{
-		/** @var EntityRepository $repository */
 		$categoryRepository = $this->container->get('category.repository');
 		return null !== $categoryRepository->search((new Criteria())->addFilter(new EqualsFilter('id', SeederConstants::DEMO_CATEGORY_UID)), $this->context)->first();
 	}
 
 	private function createDemoCategory(): void
 	{
-		/** @var EntityRepository $repository */
 		$categoryRepository = $this->container->get('category.repository');
 
 		$categoryRepository->create([
@@ -87,25 +82,6 @@ class CategorySeeder
 		echo "Demo category created\n";
 	}
 
-	private function getLanguageIdByCode(string $code)
-	{
-		if (isset($this->cachedLanguages[$code])) {
-			return $this->cachedLanguages[$code];
-		}
-
-		/** @var string|null $langId */
-		$langId = $this->connection->fetchOne('
-        SELECT HEX(`language`.`id`) FROM `language` INNER JOIN `locale` ON `language`.`locale_id` = `locale`.`id` WHERE `code` = :code LIMIT 1
-        ', ['code' => $code]);
-
-		if (!$langId) {
-			return null;
-		}
-		$this->cachedLanguages[$code] = $langId;
-
-		return $langId;
-	}
-
 	private function getDefaultSalesChannel(): ?SalesChannelEntity
 	{
 		$criteria = new Criteria();
@@ -115,7 +91,6 @@ class CategorySeeder
 		$criteria->addAssociation('domains');
 		$criteria->addAssociation('type');
 
-		/** @var EntityRepository $repository */
 		$salesChannelRepository = $this->container->get('sales_channel.repository');
 		return $salesChannelRepository->search($criteria, $this->context)->first();
 	}
