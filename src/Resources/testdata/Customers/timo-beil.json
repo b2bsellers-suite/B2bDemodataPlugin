@@ -1,0 +1,34 @@
+{
+  "guest": false,
+  "title": "",
+  "salutation": "mr",
+  "firstName": "Timo",
+  "lastName": "Beil",
+  "email": "TimoBeil@nodomain.de",
+  "password": "b2bsellers",
+  "customerNumber": "100711",
+  "accountType": "business",
+  "billingAddress": {
+    "country": "DE",
+    "street": "Nebenstraße 10",
+    "zipcode": "65663",
+    "city": "Hintertupfingen",
+    "firstName": "Timo",
+    "lastName": "Beil",
+    "salutation": "mr"
+  },
+  "shippingAddress": {
+    "country": "DE",
+    "street": "Nebenstraße 10",
+    "zipcode": "65663",
+    "city": "Hintertupfingen",
+    "firstName": "Timo",
+    "lastName": "Beil",
+    "salutation": "mr"
+  },
+  "customFields": {
+    "b2b_platform_access": true,
+    "b2b_sales_representative": false,
+    "b2b_supervisor": false
+  }
+}
