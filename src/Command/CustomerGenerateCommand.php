@@ -42,8 +42,7 @@ class CustomerGenerateCommand extends Command
         private readonly EntityRepository                   $salesChannelDomainRepository,
         private readonly EntityRepository                   $countryRepository,
         private readonly EntityRepository                   $salutationRepository,
-    )
-    {
+    ) {
         parent::__construct();
     }
 
@@ -57,8 +56,7 @@ class CustomerGenerateCommand extends Command
     protected function execute(
         InputInterface  $input,
         OutputInterface $output
-    ): int
-    {
+    ): int {
         $io = new SymfonyStyle($input, $output);
 
         $defaultContext = Context::createDefaultContext();
@@ -128,8 +126,7 @@ class CustomerGenerateCommand extends Command
         array               $countries,
         ProgressBar         $progress,
         SalesChannelContext $context
-    ): array
-    {
+    ): array {
         $customerIds = [];
 
         $progress->start();
@@ -164,8 +161,7 @@ class CustomerGenerateCommand extends Command
         array               $salutations,
         ProgressBar         $progress,
         SalesChannelContext $context
-    ): array
-    {
+    ): array {
         $progress->start();
 
         $employees = [];
@@ -185,8 +181,7 @@ class CustomerGenerateCommand extends Command
         array               $customerIds,
         array               $employees,
         SalesChannelContext $context
-    ): void
-    {
+    ): void {
         $mapping = [];
 
         foreach ($customerIds as $customerId) {
@@ -216,8 +211,7 @@ class CustomerGenerateCommand extends Command
     private function getStorefrontUrl(
         SymfonyStyle                 $io,
         SalesChannelDomainCollection $domains
-    ): string
-    {
+    ): string {
         return $io->choice(
             'Select storefront URL',
             array_values($domains->map(function (SalesChannelDomainEntity $domain) {
@@ -229,8 +223,7 @@ class CustomerGenerateCommand extends Command
     private function getSalesRep(
         SymfonyStyle       $io,
         CustomerCollection $salesReps
-    ): string
-    {
+    ): string {
         return $io->choice(
             'Select sales rep',
             array_values($salesReps->map(function (CustomerEntity $salesRep) {
@@ -242,8 +235,7 @@ class CustomerGenerateCommand extends Command
     private function getSalesRepId(
         string             $email,
         CustomerCollection $salesReps
-    ): string
-    {
+    ): string {
         return $salesReps->filter(function (CustomerEntity $salesRep) use ($email) {
             return $salesRep->getEmail() === $email;
         })->first()->getId();
@@ -252,8 +244,7 @@ class CustomerGenerateCommand extends Command
     private function getSalesChannelId(
         string                       $url,
         SalesChannelDomainCollection $domains
-    ): string
-    {
+    ): string {
         return $domains->filter(function (SalesChannelDomainEntity $domain) use ($url) {
             return $domain->getUrl() === $url;
         })->first()->getSalesChannelId();
@@ -263,8 +254,7 @@ class CustomerGenerateCommand extends Command
         string  $salesRepId,
         array   $customerIds,
         Context $context
-    ): void
-    {
+    ): void {
         $this->salesRepresentativeCustomerRepository->create(
             array_map(
                 function (string $customerId) use ($salesRepId) {
@@ -298,8 +288,7 @@ class CustomerGenerateCommand extends Command
     private function updateCustomerCustomFields(
         array   $ids,
         Context $context
-    ): void
-    {
+    ): void {
         $this->customerRepository->update(
             array_map(
                 function (string $id) {
@@ -321,8 +310,7 @@ class CustomerGenerateCommand extends Command
     private function createCustomerDataBag(
         string $storefrontUrl,
         string $countryId
-    ): RequestDataBag
-    {
+    ): RequestDataBag {
         $faker = $this->getFaker();
         $data = new RequestDataBag();
 
@@ -357,8 +345,7 @@ class CustomerGenerateCommand extends Command
         string $firstName,
         string $lastName,
         string $company
-    ): RequestDataBag
-    {
+    ): RequestDataBag {
         $faker = $this->getFaker();
 
         return new RequestDataBag([
