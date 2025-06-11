@@ -20,7 +20,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
-    name: 'b2b:product-list:generate',
+    name: 'b2b:test-data:create:product-list',
 )]
 class ProductListGenerateCommand extends Command
 {
