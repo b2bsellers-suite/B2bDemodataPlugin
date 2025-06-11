@@ -20,13 +20,11 @@ class MapCustomerData implements EventSubscriberInterface
 
     public function mapCustomerData(
         DataMappingEvent $event
-    ): void
-    {
+    ): void {
         $dataBag = $event->getInput();
         $customer = $event->getOutput();
 
         $customer['customerNumber'] = $dataBag->get('customerNumber');
-        dump($customer['customerNumber']);
 
         $event->setOutput($customer);
     }
