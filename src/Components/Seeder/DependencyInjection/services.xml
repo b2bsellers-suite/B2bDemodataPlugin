@@ -34,6 +34,8 @@
             <argument type="service" id="Doctrine\DBAL\Connection"/>
         </service>
 
-
+        <service id="B2bDemodata\Components\Seeder\Subscriber\MapCustomerData">
+            <tag name="kernel.event_subscriber"/>
+        </service>
     </services>
 </container>
