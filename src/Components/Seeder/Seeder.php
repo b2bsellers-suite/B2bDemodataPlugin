@@ -26,8 +26,7 @@ class Seeder
         private readonly CustomerSeeder                     $customerSeeder,
         private readonly ProductSeeder                      $productSeeder,
         private readonly EventSeeder                        $eventSeeder
-    )
-    {
+    ) {
         $this->context = Context::createDefaultContext();
     }
 
