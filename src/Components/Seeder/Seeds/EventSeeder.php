@@ -21,8 +21,8 @@ class EventSeeder
 
     public function __construct(
         private readonly ContainerInterface $container,
-        private readonly Connection         $connection)
-    {
+        private readonly Connection         $connection
+    ) {
         $this->context = Context::createDefaultContext();
     }
 

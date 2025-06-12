@@ -33,8 +33,7 @@ class Deseeder
         private EntityRepository $productRepository,
         private SymfonyStyle     $ioHelper,
         private ContainerInterface $container
-    )
-    {
+    ) {
         $this->connection = Kernel::getConnection();
     }
 

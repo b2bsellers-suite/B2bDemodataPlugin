@@ -2,7 +2,6 @@
 
 namespace B2bDemodata\Command;
 
-use Composer\Console\Input\InputArgument;
 use Faker\Factory;
 use Faker\Generator;
 use Maltyxx\ImagesGenerator\ImagesGeneratorProvider;
@@ -29,8 +28,7 @@ class ProductListGenerateCommand extends Command
         private readonly EntityRepository $productListRepository,
         private readonly EntityRepository $productListTypeRepository,
         private readonly EntityRepository $productRepository,
-    )
-    {
+    ) {
         parent::__construct();
     }
 

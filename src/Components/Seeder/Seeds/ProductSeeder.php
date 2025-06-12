@@ -28,8 +28,7 @@ class ProductSeeder
     public function __construct(
         private readonly ContainerInterface $container,
         private readonly Connection         $connection,
-    )
-    {
+    ) {
         $this->context = Context::createDefaultContext();
     }
 
