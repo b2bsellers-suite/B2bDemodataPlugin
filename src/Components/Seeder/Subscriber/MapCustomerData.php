@@ -24,6 +24,10 @@ class MapCustomerData implements EventSubscriberInterface
         $dataBag = $event->getInput();
         $customer = $event->getOutput();
 
+        if (empty($dataBag->get('customerNumber'))) {
+            return;
+        }
+
         $customer['customerNumber'] = $dataBag->get('customerNumber');
 
         $event->setOutput($customer);

@@ -19,8 +19,7 @@ class TestDataSeederCommand extends Command
     public function __construct(
         private readonly SystemConfigService $configService,
         private readonly Seeder              $seeder
-    )
-    {
+    ) {
         parent::__construct();
     }
 

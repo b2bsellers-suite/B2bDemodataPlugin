@@ -2,10 +2,8 @@
 
 namespace B2bDemodata\Components\Seeder\Seeds;
 
-use B2bSellersCore\Components\Employee\Aggregate\EmployeeCustomer\EmployeeCustomerCollection;
 use B2bSellersCore\Components\Employee\EmployeeEntity;
 use DirectoryIterator;
-use PHPUnit\Util\Exception;
 use Shopware\Core\Checkout\Customer\CustomerEntity;
 use Shopware\Core\Checkout\Customer\SalesChannel\RegisterRoute;
 use Shopware\Core\Framework\Context;
@@ -33,8 +31,8 @@ class CustomerSeeder
 
     public function __construct(
         private readonly ContainerInterface                 $container,
-        private readonly AbstractSalesChannelContextFactory $contextFactory)
-    {
+        private readonly AbstractSalesChannelContextFactory $contextFactory
+    ) {
         $this->context = Context::createDefaultContext();
         $this->registerRoute = $container->get(RegisterRoute::class);
         $this->salesChannelContext = $this->contextFactory->create(Uuid::randomHex(), $this->getSalesChannelDomain()->getSalesChannelId());
