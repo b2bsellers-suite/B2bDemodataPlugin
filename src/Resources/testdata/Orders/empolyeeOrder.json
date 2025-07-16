@@ -1,0 +1,33 @@
+{
+  "id": "getsReplaced",
+  "orderNumber": "employeeOrder",
+  "currencyId": "getsReplaced",
+  "salesChannelId": "getsReplaced",
+  "currencyFactor": 1,
+  "orderTotal": 10,
+  "shippingCosts": 0,
+  "lineItems": [
+    {
+      "identifier": "B2B10136",
+      "quantity": 1,
+      "type": "test",
+      "label": "test",
+      "price": 10
+    }
+  ],
+  "orderCustomer": {
+    "title": "",
+    "salutationId": "getsReplaced",
+    "firstName": "Celina",
+    "lastName": "Wagner",
+    "email": "c.wagner@web.de",
+    "customerNumber": "getsReplaced",
+    "customer": {
+      "id": "getsReplaced",
+      "salesChannelId": "getsReplaced"
+    },
+    "shippingAddressId": "getsReplaced",
+    "billingAddressId": "getsReplaced"
+
+  }
+}
