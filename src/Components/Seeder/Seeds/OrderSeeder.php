@@ -27,14 +27,15 @@ class OrderSeeder
     private Context $context;
 
     public function __construct(
-        private readonly ContainerInterface $container,
-        private readonly EntityRepository $orderRepository,
-        private readonly EntityRepository $customerRepository,
-        private readonly EntityRepository $salesChannelRepository,
-        private readonly EntityRepository $currencyRepository,
-        private readonly EntityRepository $employeeRepository,
+        private readonly ContainerInterface   $container,
+        private readonly EntityRepository     $orderRepository,
+        private readonly EntityRepository     $customerRepository,
+        private readonly EntityRepository     $salesChannelRepository,
+        private readonly EntityRepository     $currencyRepository,
+        private readonly EntityRepository     $employeeRepository,
         private readonly InitialStateIdLoader $initialStateIdLoader,
-    ) {
+    )
+    {
         $this->context = Context::createDefaultContext();
     }
 
@@ -53,7 +54,7 @@ class OrderSeeder
     private function createOrders(OutputInterface $output): void
     {
         $resourceDir = $this->container->get('kernel')->locateResource('@B2bDemodata/Resources');
-        $dir         = new \DirectoryIterator($resourceDir . '/testdata/Orders/');
+        $dir = new \DirectoryIterator($resourceDir . '/testdata/Orders/');
 
         foreach ($dir as $fileInfo) {
             if (!$fileInfo->isDot()) {
@@ -83,16 +84,18 @@ class OrderSeeder
 
     private function addDynamicOderData(array $orderJson): array
     {
-        $orderJson['id']             = Uuid::randomHex();
+        $orderJson['id'] = Uuid::randomHex();
         $orderJson['salesChannelId'] = $this->getDefaultSalesChannel()->getId();
-        $orderJson['currencyId']     = $this->getCurrentCurrencyId('EUR');
-        $orderJson['itemRounding']   = json_decode(json_encode(new CashRoundingConfig(2, 0.01, true), \JSON_THROW_ON_ERROR), true, 512, \JSON_THROW_ON_ERROR);
-        $orderJson['totalRounding']  = json_decode(json_encode(new CashRoundingConfig(2, 0.01, true), \JSON_THROW_ON_ERROR), true, 512, \JSON_THROW_ON_ERROR);
-        $orderJson['stateId']        = $this->initialStateIdLoader->get(OrderStates::STATE_MACHINE);
-        $orderJson['orderDateTime']  = (new \DateTimeImmutable())->format(Defaults::STORAGE_DATE_TIME_FORMAT);
-        $orderJson['price']          = new CartPrice($orderJson['orderTotal'], $orderJson['orderTotal'], 10, new CalculatedTaxCollection(), new TaxRuleCollection(), CartPrice::TAX_STATE_NET);
-        $orderJson['shippingCosts']  = new CalculatedPrice($orderJson['shippingCosts'], $orderJson['shippingCosts'], new CalculatedTaxCollection(), new TaxRuleCollection());
-        $orderJson['customFields']   = ['b2b_order_customer_employee_id' => $this->getEmployeeId()];
+        $orderJson['currencyId'] = $this->getCurrentCurrencyId($orderJson['currencyIsoCode']);
+        $orderJson['itemRounding'] = json_decode(json_encode(new CashRoundingConfig(2, 0.01, true), \JSON_THROW_ON_ERROR), true, 512, \JSON_THROW_ON_ERROR);
+        $orderJson['totalRounding'] = json_decode(json_encode(new CashRoundingConfig(2, 0.01, true), \JSON_THROW_ON_ERROR), true, 512, \JSON_THROW_ON_ERROR);
+        $orderJson['stateId'] = $this->initialStateIdLoader->get(OrderStates::STATE_MACHINE);
+        $orderJson['orderDateTime'] = (new \DateTimeImmutable())->format(Defaults::STORAGE_DATE_TIME_FORMAT);
+        $orderJson['price'] = new CartPrice($orderJson['orderTotal'], $orderJson['orderTotal'], 10, new CalculatedTaxCollection(), new TaxRuleCollection(), CartPrice::TAX_STATE_NET);
+        $orderJson['shippingCosts'] = new CalculatedPrice($orderJson['shippingCosts'], $orderJson['shippingCosts'], new CalculatedTaxCollection(), new TaxRuleCollection());
+        if (!empty($orderJson['employeeMail'])) {
+            $orderJson['customFields'] = ['b2b_order_customer_employee_id' => $this->getEmployeeIdByMail($orderJson['employeeMail'])];
+        }
 
         return $orderJson;
     }
@@ -106,7 +109,7 @@ class OrderSeeder
         $criteria->addFilter(new EqualsFilter('isoCode', $currencyCode));
         $criteria->setLimit(1);
 
-        return $this->currencyRepository->search($criteria, $this->context)->first()->getId();
+        return $this->currencyRepository->searchIds($criteria, $this->context)->firstId();
     }
 
     private function getDefaultSalesChannel(): ?SalesChannelEntity
@@ -123,19 +126,21 @@ class OrderSeeder
     {
         $criteria = new Criteria();
 
-        if (isset($orderJson['orderCustomer']['email'])) {
-            $criteria->addFilter(new EqualsFilter('email', $orderJson['orderCustomer']['email']));
-            $customer = $this->customerRepository->search(
-                $criteria,
-                $this->context
-            )->first();
-            $orderJson['orderCustomer']['salutationId']               = $customer->getSalutationId();
-            $orderJson['orderCustomer']['customerNumber']             = $customer->getCustomerNumber();
-            $orderJson['orderCustomer']['customer']['id']             = $customer->getId();
-            $orderJson['orderCustomer']['customer']['salesChannelId'] = $customer->getSalesChannelId();
-            $orderJson['orderCustomer']['shippingAddressId']          = $customer->getDefaultShippingAddressId();
-            $orderJson['billingAddressId']                            = $orderJson['orderCustomer']['billingAddressId'] = $customer->getDefaultShippingAddressId();
+        if (!isset($orderJson['orderCustomer']['email'])) {
+            throw new \Exception('missing customer email');
         }
+
+        $criteria->addFilter(new EqualsFilter('email', $orderJson['orderCustomer']['email']));
+        $customer = $this->customerRepository->search(
+            $criteria,
+            $this->context
+        )->first();
+        $orderJson['orderCustomer']['salutationId'] = $customer->getSalutationId();
+        $orderJson['orderCustomer']['customerNumber'] = $customer->getCustomerNumber();
+        $orderJson['orderCustomer']['customer']['id'] = $customer->getId();
+        $orderJson['orderCustomer']['customer']['salesChannelId'] = $customer->getSalesChannelId();
+        $orderJson['orderCustomer']['shippingAddressId'] = $customer->getDefaultShippingAddressId();
+        $orderJson['billingAddressId'] = $orderJson['orderCustomer']['billingAddressId'] = $customer->getDefaultShippingAddressId();
 
         return $orderJson;
     }
@@ -143,9 +148,9 @@ class OrderSeeder
     private function calculatePrices(array $orderJson): array
     {
         foreach ($orderJson['lineItems'] as $key => $orderItem) {
-            $price                        = $orderItem['price'];
-            $orderItem['id']              = Uuid::randomHex();
-            $orderItem['price']           = new CalculatedPrice($price, $price, new CalculatedTaxCollection(), new TaxRuleCollection());
+            $price = $orderItem['price'];
+            $orderItem['id'] = Uuid::randomHex();
+            $orderItem['price'] = new CalculatedPrice($price, $price, new CalculatedTaxCollection(), new TaxRuleCollection());
             $orderItem['priceDefinition'] = new QuantityPriceDefinition($price, new TaxRuleCollection());
             $orderJson['lineItems'][$key] = $orderItem;
         }
@@ -153,8 +158,8 @@ class OrderSeeder
         return $orderJson;
     }
 
-    private function getEmployeeId(): string
+    private function getEmployeeIdByMail(string $email): string
     {
-        return $this->employeeRepository->search(new Criteria(), $this->context)->getEntities()->first()->getId();
+        return $this->employeeRepository->searchIds((new Criteria())->addFilter(new EqualsFilter('email', $email)), $this->context)->firstId();
     }
 }

@@ -1,11 +1,10 @@
 {
-  "id": "getsReplaced",
   "orderNumber": "employeeOrder",
-  "currencyId": "getsReplaced",
-  "salesChannelId": "getsReplaced",
+  "currencyIsoCode": "EUR",
   "currencyFactor": 1,
   "orderTotal": 10,
   "shippingCosts": 0,
+  "employeeMail": "henk.becker@ektek.com",
   "lineItems": [
     {
       "identifier": "B2B10136",
@@ -17,17 +16,10 @@
   ],
   "orderCustomer": {
     "title": "",
-    "salutationId": "getsReplaced",
     "firstName": "Celina",
     "lastName": "Wagner",
     "email": "c.wagner@web.de",
-    "customerNumber": "getsReplaced",
     "customer": {
-      "id": "getsReplaced",
-      "salesChannelId": "getsReplaced"
-    },
-    "shippingAddressId": "getsReplaced",
-    "billingAddressId": "getsReplaced"
-
+    }
   }
 }
