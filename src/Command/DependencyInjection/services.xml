@@ -21,8 +21,8 @@
         </service>
 
         <service id="B2bDemodata\Command\ProductListGenerateCommand">
-            <argument type="service" id="b2bsellers_product_list.repository"/>
-            <argument type="service" id="b2bsellers_product_list_type.repository"/>
+            <argument type="service" id="b2bsellers_product_list.repository" on-invalid="null"/>
+            <argument type="service" id="b2bsellers_product_list_type.repository" on-invalid="null"/>
             <argument type="service" id="product.repository"/>
 
             <tag name="console.command"/>

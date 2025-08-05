@@ -25,8 +25,8 @@ class ProductListGenerateCommand extends Command
 {
 
     public function __construct(
-        private readonly EntityRepository $productListRepository,
-        private readonly EntityRepository $productListTypeRepository,
+        private readonly ?EntityRepository $productListRepository,
+        private readonly ?EntityRepository $productListTypeRepository,
         private readonly EntityRepository $productRepository,
     ) {
         parent::__construct();
@@ -42,6 +42,12 @@ class ProductListGenerateCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
+
+        if ($this->productListRepository === null || $this->productListTypeRepository === null) {
+            $io->error('Please activate the product lists addon in the B2Bsellers Suite Core plugin.');
+
+            return 1;
+        }
 
         $context = Context::createDefaultContext();
 
