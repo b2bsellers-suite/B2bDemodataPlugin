@@ -9,6 +9,9 @@ use Shopware\Core\Checkout\Cart\Price\Struct\CartPrice;
 use Shopware\Core\Checkout\Cart\Price\Struct\QuantityPriceDefinition;
 use Shopware\Core\Checkout\Cart\Tax\Struct\CalculatedTaxCollection;
 use Shopware\Core\Checkout\Cart\Tax\Struct\TaxRuleCollection;
+use Shopware\Core\Checkout\Customer\CustomerEntity;
+use Shopware\Core\Checkout\Order\Aggregate\OrderDelivery\OrderDeliveryStates;
+use Shopware\Core\Checkout\Order\Aggregate\OrderTransaction\OrderTransactionStates;
 use Shopware\Core\Checkout\Order\OrderStates;
 use Shopware\Core\Defaults;
 use Shopware\Core\Framework\Context;
@@ -16,6 +19,7 @@ use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Pricing\CashRoundingConfig;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
+use Shopware\Core\Framework\DataAbstractionLayer\Search\Sorting\FieldSorting;
 use Shopware\Core\Framework\Uuid\Uuid;
 use Shopware\Core\System\SalesChannel\SalesChannelEntity;
 use Shopware\Core\System\StateMachine\Loader\InitialStateIdLoader;
@@ -33,6 +37,8 @@ class OrderSeeder
         private readonly EntityRepository     $salesChannelRepository,
         private readonly EntityRepository     $currencyRepository,
         private readonly EntityRepository     $employeeRepository,
+        private readonly EntityRepository     $paymentMethodRepository,
+        private readonly EntityRepository     $shippingMethodRepository,
         private readonly InitialStateIdLoader $initialStateIdLoader,
     )
     {
@@ -71,9 +77,7 @@ class OrderSeeder
 
     private function createOrder($orderJson): void
     {
-        $orderJson = $this->addDynamicOderData($orderJson);
-        $orderJson = $this->replaceCustomerData($orderJson);
-        $orderJson = $this->calculatePrices($orderJson);
+        $orderJson = $this->generateOrderData($orderJson);
 
         $this->orderRepository->create([
             $orderJson,
@@ -82,8 +86,24 @@ class OrderSeeder
         );
     }
 
-    private function addDynamicOderData(array $orderJson): array
+    private function generateOrderData(array $orderJson): array
     {
+        $orderItemId = Uuid::randomHex();
+        $criteria = new Criteria();
+
+        if (!isset($orderJson['orderCustomer']['email'])) {
+            throw new \Exception('missing customer email');
+        }
+
+        $criteria->addFilter(new EqualsFilter('email', $orderJson['orderCustomer']['email']));
+        $criteria->addAssociation('defaultShippingAddress');
+        $criteria->addAssociation('defaultShippingAddress.country');
+        /** @var CustomerEntity $customer */
+        $customer = $this->customerRepository->search(
+            $criteria,
+            $this->context
+        )->first();
+
         $orderJson['id'] = Uuid::randomHex();
         $orderJson['salesChannelId'] = $this->getDefaultSalesChannel()->getId();
         $orderJson['currencyId'] = $this->getCurrentCurrencyId($orderJson['currencyIsoCode']);
@@ -93,6 +113,76 @@ class OrderSeeder
         $orderJson['orderDateTime'] = (new \DateTimeImmutable())->format(Defaults::STORAGE_DATE_TIME_FORMAT);
         $orderJson['price'] = new CartPrice($orderJson['orderTotal'], $orderJson['orderTotal'], 10, new CalculatedTaxCollection(), new TaxRuleCollection(), CartPrice::TAX_STATE_NET);
         $orderJson['shippingCosts'] = new CalculatedPrice($orderJson['shippingCosts'], $orderJson['shippingCosts'], new CalculatedTaxCollection(), new TaxRuleCollection());
+        $orderJson['paymentMethodId'] = $this->getDefaultPaymentMethodId();
+        $orderJson['transactions'] = [
+            [
+                'id' => Uuid::randomHex(),
+                'paymentMethodId' => $this->getDefaultPaymentMethodId(),
+                'amount' => [
+                    'unitPrice' => $orderJson['orderTotal'],
+                    'totalPrice' => $orderJson['orderTotal'],
+                    'quantity' => 1,
+                    'calculatedTaxes' => [],
+                    'taxRules' => [],
+                ],
+                'stateId' => $this->initialStateIdLoader->get(OrderTransactionStates::STATE_MACHINE),
+            ]
+        ];
+        $orderJson['deliveries'] = [
+            [
+                'stateId' => $this->initialStateIdLoader->get(OrderDeliveryStates::STATE_MACHINE),
+                'shippingMethodId' => $this->getDefaultShippingMethodId(),
+                'shippingCosts' => $orderJson['shippingCosts'],
+                'shippingDateEarliest' => date(\DATE_ATOM),
+                'shippingDateLatest' => date(\DATE_ATOM),
+                'shippingOrderAddress' => [
+                    'salutationId' => $customer->getSalutationId(),
+                    'firstName' => $customer->getFirstName(),
+                    'lastName' => $customer->getLastName(),
+                    'zipcode' => $customer->getDefaultShippingAddress()->getZipcode(),
+                    'city' => $customer->getDefaultShippingAddress()->getCity(),
+                    'street' => $customer->getDefaultShippingAddress()->getStreet(),
+                    'country' => [
+                        'name' => $customer->getDefaultShippingAddress()->getCountry()->getName(),
+                        'id' => $customer->getDefaultShippingAddress()->getCountry()->getId(),
+                    ],
+                ],
+                'positions' => [
+                    [
+                        'price' => $orderJson['shippingCosts'],
+                        'orderLineItemId' => $orderItemId,
+                    ],
+                ],
+            ],
+        ];
+        $orderJson['addresses'] = [
+            [
+                'salutationId' => $customer->getSalutationId(),
+                'firstName' => $customer->getFirstName(),
+                'lastName' => $customer->getLastName(),
+                'zipcode' => $customer->getDefaultShippingAddress()->getZipcode(),
+                'city' => $customer->getDefaultShippingAddress()->getCity(),
+                'street' => $customer->getDefaultShippingAddress()->getStreet(),
+                'countryId' => $customer->getDefaultShippingAddress()->getCountry()->getId(),
+                'id' => $customer->getDefaultShippingAddress()->getId(),
+            ]
+        ];
+
+        foreach ($orderJson['lineItems'] as $key => $orderItem) {
+            $price = $orderItem['price'];
+            $orderItem['id'] = $orderItemId;
+            $orderItem['price'] = new CalculatedPrice($price, $price, new CalculatedTaxCollection(), new TaxRuleCollection());
+            $orderItem['priceDefinition'] = new QuantityPriceDefinition($price, new TaxRuleCollection());
+            $orderJson['lineItems'][$key] = $orderItem;
+            $orderItemId = Uuid::randomHex();
+        }
+        $orderJson['orderCustomer']['salutationId'] = $customer->getSalutationId();
+        $orderJson['orderCustomer']['customerNumber'] = $customer->getCustomerNumber();
+        $orderJson['orderCustomer']['customer']['id'] = $customer->getId();
+        $orderJson['orderCustomer']['customer']['salesChannelId'] = $customer->getSalesChannelId();
+        $orderJson['orderCustomer']['shippingAddressId'] = $customer->getDefaultShippingAddressId();
+        $orderJson['billingAddressId'] = $orderJson['orderCustomer']['billingAddressId'] = $customer->getDefaultShippingAddressId();
+
         if (!empty($orderJson['employeeMail'])) {
             $orderJson['customFields'] = ['b2b_order_customer_employee_id' => $this->getEmployeeIdByMail($orderJson['employeeMail'])];
         }
@@ -122,44 +212,32 @@ class OrderSeeder
         return $this->salesChannelRepository->search($criteria, $this->context)->first();
     }
 
-    private function replaceCustomerData(array $orderJson): array
-    {
-        $criteria = new Criteria();
-
-        if (!isset($orderJson['orderCustomer']['email'])) {
-            throw new \Exception('missing customer email');
-        }
-
-        $criteria->addFilter(new EqualsFilter('email', $orderJson['orderCustomer']['email']));
-        $customer = $this->customerRepository->search(
-            $criteria,
-            $this->context
-        )->first();
-        $orderJson['orderCustomer']['salutationId'] = $customer->getSalutationId();
-        $orderJson['orderCustomer']['customerNumber'] = $customer->getCustomerNumber();
-        $orderJson['orderCustomer']['customer']['id'] = $customer->getId();
-        $orderJson['orderCustomer']['customer']['salesChannelId'] = $customer->getSalesChannelId();
-        $orderJson['orderCustomer']['shippingAddressId'] = $customer->getDefaultShippingAddressId();
-        $orderJson['billingAddressId'] = $orderJson['orderCustomer']['billingAddressId'] = $customer->getDefaultShippingAddressId();
-
-        return $orderJson;
-    }
-
-    private function calculatePrices(array $orderJson): array
-    {
-        foreach ($orderJson['lineItems'] as $key => $orderItem) {
-            $price = $orderItem['price'];
-            $orderItem['id'] = Uuid::randomHex();
-            $orderItem['price'] = new CalculatedPrice($price, $price, new CalculatedTaxCollection(), new TaxRuleCollection());
-            $orderItem['priceDefinition'] = new QuantityPriceDefinition($price, new TaxRuleCollection());
-            $orderJson['lineItems'][$key] = $orderItem;
-        }
-
-        return $orderJson;
-    }
-
     private function getEmployeeIdByMail(string $email): string
     {
         return $this->employeeRepository->searchIds((new Criteria())->addFilter(new EqualsFilter('email', $email)), $this->context)->firstId();
+    }
+
+    protected function getDefaultPaymentMethodId(): string
+    {
+        $criteria = (new Criteria())
+            ->addFilter(new EqualsFilter('availabilityRuleId', null))
+            ->addFilter(new EqualsFilter('active', true));
+
+        return $this->paymentMethodRepository->searchIds($criteria, Context::createDefaultContext())->firstId();
+    }
+
+    private function getDefaultShippingMethodId()
+    {
+        $criteria = (new Criteria())
+            ->setLimit(1)
+            ->addFilter(new EqualsFilter('active', true))
+            ->addSorting(new FieldSorting('name'));
+
+
+        $criteria->addFilter(new EqualsFilter('salesChannels.id', $this->getDefaultSalesChannel()->getId()));
+
+
+        /** @var string $id */
+        return $this->shippingMethodRepository->searchIds($criteria, Context::createDefaultContext())->firstId();
     }
 }

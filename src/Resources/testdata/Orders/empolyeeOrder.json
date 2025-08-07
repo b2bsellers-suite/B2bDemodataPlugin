@@ -11,7 +11,8 @@
       "quantity": 1,
       "type": "test",
       "label": "test",
-      "price": 10
+      "price": 10,
+      "good": true
     }
   ],
   "orderCustomer": {

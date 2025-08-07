@@ -37,6 +37,8 @@
             <argument type="service" id="sales_channel.repository"/>
             <argument type="service" id="currency.repository"/>
             <argument type="service" id="b2bsellers_employee.repository"/>
+            <argument type="service" id="payment_method.repository"/>
+            <argument type="service" id="shipping_method.repository"/>
             <argument type="service" id="Shopware\Core\System\StateMachine\Loader\InitialStateIdLoader"/>
         </service>
 
