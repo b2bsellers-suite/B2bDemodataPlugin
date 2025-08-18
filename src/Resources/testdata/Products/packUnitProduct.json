@@ -1,0 +1,57 @@
+{
+  "active": true,
+  "price": [
+    {
+      "net": 10.0,
+      "gross": 11.9,
+      "linked": true,
+      "listPrice": null,
+      "percentage": null,
+      "regulationPrice": null,
+      "currencyCode": "EUR"
+    }
+  ],
+  "productNumber": "B2B-VPE-001",
+  "stock": 250,
+  "isCloseout": false,
+  "purchaseSteps": 2,
+  "minPurchase": 2,
+  "purchaseUnit": 1,
+  "referenceUnit": 1,
+  "shippingFree": false,
+  "name": "VPE Testartikel (Karton)",
+  "description": "Demodaten-Produkt mit gesetzter Verpackungseinheit (VPE) für E2E-Tests.",
+  "prices": [],
+  "translations": [
+    {
+      "versionId": null,
+      "productId": "51fa659081874d50b577df87e6fe1645",
+      "metaDescription": null,
+      "name": "VPE Testartikel (Karton)",
+      "keywords": null,
+      "description": "Demodaten-Produkt mit gesetzter Verpackungseinheit (VPE) für E2E-Tests.",
+      "metaTitle": null,
+      "packUnit": "Karton",
+      "packUnitPlural": "Kartons",
+      "customSearchKeywords": null,
+      "productVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
+      "languageCode": "de-DE"
+    },
+    {
+      "versionId": null,
+      "productId": "51fa659081874d50b577df87e6fe1645",
+      "metaDescription": null,
+      "name": "VPE test product (carton)",
+      "keywords": null,
+      "description": "Demo product with packaging unit set for E2E tests.",
+      "metaTitle": null,
+      "packUnit": "carton",
+      "packUnitPlural": "cartons",
+      "customSearchKeywords": null,
+      "productVersionId": "0fa91ce3e96a4bc2be4bd9ce752c3425",
+      "languageCode": "en-GB"
+    }
+  ],
+  "id": "51fa659081874d50b577df87e6fe1645",
+  "customFields": {}
+}
