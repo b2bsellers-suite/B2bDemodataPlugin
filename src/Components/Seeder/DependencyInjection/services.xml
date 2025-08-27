@@ -12,6 +12,7 @@
             <argument type="service" id="B2bDemodata\Components\Seeder\Seeds\CustomerSeeder"/>
             <argument type="service" id="B2bDemodata\Components\Seeder\Seeds\ProductSeeder"/>
             <argument type="service" id="B2bDemodata\Components\Seeder\Seeds\EventSeeder"/>
+            <argument type="service" id="B2bDemodata\Components\Seeder\Seeds\OrderSeeder"/>
         </service>
 
         <service id="B2bDemodata\Components\Seeder\Seeds\CategorySeeder">
@@ -27,6 +28,18 @@
         <service id="B2bDemodata\Components\Seeder\Seeds\ProductSeeder">
             <argument type="service" id="service_container"/>
             <argument type="service" id="Doctrine\DBAL\Connection"/>
+        </service>
+
+        <service id="B2bDemodata\Components\Seeder\Seeds\OrderSeeder">
+            <argument type="service" id="service_container"/>
+            <argument type="service" id="order.repository"/>
+            <argument type="service" id="customer.repository"/>
+            <argument type="service" id="sales_channel.repository"/>
+            <argument type="service" id="currency.repository"/>
+            <argument type="service" id="b2bsellers_employee.repository"/>
+            <argument type="service" id="payment_method.repository"/>
+            <argument type="service" id="shipping_method.repository"/>
+            <argument type="service" id="Shopware\Core\System\StateMachine\Loader\InitialStateIdLoader"/>
         </service>
 
         <service id="B2bDemodata\Components\Seeder\Seeds\EventSeeder">
