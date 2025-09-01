@@ -22,9 +22,10 @@
   ],
   "orderCustomer": {
     "title": "",
-    "firstName": "Celina",
-    "lastName": "Wagner",
-    "email": "c.wagner@web.de",
+    "firstName": "Henk",
+    "lastName": "Becker",
+    "customerNumber": "10003",
+    "email": "henk.becker@ektek.com",
     "customer": {
     }
   }

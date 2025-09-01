@@ -89,10 +89,10 @@ class OrderSeeder
 
     private function generateOrderData(array $orderJson): array
     {
-        if (!isset($orderJson['orderCustomer']['email'])) {
-            throw new \Exception('missing customer email');
+        if (!isset($orderJson['orderCustomer']['customerNumber'])) {
+            throw new \Exception('missing customer number');
         }
-        $customer = $this->getOrderCustomer($orderJson['orderCustomer']['email']);
+        $customer = $this->getOrderCustomer($orderJson['orderCustomer']['customerNumber']);
         $orderJson = $this->getOrderBaseData($orderJson);
         $orderJson = $this->getOrderTransactions($orderJson);
         $orderJson = $this->getOrderAddresses($customer, $orderJson);
@@ -198,10 +198,10 @@ class OrderSeeder
         return $orderJson;
     }
 
-    private function getOrderCustomer($email): CustomerEntity
+    private function getOrderCustomer($customerNumber): CustomerEntity
     {
         $criteria = new Criteria();
-        $criteria->addFilter(new EqualsFilter('email', $email));
+        $criteria->addFilter(new EqualsFilter('customerNumber', $customerNumber));
         $criteria->addAssociation('defaultShippingAddress');
         $criteria->addAssociation('defaultShippingAddress.country');
         /** @var CustomerEntity $customer */
