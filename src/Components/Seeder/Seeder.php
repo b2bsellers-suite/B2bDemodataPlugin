@@ -5,7 +5,6 @@ namespace B2bDemodata\Components\Seeder;
 use B2bDemodata\Components\Seeder\Helper\B2bLicenceTrait;
 use B2bDemodata\Components\Seeder\Seeds\CategorySeeder;
 use B2bDemodata\Components\Seeder\Seeds\CustomerSeeder;
-use B2bDemodata\Components\Seeder\Seeds\EventSeeder;
 use B2bDemodata\Components\Seeder\Seeds\ProductSeeder;
 use Exception;
 use Shopware\Core\Framework\Context;
@@ -25,7 +24,6 @@ class Seeder
         private readonly CategorySeeder                     $categorySeeder,
         private readonly CustomerSeeder                     $customerSeeder,
         private readonly ProductSeeder                      $productSeeder,
-        private readonly EventSeeder                        $eventSeeder
     ) {
         $this->context = Context::createDefaultContext();
     }
@@ -39,10 +37,6 @@ class Seeder
         $this->customerSeeder->run($output);
         $this->categorySeeder->run($output);
         $this->productSeeder->run($output);
-
-        if ($this->isB2bAddonEnabled($this->container, 'B2bEventManager')) {
-            $this->eventSeeder->run($output);
-        }
 
         // ToDo: We will add more seeders like:
         // (new CustomerSpecificPrice($this->container, $this->context))->run();
