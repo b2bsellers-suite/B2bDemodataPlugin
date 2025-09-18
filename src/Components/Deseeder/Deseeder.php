@@ -59,6 +59,7 @@ class Deseeder
              */
             $this->deleteCategory();
             $this->deleteProducts();
+            $this->deleteOrders();
             if ($this->isB2bAddonEnabled($this->container, 'B2bEventManager')) {
                 $this->deleteEvents();
             }
@@ -129,7 +130,7 @@ class Deseeder
         return $this->employeeCustomerRepository->search($criteria, Context::createDefaultContext())->getEntities() ?? new EntityCollection();
     }
 
-    private function deleteProducts()
+    private function deleteProducts(): void
     {
         $this->ioHelper->info('Start deleting customer products');
         $files = scandir(__DIR__ . self::TESTDATA_DIRECTORY . '/Products');
@@ -147,7 +148,7 @@ class Deseeder
     /**
      * @throws Exception
      */
-    private function deleteCategory()
+    private function deleteCategory(): void
     {
         $this->ioHelper->info('Start deleting demo category');
         $this->connection->executeStatement("DELETE FROM `category` WHERE `id` = UNHEX('" . SeederConstants::DEMO_CATEGORY_UID . "')");
@@ -157,7 +158,7 @@ class Deseeder
     /**
      * @throws Exception
      */
-    private function deleteCustomersPartialAssortment()
+    private function deleteCustomersPartialAssortment(): void
     {
         $this->ioHelper->info('Start deleting customer assortments');
         $files = scandir(__DIR__ . self::TESTDATA_DIRECTORY . '/Customers');
@@ -177,7 +178,7 @@ class Deseeder
     /**
      * @throws Exception
      */
-    private function deleteOffers()
+    private function deleteOffers(): void
     {
         $this->ioHelper->info('Start deleting offers');
         $files = scandir(__DIR__ . self::TESTDATA_DIRECTORY . '/Customers');
@@ -198,7 +199,7 @@ class Deseeder
     /**
      * @throws Exception
      */
-    private function deleteCustomersBudgets()
+    private function deleteCustomersBudgets(): void
     {
         $this->ioHelper->info('Start deleting customer budgets');
         $files = scandir(__DIR__ . self::TESTDATA_DIRECTORY . '/Customers');
@@ -218,7 +219,7 @@ class Deseeder
     /**
      * @throws Exception
      */
-    private function deleteCustomersActivities()
+    private function deleteCustomersActivities(): void
     {
         $this->ioHelper->info('Start deleting customer activities');
         $files = scandir(__DIR__ . self::TESTDATA_DIRECTORY . '/Customers');
@@ -238,7 +239,7 @@ class Deseeder
     /**
      * @throws Exception
      */
-    private function deleteCustomersCostCenters()
+    private function deleteCustomersCostCenters(): void
     {
         $this->ioHelper->info('Start deleting customer cost centers');
         $files = scandir(__DIR__ . self::TESTDATA_DIRECTORY . '/Customers');
@@ -258,7 +259,7 @@ class Deseeder
     /**
      * @throws Exception
      */
-    private function deleteCustomersSpecificPrices()
+    private function deleteCustomersSpecificPrices(): void
     {
         $this->ioHelper->info('Start deleting customer specific prices');
         $files = scandir(__DIR__ . self::TESTDATA_DIRECTORY . '/Customers');
@@ -278,7 +279,7 @@ class Deseeder
     /**
      * @throws Exception
      */
-    private function deleteCustomersPasswordlessLogins()
+    private function deleteCustomersPasswordlessLogins(): void
     {
         $this->ioHelper->info('Start deleting customer passwordless logins');
         $files = scandir(__DIR__ . self::TESTDATA_DIRECTORY . '/Customers');
@@ -298,7 +299,7 @@ class Deseeder
     /**
      * @throws Exception
      */
-    private function deleteCustomersOrderLists()
+    private function deleteCustomersOrderLists(): void
     {
         $this->ioHelper->info('Start deleting customer orderlists');
         $files = scandir(__DIR__ . self::TESTDATA_DIRECTORY . '/Customers');
@@ -315,7 +316,7 @@ class Deseeder
         }
     }
 
-    private function deleteEvents()
+    private function deleteEvents(): void
     {
         $this->ioHelper->info('Start deleting customer Events');
         $files = scandir(__DIR__ . self::TESTDATA_DIRECTORY . '/Events');
@@ -329,4 +330,17 @@ class Deseeder
         }
     }
 
+    private function deleteOrders(): void
+    {
+        $this->ioHelper->info('Start deleting Orders');
+        $files = scandir(__DIR__ . self::TESTDATA_DIRECTORY . '/Orders');
+        $files = array_diff($files, ['.', '..']);
+        foreach ($files as $file) {
+
+            $order = json_decode(file_get_contents(__DIR__ . self::TESTDATA_DIRECTORY . '/Orders/' . $file), true);
+            if (!empty($order['orderNumber'])) {
+                $this->connection->executeStatement("DELETE FROM `order` WHERE `order_number` = '" . $order['orderNumber'] . "'");
+            }
+        }
+    }
 }

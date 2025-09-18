@@ -5,6 +5,7 @@ namespace B2bDemodata\Components\Seeder;
 use B2bDemodata\Components\Seeder\Helper\B2bLicenceTrait;
 use B2bDemodata\Components\Seeder\Seeds\CategorySeeder;
 use B2bDemodata\Components\Seeder\Seeds\CustomerSeeder;
+use B2bDemodata\Components\Seeder\Seeds\OrderSeeder;
 use B2bDemodata\Components\Seeder\Seeds\ProductSeeder;
 use Exception;
 use Shopware\Core\Framework\Context;
@@ -19,12 +20,14 @@ class Seeder
     private Context $context;
 
     public function __construct(
-        private readonly ContainerInterface                 $container,
-        private readonly AbstractSalesChannelContextFactory $contextFactory,
-        private readonly CategorySeeder                     $categorySeeder,
-        private readonly CustomerSeeder                     $customerSeeder,
-        private readonly ProductSeeder                      $productSeeder,
-    ) {
+		private ContainerInterface $container,
+        private AbstractSalesChannelContextFactory $contextFactory,
+        private CategorySeeder	$categorySeeder,
+        private CustomerSeeder $customerSeeder,
+        private ProductSeeder $productSeeder,
+        private OrderSeeder $orderSeeder,
+	)
+    {
         $this->context = Context::createDefaultContext();
     }
 
@@ -37,6 +40,7 @@ class Seeder
         $this->customerSeeder->run($output);
         $this->categorySeeder->run($output);
         $this->productSeeder->run($output);
+        $this->orderSeeder->run($output);
 
         // ToDo: We will add more seeders like:
         // (new CustomerSpecificPrice($this->container, $this->context))->run();

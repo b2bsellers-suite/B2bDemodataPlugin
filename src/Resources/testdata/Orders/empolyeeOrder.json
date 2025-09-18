@@ -1,0 +1,32 @@
+{
+  "orderNumber": "employeeOrder",
+  "currencyIsoCode": "EUR",
+  "currencyFactor": 1,
+  "orderTotal": 10,
+  "shippingCosts": 0,
+  "employeeMail": "henk.becker@ektek.com",
+  "lineItems": [
+    {
+      "identifier": "c3d602c47a844732baf2cb58b775c860",
+      "productId": "c3d602c47a844732baf2cb58b775c860",
+      "referencedId": "c3d602c47a844732baf2cb58b775c860",
+      "quantity": 1,
+      "type": "product",
+      "label": "test",
+      "price": 10,
+      "good": true,
+      "payload": {
+        "productNumber": "B2B10136"
+      }
+    }
+  ],
+  "orderCustomer": {
+    "title": "",
+    "firstName": "Henk",
+    "lastName": "Becker",
+    "customerNumber": "10002",
+    "email": "henk.becker@ektek.com",
+    "customer": {
+    }
+  }
+}
