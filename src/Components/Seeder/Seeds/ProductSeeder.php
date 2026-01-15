@@ -1,11 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace B2bDemodata\Components\Seeder\Seeds;
 
 use B2bDemodata\Components\Seeder\Helper\SeederConstants;
-use DirectoryIterator;
 use Doctrine\DBAL\Connection;
-use Exception;
 use Shopware\Core\Content\Product\Aggregate\ProductVisibility\ProductVisibilityDefinition;
 use Shopware\Core\Defaults;
 use Shopware\Core\Framework\Context;
@@ -18,16 +18,15 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class ProductSeeder
 {
-    private Context $context;
-
     private const PRICE_FIELDS = [
         'price',
-        'purchasePrices'
+        'purchasePrices',
     ];
+    private Context $context;
 
     public function __construct(
         private readonly ContainerInterface $container,
-        private readonly Connection         $connection,
+        private readonly Connection $connection,
     ) {
         $this->context = Context::createDefaultContext();
     }
@@ -43,12 +42,12 @@ class ProductSeeder
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     private function createProducts(OutputInterface $output): void
     {
         $resourceDir = $this->container->get('kernel')->locateResource('@B2bDemodata/Resources');
-        $dir = new DirectoryIterator($resourceDir . '/testdata/Products/');
+        $dir         = new \DirectoryIterator($resourceDir . '/testdata/Products/');
 
         foreach ($dir as $fileInfo) {
             if (!$fileInfo->isDot()) {
@@ -74,7 +73,7 @@ class ProductSeeder
         $productJson = $this->replaceCurrencyCodes($productJson);
 
         $productRepository->upsert([
-            $productJson
+            $productJson,
         ],
             $this->context
         );
@@ -82,15 +81,15 @@ class ProductSeeder
 
     private function replaceKnownIds(array $productJson): array
     {
-        $productJson['taxId'] = $this->getDefaultId('tax');
+        $productJson['taxId']      = $this->getDefaultId('tax');
         $productJson['categories'] = [['id' => SeederConstants::DEMO_CATEGORY_UID]];
 
         if (!$this->isVisibleInSalesChannel($productJson, $this->getDefaultSalesChannel())) {
             $productJson['visibilities'] = [
                 [
-                    "salesChannelId" => $this->getDefaultId('sales_channel'),
-                    "visibility" => ProductVisibilityDefinition::VISIBILITY_ALL
-                ]
+                    'salesChannelId' => $this->getDefaultId('sales_channel'),
+                    'visibility'     => ProductVisibilityDefinition::VISIBILITY_ALL,
+                ],
             ];
         }
 
@@ -101,7 +100,8 @@ class ProductSeeder
     {
         /** @var EntityRepository $repository */
         $productRepository = $this->container->get($repoName . '.repository');
-        return $productRepository->search((new Criteria()), $this->context)->first()->getId();
+
+        return $productRepository->search(new Criteria(), $this->context)->first()->getId();
     }
 
     private function replaceLanguageCodes(array $productJson): array
@@ -114,15 +114,15 @@ class ProductSeeder
             $newTranslations[$translation['languageCode']] = $translation;
         }
         $productJson['translations'] = $newTranslations;
+
         return $productJson;
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     private function replaceCurrencyCodes(array $productJson): array
     {
-
         if (!isset($productJson['price'])) {
             return $productJson;
         }
@@ -150,7 +150,7 @@ class ProductSeeder
      */
     private function getCurrentCurrencyId($currencyCode): string
     {
-        /** @var string|null $currencyId */
+        /** @var null|string $currencyId */
         $currencyId = $this->connection->fetchOne(
             <<<SQL
                 SELECT HEX(`currency`.`id`) 
@@ -159,12 +159,12 @@ class ProductSeeder
                 LIMIT 1
             SQL,
             [
-                'currencyCode' => $currencyCode
+                'currencyCode' => $currencyCode,
             ]
         );
 
         if (!$currencyId) {
-            throw new Exception("Currency with code $currencyCode not found");
+            throw new \Exception("Currency with code $currencyCode not found");
         }
 
         return strtolower($currencyId);
@@ -181,6 +181,7 @@ class ProductSeeder
 
         /** @var EntityRepository $repository */
         $salesChannelRepository = $this->container->get('sales_channel.repository');
+
         return $salesChannelRepository->search($criteria, $this->context)->first();
     }
 
@@ -193,12 +194,12 @@ class ProductSeeder
 
             /** @var EntityRepository $repository */
             $productVisibilityRepository = $this->container->get('product_visibility.repository');
+
             if ($productVisibilityRepository->search($criteria, $this->context)->first()) {
                 return true;
             }
         }
+
         return false;
     }
-
-
 }

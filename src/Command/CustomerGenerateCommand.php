@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace B2bDemodata\Command;
 
 use Faker\Factory;
@@ -33,19 +35,18 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 class CustomerGenerateCommand extends Command
 {
     public function __construct(
-        private readonly AbstractRegisterRoute              $registerRoute,
+        private readonly AbstractRegisterRoute $registerRoute,
         private readonly AbstractSalesChannelContextFactory $salesChannelContextFactory,
-        private readonly EntityRepository                   $customerRepository,
-        private readonly EntityRepository                   $employeeRepository,
-        private readonly EntityRepository                   $employeeCustomerRepository,
-        private readonly EntityRepository                   $salesRepresentativeCustomerRepository,
-        private readonly EntityRepository                   $salesChannelDomainRepository,
-        private readonly EntityRepository                   $countryRepository,
-        private readonly EntityRepository                   $salutationRepository,
+        private readonly EntityRepository $customerRepository,
+        private readonly EntityRepository $employeeRepository,
+        private readonly EntityRepository $employeeCustomerRepository,
+        private readonly EntityRepository $salesRepresentativeCustomerRepository,
+        private readonly EntityRepository $salesChannelDomainRepository,
+        private readonly EntityRepository $countryRepository,
+        private readonly EntityRepository $salutationRepository,
     ) {
         parent::__construct();
     }
-
 
     protected function configure(): void
     {
@@ -54,31 +55,31 @@ class CustomerGenerateCommand extends Command
     }
 
     protected function execute(
-        InputInterface  $input,
-        OutputInterface $output
+        InputInterface $input,
+        OutputInterface $output,
     ): int {
         $io = new SymfonyStyle($input, $output);
 
         $defaultContext = Context::createDefaultContext();
-        $domains = $this->salesChannelDomainRepository->search(new Criteria(), $defaultContext)->getEntities();
-        $salesReps = $this->customerRepository->search(
+        $domains        = $this->salesChannelDomainRepository->search(new Criteria(), $defaultContext)->getEntities();
+        $salesReps      = $this->customerRepository->search(
             (new Criteria())
                 ->addFilter(
                     new EqualsFilter('customFields.b2b_sales_representative', true)
                 ),
             $defaultContext
         )->getEntities();
-        $countries = $this->countryRepository->searchIds(new Criteria(), $defaultContext)->getIds();
+        $countries   = $this->countryRepository->searchIds(new Criteria(), $defaultContext)->getIds();
         $salutations = $this->salutationRepository->searchIds(new Criteria(), $defaultContext)->getIds();
 
-        $storefrontUrl = $this->getStorefrontUrl($io, $domains);
+        $storefrontUrl  = $this->getStorefrontUrl($io, $domains);
         $salesChannelId = $this->getSalesChannelId($storefrontUrl, $domains);
-        $salesRep = $this->getSalesRep($io, $salesReps);
-        $salesRepId = $this->getSalesRepId($salesRep, $salesReps);
-        $context = $this->salesChannelContextFactory->create(Uuid::randomHex(), $salesChannelId);
+        $salesRep       = $this->getSalesRep($io, $salesReps);
+        $salesRepId     = $this->getSalesRepId($salesRep, $salesReps);
+        $context        = $this->salesChannelContextFactory->create(Uuid::randomHex(), $salesChannelId);
 
         $io->writeln('Creating customers');
-        $progress = $io->createProgressBar($input->getOption('customer-amount'));
+        $progress    = $io->createProgressBar($input->getOption('customer-amount'));
         $customerIds = $this->createCustomers(
             $input->getOption('customer-amount'),
             $storefrontUrl,
@@ -100,7 +101,7 @@ class CustomerGenerateCommand extends Command
 
         $io->writeln('Creating employees');
 
-        $progress = $io->createProgressBar($input->getOption('employee-amount'));
+        $progress  = $io->createProgressBar($input->getOption('employee-amount'));
         $employees = $this->createEmployees(
             $input->getOption('employee-amount'),
             $salutations,
@@ -121,17 +122,17 @@ class CustomerGenerateCommand extends Command
     }
 
     private function createCustomers(
-        int                 $limit,
-        string              $storefrontUrl,
-        array               $countries,
-        ProgressBar         $progress,
-        SalesChannelContext $context
+        int $limit,
+        string $storefrontUrl,
+        array $countries,
+        ProgressBar $progress,
+        SalesChannelContext $context,
     ): array {
         $customerIds = [];
 
         $progress->start();
 
-        for ($i = 0; $i <= $limit; $i++) {
+        for ($i = 0; $i <= $limit; ++$i) {
             try {
                 $customerResponse = $this->registerRoute->register(
                     $this->createCustomerDataBag(
@@ -157,16 +158,16 @@ class CustomerGenerateCommand extends Command
     }
 
     private function createEmployees(
-        int                 $limit,
-        array               $salutations,
-        ProgressBar         $progress,
-        SalesChannelContext $context
+        int $limit,
+        array $salutations,
+        ProgressBar $progress,
+        SalesChannelContext $context,
     ): array {
         $progress->start();
 
         $employees = [];
 
-        for ($i = 0; $i <= $limit; $i++) {
+        for ($i = 0; $i <= $limit; ++$i) {
             $employees[] = $this->prepareEmployee($salutations[random_int(0, count($salutations) - 1)]);
             $progress->advance();
         }
@@ -178,9 +179,9 @@ class CustomerGenerateCommand extends Command
     }
 
     private function mapEmployeesToCustomers(
-        array               $customerIds,
-        array               $employees,
-        SalesChannelContext $context
+        array $customerIds,
+        array $employees,
+        SalesChannelContext $context,
     ): void {
         $mapping = [];
 
@@ -189,14 +190,14 @@ class CustomerGenerateCommand extends Command
                 array_map(
                     function (string $employeeId) use ($customerId) {
                         return [
-                            'id' => Uuid::randomHex(),
-                            'customerId' => $customerId,
-                            'employeeId' => $employeeId,
-                            'admin' => true,
-                            'active' => true,
+                            'id'           => Uuid::randomHex(),
+                            'customerId'   => $customerId,
+                            'employeeId'   => $employeeId,
+                            'admin'        => true,
+                            'active'       => true,
                             'customFields' => [
-                                'b2b_show_bonus' => false
-                            ]
+                                'b2b_show_bonus' => false,
+                            ],
                         ];
                     },
                     array_column($employees, 'id'),
@@ -209,8 +210,8 @@ class CustomerGenerateCommand extends Command
     }
 
     private function getStorefrontUrl(
-        SymfonyStyle                 $io,
-        SalesChannelDomainCollection $domains
+        SymfonyStyle $io,
+        SalesChannelDomainCollection $domains,
     ): string {
         return $io->choice(
             'Select storefront URL',
@@ -221,8 +222,8 @@ class CustomerGenerateCommand extends Command
     }
 
     private function getSalesRep(
-        SymfonyStyle       $io,
-        CustomerCollection $salesReps
+        SymfonyStyle $io,
+        CustomerCollection $salesReps,
     ): string {
         return $io->choice(
             'Select sales rep',
@@ -233,8 +234,8 @@ class CustomerGenerateCommand extends Command
     }
 
     private function getSalesRepId(
-        string             $email,
-        CustomerCollection $salesReps
+        string $email,
+        CustomerCollection $salesReps,
     ): string {
         return $salesReps->filter(function (CustomerEntity $salesRep) use ($email) {
             return $salesRep->getEmail() === $email;
@@ -242,8 +243,8 @@ class CustomerGenerateCommand extends Command
     }
 
     private function getSalesChannelId(
-        string                       $url,
-        SalesChannelDomainCollection $domains
+        string $url,
+        SalesChannelDomainCollection $domains,
     ): string {
         return $domains->filter(function (SalesChannelDomainEntity $domain) use ($url) {
             return $domain->getUrl() === $url;
@@ -251,9 +252,9 @@ class CustomerGenerateCommand extends Command
     }
 
     private function addSalesRepCustomer(
-        string  $salesRepId,
-        array   $customerIds,
-        Context $context
+        string $salesRepId,
+        array $customerIds,
+        Context $context,
     ): void {
         $this->salesRepresentativeCustomerRepository->create(
             array_map(
@@ -272,32 +273,33 @@ class CustomerGenerateCommand extends Command
     private function prepareEmployee(string $salutationId): array
     {
         $faker = $this->getFaker();
+
         return [
-            'id' => Uuid::randomHex(),
-            'firstName' => $faker->firstName(),
-            'lastName' => $faker->lastName(),
-            'email' => $faker->email(),
-            'password' => 'b2bsellers',
+            'id'           => Uuid::randomHex(),
+            'firstName'    => $faker->firstName(),
+            'lastName'     => $faker->lastName(),
+            'email'        => $faker->email(),
+            'password'     => 'b2bsellers',
             'salutationId' => $salutationId,
             'customFields' => [
-                'b2b_url_login_authentication_hash' => Uuid::randomHex()
-            ]
+                'b2b_url_login_authentication_hash' => Uuid::randomHex(),
+            ],
         ];
     }
 
     private function updateCustomerCustomFields(
-        array   $ids,
-        Context $context
+        array $ids,
+        Context $context,
     ): void {
         $this->customerRepository->update(
             array_map(
                 function (string $id) {
                     return [
-                        'id' => $id,
+                        'id'           => $id,
                         'customFields' => [
-                            'b2b_platform_access' => true,
+                            'b2b_platform_access'      => true,
                             'b2b_sales_representative' => false,
-                            'b2b_supervisor' => false
+                            'b2b_supervisor'           => false,
                         ],
                     ];
                 },
@@ -309,14 +311,14 @@ class CustomerGenerateCommand extends Command
 
     private function createCustomerDataBag(
         string $storefrontUrl,
-        string $countryId
+        string $countryId,
     ): RequestDataBag {
         $faker = $this->getFaker();
-        $data = new RequestDataBag();
+        $data  = new RequestDataBag();
 
         $firstName = $faker->firstName();
-        $lastName = $faker->lastName();
-        $company = $faker->company();
+        $lastName  = $faker->lastName();
+        $company   = $faker->company();
 
         $data->set('guest', false);
         $data->set('company', $company);
@@ -344,18 +346,18 @@ class CustomerGenerateCommand extends Command
         string $countryId,
         string $firstName,
         string $lastName,
-        string $company
+        string $company,
     ): RequestDataBag {
         $faker = $this->getFaker();
 
         return new RequestDataBag([
             'countryId' => $countryId,
-            'street' => $faker->streetAddress(),
-            'zipcode' => $faker->postcode(),
-            'city' => $faker->city(),
+            'street'    => $faker->streetAddress(),
+            'zipcode'   => $faker->postcode(),
+            'city'      => $faker->city(),
             'firstName' => $firstName,
-            'lastName' => $lastName,
-            'company' => $company,
+            'lastName'  => $lastName,
+            'company'   => $company,
         ]);
     }
 

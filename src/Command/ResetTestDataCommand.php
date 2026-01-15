@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace B2bDemodata\Command;
 
 use B2bDemodata\Components\Deseeder\Deseeder;
-use Symfony\Component\DependencyInjection\ContainerInterface;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -12,6 +13,7 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 #[AsCommand(
     name: 'b2b:test-data:reset',
@@ -28,7 +30,6 @@ class ResetTestDataCommand extends Command
         parent::__construct();
     }
 
-
     protected function configure(): void
     {
         $this->addOption('force', 'f', InputOption::VALUE_NONE, 'Force delete of all test data');
@@ -37,7 +38,7 @@ class ResetTestDataCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $ioHelper = new SymfonyStyle($input, $output);
-        $isForce = $input->getOption('force') ?? false;
+        $isForce  = $input->getOption('force') ?? false;
 
         if (!$isForce) {
             $question = $ioHelper->askQuestion(new ConfirmationQuestion('Delete all B2Bsellers test data! Do you want to proceed?', false));
@@ -48,6 +49,7 @@ class ResetTestDataCommand extends Command
         }
 
         $ioHelper->section('Start deleting all test data');
+
         try {
             (new Deseeder(
                 $this->customerRepository,
