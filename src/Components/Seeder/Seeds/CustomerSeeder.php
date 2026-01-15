@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace B2bDemodata\Components\Seeder\Seeds;
 
 use B2bSellersCore\Components\Employee\EmployeeEntity;
-use DirectoryIterator;
 use Shopware\Core\Checkout\Customer\CustomerEntity;
 use Shopware\Core\Checkout\Customer\SalesChannel\RegisterRoute;
 use Shopware\Core\Framework\Context;
@@ -30,11 +31,11 @@ class CustomerSeeder
     private RegisterRoute $registerRoute;
 
     public function __construct(
-        private readonly ContainerInterface                 $container,
-        private readonly AbstractSalesChannelContextFactory $contextFactory
+        private readonly ContainerInterface $container,
+        private readonly AbstractSalesChannelContextFactory $contextFactory,
     ) {
-        $this->context = Context::createDefaultContext();
-        $this->registerRoute = $container->get(RegisterRoute::class);
+        $this->context             = Context::createDefaultContext();
+        $this->registerRoute       = $container->get(RegisterRoute::class);
         $this->salesChannelContext = $this->contextFactory->create(Uuid::randomHex(), $this->getSalesChannelDomain()->getSalesChannelId());
     }
 
@@ -46,7 +47,7 @@ class CustomerSeeder
         $output->writeln('Creating customers and employees...');
 
         $resourceDir = $this->container->get('kernel')->locateResource('@B2bDemodata/Resources');
-        $dir = new DirectoryIterator($resourceDir . '/testdata/Customers/');
+        $dir         = new \DirectoryIterator($resourceDir . '/testdata/Customers/');
 
         foreach ($dir as $fileInfo) {
             if (!$fileInfo->isDot()) {
@@ -60,7 +61,20 @@ class CustomerSeeder
                 }
             }
         }
+    }
 
+    protected function getAddress($addressJson): RequestDataBag
+    {
+        return new RequestDataBag([
+            'countryId'    => $this->getCountry($addressJson['country'])->getId(),
+            'street'       => $addressJson['street'],
+            'zipcode'      => $addressJson['zipcode'],
+            'city'         => $addressJson['city'],
+            'firstName'    => $addressJson['firstName'] ?? '',
+            'lastName'     => $addressJson['lastName'] ?? '',
+            'company'      => $addressJson['company'] ?? '',
+            'salutationId' => $this->getSalutation($addressJson['salutation']) ? $this->getSalutation($addressJson['salutation'])->getId() : null,
+        ]);
     }
 
     /**
@@ -79,8 +93,9 @@ class CustomerSeeder
             $output->write(sprintf('Creating customer: %s', $customerJson['email']));
 
             $customerResponse = $this->registerRoute->register($dataBag, $this->salesChannelContext);
-            $customer = $customerResponse->getCustomer();
+            $customer         = $customerResponse->getCustomer();
         }
+
         if (!$customer) {
             throw new \Exception('Customer not created');
         }
@@ -113,10 +128,12 @@ class CustomerSeeder
     {
         /** @var EntityRepository $repository */
         $repository = $this->container->get('country.repository');
-        $country = $repository->search((new Criteria())->addFilter(new EqualsFilter('iso', $iso)), $this->context)->first();
+        $country    = $repository->search((new Criteria())->addFilter(new EqualsFilter('iso', $iso)), $this->context)->first();
+
         if (!$country) {
             throw new \Exception('no country with iso ' . $iso . ' found');
         }
+
         return $country;
     }
 
@@ -144,15 +161,14 @@ class CustomerSeeder
         return $repository->search((new Criteria())->addFilter(new EqualsFilter('customerNumber', $customerNumber)), $this->context)->first();
     }
 
-    private function createEmployee($employee)
+    private function createEmployee($employee): void
     {
         /** @var EntityRepository $repository */
         $employeeRepository = $this->container->get('b2bsellers_employee.repository');
         $employeeRepository->upsert([$employee], $this->context);
-
     }
 
-    private function createEmployee2Customer($employee2Customer)
+    private function createEmployee2Customer($employee2Customer): void
     {
         if (empty($employee2Customer['customerId']) || empty($employee2Customer['employeeId'])) {
             dd($employee2Customer);
@@ -160,22 +176,20 @@ class CustomerSeeder
         /** @var EntityRepository $repository */
         $employee2CustomerRepository = $this->container->get('b2bsellers_employee_customer.repository');
         $employee2CustomerRepository->upsert([$employee2Customer], $this->context);
-
     }
 
-    private function updateCustomerCustomFields($id, $customFields)
+    private function updateCustomerCustomFields($id, $customFields): void
     {
         /** @var EntityRepository $repository */
         $repository = $this->container->get('customer.repository');
 
         $repository->update([[
-            'id' => $id,
-            'customFields' => $customFields
+            'id'           => $id,
+            'customFields' => $customFields,
         ]], $this->context);
-
     }
 
-    private function addSalesRepCustomer($salesRepId, $customerId)
+    private function addSalesRepCustomer($salesRepId, $customerId): void
     {
         /** @var EntityRepository $repository */
         $repository = $this->container->get('b2bsellers_sales_representative_customer.repository');
@@ -192,7 +206,7 @@ class CustomerSeeder
 
         $data = [
             'salesRepId' => $salesRepId,
-            'customerId' => $customerId
+            'customerId' => $customerId,
         ];
 
         $repository->create([$data], $this->context);
@@ -209,10 +223,10 @@ class CustomerSeeder
     {
         $data = new RequestDataBag();
 
-        $data->set('guest', (bool)$customerJson['guest']);
-        $data->set('title', array_key_exists('title', $customerJson) ? (string)$customerJson['title'] : '');
-        $data->set('company', array_key_exists('company', $customerJson) ? (string)$customerJson['company'] : '');
-        $data->set('customerNumber', array_key_exists('customerNumber', $customerJson) ? (string)$customerJson['customerNumber'] : '');
+        $data->set('guest', (bool) $customerJson['guest']);
+        $data->set('title', array_key_exists('title', $customerJson) ? (string) $customerJson['title'] : '');
+        $data->set('company', array_key_exists('company', $customerJson) ? (string) $customerJson['company'] : '');
+        $data->set('customerNumber', array_key_exists('customerNumber', $customerJson) ? (string) $customerJson['customerNumber'] : '');
         $data->set('salutationId', $this->getSalutation($customerJson['salutation']) ? $this->getSalutation($customerJson['salutation'])->getId() : null);
         $data->set('firstName', $customerJson['firstName'] ?? null);
         $data->set('lastName', $customerJson['lastName'] ?? null);
@@ -233,20 +247,6 @@ class CustomerSeeder
         return $data;
     }
 
-    protected function getAddress($addressJson): RequestDataBag
-    {
-        return new RequestDataBag([
-            'countryId' => $this->getCountry($addressJson['country'])->getId(),
-            'street' => $addressJson['street'],
-            'zipcode' => $addressJson['zipcode'],
-            'city' => $addressJson['city'],
-            'firstName' => $addressJson['firstName'] ?? '',
-            'lastName' => $addressJson['lastName'] ?? '',
-            'company' => $addressJson['company'] ?? '',
-            'salutationId' => $this->getSalutation($addressJson['salutation']) ? $this->getSalutation($addressJson['salutation'])->getId() : null,
-        ]);
-    }
-
     /**
      * @throws \Exception
      */
@@ -256,7 +256,6 @@ class CustomerSeeder
             return;
         }
         foreach ($customerJson['customerEmployees'] as $customerEmployee) {
-
             $employee = $this->prepareEmployee($customerEmployee);
             $this->createEmployee($employee);
 
@@ -269,13 +268,12 @@ class CustomerSeeder
         }
     }
 
-    private function createSalesRepRelations(CustomerEntity $customer, $customerJson)
+    private function createSalesRepRelations(CustomerEntity $customer, $customerJson): void
     {
-
         if (isset($customerJson['isSalesRepOf']) && is_array($customerJson['isSalesRepOf'])) {
-
             foreach ($customerJson['isSalesRepOf'] as $salesRepRelation) {
                 $relatedCustomer = $this->getCustomerByCustomerNumber($salesRepRelation['customerNumber']);
+
                 if ($relatedCustomer) {
                     $this->addSalesRepCustomer($customer->getId(), $relatedCustomer->getId());
                 }
@@ -291,13 +289,15 @@ class CustomerSeeder
         $employee = $this->getEmployeeByEmail($customerEmployee['email']);
 
         $id = Uuid::randomHex();
+
         if ($employee) {
             /** @var EntityRepository $repository */
             $employee2CustomerRepository = $this->container->get('b2bsellers_employee_customer.repository');
-            $result = $employee2CustomerRepository->search((new Criteria())->addFilter(
+            $result                      = $employee2CustomerRepository->search((new Criteria())->addFilter(
                 new EqualsFilter('customerId', $customerId),
                 new EqualsFilter('employeeId', $employee->getId())
             ), $this->context)->first();
+
             if ($result) {
                 $id = $result->getId();
             }
@@ -305,19 +305,17 @@ class CustomerSeeder
             throw new \Exception('Employee with email ' . $customerEmployee['email'] . ' not found! Cant create employee2customer relation!');
         }
 
-        $customerEmployee = [
-            'id' => $id,
-            'customerId' => $customerId,
-            'employeeId' => $employee->getId(),
-            'admin' => $customerEmployee['admin'] ?? false,
-            'active' => $customerEmployee['active'] ?? true,
-            'roleId' => $this->getRoleId($customerEmployee['role'] ?? null) ?? null,
+        return [
+            'id'           => $id,
+            'customerId'   => $customerId,
+            'employeeId'   => $employee->getId(),
+            'admin'        => $customerEmployee['admin'] ?? false,
+            'active'       => $customerEmployee['active'] ?? true,
+            'roleId'       => $this->getRoleId($customerEmployee['role'] ?? null) ?? null,
             'customFields' => [
-                'b2b_show_bonus' => $customerEmployee['showBonus'] ?? false
-            ]
+                'b2b_show_bonus' => $customerEmployee['showBonus'] ?? false,
+            ],
         ];
-
-        return $customerEmployee;
     }
 
     /**
@@ -334,41 +332,41 @@ class CustomerSeeder
         $criteria = new Criteria();
         $criteria->addAssociation('translated');
         $criteria->addFilter(new AndFilter([
-            new EqualsFilter('customerId', NULL),
-            new EqualsFilter('name', $name)
+            new EqualsFilter('customerId', null),
+            new EqualsFilter('name', $name),
         ]));
 
         $result = $repository->search($criteria, $this->context)->first();
+
         if (!$result) {
             throw new \Exception('Role with name ' . $name . ' not found!');
         }
-        return $result->getId();
 
+        return $result->getId();
     }
 
     private function prepareEmployee(array $customerEmployee): array
     {
         $employee = $this->getEmployeeByEmail($customerEmployee['email']);
 
-        $employee = [
-            'id' => $employee ? $employee->getId() : Uuid::randomHex(),
-            'firstName' => $customerEmployee['firstName'],
-            'lastName' => $customerEmployee['lastName'],
-            'email' => $customerEmployee['email'],
-            'password' => $customerEmployee['password'],
-            'languageId' => $this->getLanguage()->getId() ?? null,
-            'title' => $customerEmployee['title'] ?? null,
-            'department' => $customerEmployee['department'] ?? null,
-            'phoneNumber' => $customerEmployee['phoneNumber'] ?? null,
-            'loginTarget' => $customerEmployee['loginTarget'] ?? null,
-            'trackActivity' => $customerEmployee['trackActivity'] ?? true,
-            'salutationId' => ($this->getSalutation($customerEmployee['salutation']) ? $this->getSalutation($customerEmployee['salutation'])->getId() : null),
+        return [
+            'id'                  => $employee ? $employee->getId() : Uuid::randomHex(),
+            'firstName'           => $customerEmployee['firstName'],
+            'lastName'            => $customerEmployee['lastName'],
+            'email'               => $customerEmployee['email'],
+            'password'            => $customerEmployee['password'],
+            'languageId'          => $this->getLanguage()->getId() ?? null,
+            'title'               => $customerEmployee['title'] ?? null,
+            'department'          => $customerEmployee['department'] ?? null,
+            'phoneNumber'         => $customerEmployee['phoneNumber'] ?? null,
+            'loginTarget'         => $customerEmployee['loginTarget'] ?? null,
+            'trackActivity'       => $customerEmployee['trackActivity'] ?? true,
+            'salutationId'        => ($this->getSalutation($customerEmployee['salutation']) ? $this->getSalutation($customerEmployee['salutation'])->getId() : null),
             'boundSalesChannelId' => $customerEmployee['boundSalesChannelId'] ?? null,
-            'customFields' => [
-                'b2b_url_login_authentication_hash' => Uuid::randomHex()
-            ]
+            'customFields'        => [
+                'b2b_url_login_authentication_hash' => Uuid::randomHex(),
+            ],
         ];
-        return $employee;
     }
 
     private function getEmployeeByEmail(string $email): ?EmployeeEntity
@@ -389,6 +387,4 @@ class CustomerSeeder
 
         return $this->getCustomerByEmail($customer->getEmail());
     }
-
-
 }

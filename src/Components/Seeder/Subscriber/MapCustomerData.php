@@ -10,7 +10,6 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 class MapCustomerData implements EventSubscriberInterface
 {
-
     public static function getSubscribedEvents()
     {
         return [
@@ -19,9 +18,9 @@ class MapCustomerData implements EventSubscriberInterface
     }
 
     public function mapCustomerData(
-        DataMappingEvent $event
+        DataMappingEvent $event,
     ): void {
-        $dataBag = $event->getInput();
+        $dataBag  = $event->getInput();
         $customer = $event->getOutput();
 
         if (empty($dataBag->get('customerNumber'))) {
@@ -32,5 +31,4 @@ class MapCustomerData implements EventSubscriberInterface
 
         $event->setOutput($customer);
     }
-
 }

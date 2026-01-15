@@ -1,11 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace B2bDemodata\Components\Seeder\Seeds;
 
 use B2bDemodata\Components\Seeder\Helper\SeederConstants;
-use DirectoryIterator;
 use Doctrine\DBAL\Connection;
-use Exception;
 use Shopware\Core\Checkout\Customer\CustomerEntity;
 use Shopware\Core\Framework\Context;
 use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
@@ -21,7 +21,7 @@ class EventSeeder
 
     public function __construct(
         private readonly ContainerInterface $container,
-        private readonly Connection         $connection
+        private readonly Connection $connection,
     ) {
         $this->context = Context::createDefaultContext();
     }
@@ -37,12 +37,12 @@ class EventSeeder
     }
 
     /**
-     * @throws Exception
+     * @throws \Exception
      */
     private function createProducts(OutputInterface $output): void
     {
         $resourceDir = $this->container->get('kernel')->locateResource('@B2bDemodata/Resources');
-        $dir = new DirectoryIterator($resourceDir . '/testdata/Events/');
+        $dir         = new \DirectoryIterator($resourceDir . '/testdata/Events/');
 
         foreach ($dir as $fileInfo) {
             if (!$fileInfo->isDot()) {
@@ -73,7 +73,7 @@ class EventSeeder
         );
 
         foreach ($eventJson['eventParticipants'] as $key => $eventParticipant) {
-            $eventJson['eventParticipants'][$key]['stateId']        = $this->getEventStateId(
+            $eventJson['eventParticipants'][$key]['stateId'] = $this->getEventStateId(
                 $eventParticipant['stateName'],
                 'b2bsellers_event_participant.state'
             );
@@ -85,7 +85,7 @@ class EventSeeder
         }
 
         $eventRepository->upsert([
-            $eventJson
+            $eventJson,
         ],
             $this->context
         );
@@ -97,10 +97,12 @@ class EventSeeder
             if ($key == 'customerId' || $key == 'salesRepresentativeId') {
                 $eventJson[$key] = $this->getDefaultCustomer();
             }
+
             if (is_array($value)) {
                 $eventJson[$key] = $this->replaceKnownIds($eventJson[$key]);
             }
         }
+
         return $eventJson;
     }
 
@@ -115,6 +117,7 @@ class EventSeeder
 
             $this->defaultCustomerId = $customer->getId();
         }
+
         return $this->defaultCustomerId;
     }
 
@@ -122,8 +125,9 @@ class EventSeeder
     {
         /** @var EntityRepository $customerRepository */
         $customerRepository = $this->container->get('customer.repository');
-        $criteria = new Criteria();
+        $criteria           = new Criteria();
         $criteria->addFilter(new EqualsFilter('email', $email));
+
         return $customerRepository->search($criteria, Context::createDefaultContext())->getEntities()->first();
     }
 
@@ -136,7 +140,7 @@ class EventSeeder
                 WHERE `name` = :name
             SQL,
             [
-                'name' => $eventFormatName
+                'name' => $eventFormatName,
             ]
         );
 
@@ -156,7 +160,7 @@ class EventSeeder
                 WHERE `name` = :name
             SQL,
             [
-                'name' => $eventLocationName
+                'name' => $eventLocationName,
             ]
         );
 
@@ -176,7 +180,7 @@ class EventSeeder
                 WHERE `name` = :name
             SQL,
             [
-                'name' => $eventLevelName
+                'name' => $eventLevelName,
             ]
         );
 
@@ -196,10 +200,9 @@ class EventSeeder
                 WHERE `technical_name` = :name
             SQL,
             [
-                'name' => $stateMachineName
+                'name' => $stateMachineName,
             ]
         );
-
 
         if (!$stateMachineId) {
             throw new \Exception('unable to find state maschine id for Event creation ' . $stateMachineName . ' not found');
@@ -214,7 +217,7 @@ class EventSeeder
             SQL,
             [
                 'stateMachineId' => $stateMachineId,
-                'name' => $stateName
+                'name'           => $stateName,
             ]
         );
 
@@ -223,6 +226,5 @@ class EventSeeder
         }
 
         throw new \Exception('unable to find event state id for Event creation ' . $stateName . ' not found');
-
     }
 }

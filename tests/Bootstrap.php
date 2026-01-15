@@ -6,7 +6,7 @@ use Shopware\Core\TestBootstrapper;
 
 if (is_readable(__DIR__ . '/../vendor/shopware/platform/src/Core/TestBootstrapper.php')) {
     require __DIR__ . '/../vendor/shopware/platform/src/Core/TestBootstrapper.php';
-} else if (is_readable(__DIR__ . '/../vendor/shopware/core/TestBootstrapper.php')) {
+} elseif (is_readable(__DIR__ . '/../vendor/shopware/core/TestBootstrapper.php')) {
     require __DIR__ . '/../vendor/shopware/core/TestBootstrapper.php';
 }
 
