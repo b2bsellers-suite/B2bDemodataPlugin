@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace B2bDemodata\Command;
 
 use B2bDemodata\Components\Seeder\Seeder;
@@ -12,13 +14,13 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 #[AsCommand(
-	name: 'b2b:test-data:create',
+    name: 'b2b:test-data:create',
 )]
 class TestDataSeederCommand extends Command
 {
     public function __construct(
         private readonly SystemConfigService $configService,
-        private readonly Seeder              $seeder
+        private readonly Seeder $seeder,
     ) {
         parent::__construct();
     }
@@ -35,13 +37,14 @@ class TestDataSeederCommand extends Command
 
         if ($delivery) {
             $question = $ioHelper->askQuestion(new ConfirmationQuestion('Mail sender is active! Do you want to proceed?', false));
-            if (!$question) {
 
+            if (!$question) {
                 return 0;
             }
         }
 
         $ioHelper->section('Creating test data');
+
         try {
             $this->seeder->run($output);
             $ioHelper->success('Completed!!');

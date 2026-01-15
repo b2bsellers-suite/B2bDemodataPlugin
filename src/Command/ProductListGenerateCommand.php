@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace B2bDemodata\Command;
 
 use Faker\Factory;
@@ -23,7 +25,6 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 )]
 class ProductListGenerateCommand extends Command
 {
-
     public function __construct(
         private readonly ?EntityRepository $productListRepository,
         private readonly ?EntityRepository $productListTypeRepository,
@@ -51,15 +52,15 @@ class ProductListGenerateCommand extends Command
 
         $context = Context::createDefaultContext();
 
-        $lists = [];
+        $lists             = [];
         $defaultListTypeId = $this->getDefaultListTypeId($context);
-        $productIds = $this->productRepository->searchIds(new Criteria(), $context);
+        $productIds        = $this->productRepository->searchIds(new Criteria(), $context);
 
         $progress = $io->createProgressBar($input->getOption('list-amount'));
         $progress->start();
         $progress->setMessage('Generating data');
 
-        for ($i = 0; $i <= $input->getOption('list-amount'); $i++) {
+        for ($i = 0; $i <= $input->getOption('list-amount'); ++$i) {
             $list = $this->getBaseData(
                 $input->getArgument('customerId'),
                 $input->getArgument('salesChannelId'),
@@ -86,10 +87,10 @@ class ProductListGenerateCommand extends Command
     {
         $items = [];
 
-        for ($i = 0; $i < count($productIds) * 5; $i++) {
+        for ($i = 0; $i < count($productIds) * 5; ++$i) {
             $items = array_merge($items, array_map(function (string $productId) {
                 return [
-                    'id' => Uuid::randomHex(),
+                    'id'        => Uuid::randomHex(),
                     'productId' => $productId,
                 ];
             }, $productIds));
@@ -109,11 +110,11 @@ class ProductListGenerateCommand extends Command
     private function getBaseData(string $customerId, string $salesChannelId, string $listTypeId, array $items): array
     {
         return [
-            'id' => Uuid::randomHex(),
-            'customerId' => $customerId,
+            'id'             => Uuid::randomHex(),
+            'customerId'     => $customerId,
             'salesChannelId' => $salesChannelId,
-            'listTypeId' => $listTypeId,
-            'items' => $items,
+            'listTypeId'     => $listTypeId,
+            'items'          => $items,
         ];
     }
 
@@ -125,5 +126,4 @@ class ProductListGenerateCommand extends Command
 
         return $faker;
     }
-
 }

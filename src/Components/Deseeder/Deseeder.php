@@ -1,11 +1,13 @@
 <?php
 
-namespace B2bDemodata\Components\Deseeder;
+declare(strict_types=1);
 
+namespace B2bDemodata\Components\Deseeder;
 
 use B2bDemodata\Components\Seeder\Helper\SeederConstants;
 use B2bSellersCore\Components\B2bConfiguration\Traits\B2bLicenceTrait;
 use B2bSellersCore\Components\Employee\EmployeeEntity;
+use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 use Shopware\Core\Checkout\Customer\CustomerEntity;
 use Shopware\Core\Content\Product\ProductEntity;
@@ -15,7 +17,6 @@ use Shopware\Core\Framework\DataAbstractionLayer\EntityRepository;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Criteria;
 use Shopware\Core\Framework\DataAbstractionLayer\Search\Filter\EqualsFilter;
 use Shopware\Core\Kernel;
-use Doctrine\DBAL\Connection;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -23,21 +24,19 @@ class Deseeder
 {
     use B2bLicenceTrait;
 
-    const TESTDATA_DIRECTORY = '/../../Resources/testdata';
+    public const TESTDATA_DIRECTORY = '/../../Resources/testdata';
     private Connection $connection;
-
 
     public function __construct(
         private EntityRepository $customerRepository,
         private EntityRepository $employeeRepository,
         private EntityRepository $employeeCustomerRepository,
         private EntityRepository $productRepository,
-        private SymfonyStyle     $ioHelper,
-        private ContainerInterface $container
+        private SymfonyStyle $ioHelper,
+        private ContainerInterface $container,
     ) {
         $this->connection = Kernel::getConnection();
     }
-
 
     public function run(): bool
     {
@@ -61,18 +60,20 @@ class Deseeder
             $this->deleteCategory();
             $this->deleteProducts();
             $this->deleteOrders();
+
             if ($this->isB2bAddonEnabled($this->container, 'B2bEventManager')) {
                 $this->deleteEvents();
             }
+
             return true;
         } catch (\Exception $e) {
             $this->ioHelper->error($e->getMessage());
+
             return false;
         }
     }
 
     /**
-     * @return void
      * @throws Exception
      */
     private function deleteCustomersAndEmployees(): void
@@ -81,13 +82,12 @@ class Deseeder
         $files = scandir(__DIR__ . self::TESTDATA_DIRECTORY . '/Customers');
         $files = array_diff($files, ['.', '..']);
         foreach ($files as $file) {
-
             $customer = json_decode(file_get_contents(__DIR__ . self::TESTDATA_DIRECTORY . '/Customers/' . $file), true);
             $customer = $this->getCustomerByEmail($customer['email']);
 
             if ($customer) {
                 $customerId = $customer->getId();
-                $employees = $this->getEmployees($customerId);
+                $employees  = $this->getEmployees($customerId);
                 foreach ($employees as $employee) {
                     $employeeId = $employee->getEmployeeId();
 
@@ -99,6 +99,7 @@ class Deseeder
                     }
                 }
                 $this->connection->executeStatement("DELETE FROM `b2bsellers_sales_representative_customer` WHERE `customer_id` = UNHEX('" . $customerId . "')");
+
                 try {
                     $this->customerRepository->delete([['id' => $customerId]], Context::createDefaultContext());
                 } catch (\Exception $e) {
@@ -114,6 +115,7 @@ class Deseeder
     {
         $criteria = new Criteria();
         $criteria->addFilter(new EqualsFilter('email', $email));
+
         return $this->customerRepository->search($criteria, Context::createDefaultContext())->getEntities()->first();
     }
 
@@ -121,6 +123,7 @@ class Deseeder
     {
         $criteria = new Criteria();
         $criteria->addFilter(new EqualsFilter('email', $email));
+
         return $this->employeeRepository->search($criteria, Context::createDefaultContext())->getEntities()->first();
     }
 
@@ -128,6 +131,7 @@ class Deseeder
     {
         $criteria = new Criteria();
         $criteria->addFilter(new EqualsFilter('id', $productId));
+
         return $this->productRepository->search($criteria, Context::createDefaultContext())->getEntities()->first();
     }
 
@@ -136,6 +140,7 @@ class Deseeder
         $criteria = new Criteria();
         $criteria->addFilter(new EqualsFilter('customerId', $customerId));
         $criteria->addAssociation('employee');
+
         return $this->employeeCustomerRepository->search($criteria, Context::createDefaultContext())->getEntities() ?? new EntityCollection();
     }
 
@@ -147,6 +152,7 @@ class Deseeder
         foreach ($files as $file) {
             $product = json_decode(file_get_contents(__DIR__ . self::TESTDATA_DIRECTORY . '/Products/' . $file), true);
             $product = $this->getProductByProductId($product['id']);
+
             if ($product) {
                 $this->productRepository->delete([['id' => $product->getId()]], Context::createDefaultContext());
                 $this->connection->executeStatement("DELETE FROM `product_visibility` WHERE `product_id` = UNHEX('" . $product->getId() . "')");
@@ -161,7 +167,6 @@ class Deseeder
     {
         $this->ioHelper->info('Start deleting demo category');
         $this->connection->executeStatement("DELETE FROM `category` WHERE `id` = UNHEX('" . SeederConstants::DEMO_CATEGORY_UID . "')");
-
     }
 
     /**
@@ -173,7 +178,6 @@ class Deseeder
         $files = scandir(__DIR__ . self::TESTDATA_DIRECTORY . '/Customers');
         $files = array_diff($files, ['.', '..']);
         foreach ($files as $file) {
-
             $customer = json_decode(file_get_contents(__DIR__ . self::TESTDATA_DIRECTORY . '/Customers/' . $file), true);
             $customer = $this->getCustomerByEmail($customer['email']);
 
@@ -193,7 +197,6 @@ class Deseeder
         $files = scandir(__DIR__ . self::TESTDATA_DIRECTORY . '/Customers');
         $files = array_diff($files, ['.', '..']);
         foreach ($files as $file) {
-
             $customer = json_decode(file_get_contents(__DIR__ . self::TESTDATA_DIRECTORY . '/Customers/' . $file), true);
             $customer = $this->getCustomerByEmail($customer['email']);
 
@@ -214,7 +217,6 @@ class Deseeder
         $files = scandir(__DIR__ . self::TESTDATA_DIRECTORY . '/Customers');
         $files = array_diff($files, ['.', '..']);
         foreach ($files as $file) {
-
             $customer = json_decode(file_get_contents(__DIR__ . self::TESTDATA_DIRECTORY . '/Customers/' . $file), true);
             $customer = $this->getCustomerByEmail($customer['email']);
 
@@ -234,7 +236,6 @@ class Deseeder
         $files = scandir(__DIR__ . self::TESTDATA_DIRECTORY . '/Customers');
         $files = array_diff($files, ['.', '..']);
         foreach ($files as $file) {
-
             $customer = json_decode(file_get_contents(__DIR__ . self::TESTDATA_DIRECTORY . '/Customers/' . $file), true);
             $customer = $this->getCustomerByEmail($customer['email']);
 
@@ -254,7 +255,6 @@ class Deseeder
         $files = scandir(__DIR__ . self::TESTDATA_DIRECTORY . '/Customers');
         $files = array_diff($files, ['.', '..']);
         foreach ($files as $file) {
-
             $customer = json_decode(file_get_contents(__DIR__ . self::TESTDATA_DIRECTORY . '/Customers/' . $file), true);
             $customer = $this->getCustomerByEmail($customer['email']);
 
@@ -274,7 +274,6 @@ class Deseeder
         $files = scandir(__DIR__ . self::TESTDATA_DIRECTORY . '/Customers');
         $files = array_diff($files, ['.', '..']);
         foreach ($files as $file) {
-
             $customer = json_decode(file_get_contents(__DIR__ . self::TESTDATA_DIRECTORY . '/Customers/' . $file), true);
             $customer = $this->getCustomerByEmail($customer['email']);
 
@@ -294,7 +293,6 @@ class Deseeder
         $files = scandir(__DIR__ . self::TESTDATA_DIRECTORY . '/Customers');
         $files = array_diff($files, ['.', '..']);
         foreach ($files as $file) {
-
             $customer = json_decode(file_get_contents(__DIR__ . self::TESTDATA_DIRECTORY . '/Customers/' . $file), true);
             $customer = $this->getCustomerByEmail($customer['email']);
 
@@ -314,7 +312,6 @@ class Deseeder
         $files = scandir(__DIR__ . self::TESTDATA_DIRECTORY . '/Customers');
         $files = array_diff($files, ['.', '..']);
         foreach ($files as $file) {
-
             $customer = json_decode(file_get_contents(__DIR__ . self::TESTDATA_DIRECTORY . '/Customers/' . $file), true);
             $customer = $this->getCustomerByEmail($customer['email']);
 
@@ -331,8 +328,8 @@ class Deseeder
         $files = scandir(__DIR__ . self::TESTDATA_DIRECTORY . '/Events');
         $files = array_diff($files, ['.', '..']);
         foreach ($files as $file) {
-
             $event = json_decode(file_get_contents(__DIR__ . self::TESTDATA_DIRECTORY . '/Events/' . $file), true);
+
             if (!empty($event['id'])) {
                 $this->connection->executeStatement("DELETE FROM `b2bsellers_event` WHERE `id` = UNHEX('" . $event['id'] . "')");
             }
@@ -345,8 +342,8 @@ class Deseeder
         $files = scandir(__DIR__ . self::TESTDATA_DIRECTORY . '/Orders');
         $files = array_diff($files, ['.', '..']);
         foreach ($files as $file) {
-
             $order = json_decode(file_get_contents(__DIR__ . self::TESTDATA_DIRECTORY . '/Orders/' . $file), true);
+
             if (!empty($order['orderNumber'])) {
                 $this->connection->executeStatement("DELETE FROM `order` WHERE `order_number` = '" . $order['orderNumber'] . "'");
             }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace B2bDemodata\Components\Seeder\Seeds;
 
 use B2bDemodata\Components\Seeder\Helper\SeederConstants;
@@ -20,7 +22,7 @@ class CategorySeeder
 
     public function __construct(
         private readonly ContainerInterface $container,
-        private readonly Connection         $connection
+        private readonly Connection $connection,
     ) {
         $this->context = Context::createDefaultContext();
     }
@@ -43,7 +45,7 @@ class CategorySeeder
     {
         /** @var EntityRepository $repository */
         $categoryRepository = $this->container->get('category.repository');
-        $criteria = (new Criteria())
+        $criteria           = (new Criteria())
             ->addFilter(
                 new EqualsFilter(
                     'id',
@@ -51,7 +53,7 @@ class CategorySeeder
                 )
             );
 
-        return null !== $categoryRepository->search($criteria, $this->context)->first();
+        return $categoryRepository->search($criteria, $this->context)->first() !== null;
     }
 
     private function createDemoCategory(): void
@@ -62,33 +64,32 @@ class CategorySeeder
         $categoryRepository->create(
             [
                 [
-                    'id' => SeederConstants::DEMO_CATEGORY_UID,
-                    'parentId' => $this->getDefaultSalesChannel()->getNavigationCategoryId(),
+                    'id'              => SeederConstants::DEMO_CATEGORY_UID,
+                    'parentId'        => $this->getDefaultSalesChannel()->getNavigationCategoryId(),
                     'parentVersionId' => $this->getDefaultSalesChannel()->getNavigationCategoryVersionId(),
-                    'translations' => [
+                    'translations'    => [
                         'de-DE' => [
-                            'name' => 'Demo Produkte',
-                            'description' => 'In dieser Kategorie befinden sich alle Beispiel Produkte der B2Bsellers Suite. Dabei sind die Produkte so benannt wie die technische Funktion heißt. So ist es einfach die Funktionen zu finden und zu testen.'
+                            'name'        => 'Demo Produkte',
+                            'description' => 'In dieser Kategorie befinden sich alle Beispiel Produkte der B2Bsellers Suite. Dabei sind die Produkte so benannt wie die technische Funktion heißt. So ist es einfach die Funktionen zu finden und zu testen.',
                         ],
                         'en-GB' => [
-                            'name' => 'Demo products',
-                            'description' => 'This category contains all sample products of the B2Bsellers Suite. The products are named like the technical function. This makes it easy to find and test the functions.'
+                            'name'        => 'Demo products',
+                            'description' => 'This category contains all sample products of the B2Bsellers Suite. The products are named like the technical function. This makes it easy to find and test the functions.',
                         ],
                         'nl-NL' => [
-                            'name' => 'Demoproducten',
-                            'description' => 'Deze categorie bevat alle voorbeeldproducten van de B2Bsellers Suite. De producten zijn genoemd naar de technische functie. Dit maakt het gemakkelijk om de functies te vinden en te testen.'
+                            'name'        => 'Demoproducten',
+                            'description' => 'Deze categorie bevat alle voorbeeldproducten van de B2Bsellers Suite. De producten zijn genoemd naar de technische functie. Dit maakt het gemakkelijk om de functies te vinden en te testen.',
                         ],
                         'da-DK' => [
-                            'name' => 'Demo produkter',
-                            'description' => 'Denne kategori indeholder alle prøveprodukter fra B2Bsellers Suite. Produkterne er opkaldt efter den tekniske funktion. Det gør det nemt at finde og teste funktionerne.'
+                            'name'        => 'Demo produkter',
+                            'description' => 'Denne kategori indeholder alle prøveprodukter fra B2Bsellers Suite. Produkterne er opkaldt efter den tekniske funktion. Det gør det nemt at finde og teste funktionerne.',
                         ],
                         'pl-PL' => [
-                            'name' => 'Produkty demonstracyjne',
-                            'description' => 'Ta kategoria zawiera wszystkie przykładowe produkty pakietu B2Bsellers Suite. Produkty są nazwane według funkcji technicznych. Ułatwia to wyszukiwanie i testowanie funkcji.'
+                            'name'        => 'Produkty demonstracyjne',
+                            'description' => 'Ta kategoria zawiera wszystkie przykładowe produkty pakietu B2Bsellers Suite. Produkty są nazwane według funkcji technicznych. Ułatwia to wyszukiwanie i testowanie funkcji.',
                         ],
-                    ]
-
-                ]
+                    ],
+                ],
             ],
             $this->context
         );
@@ -100,7 +101,7 @@ class CategorySeeder
             return $this->cachedLanguages[$code];
         }
 
-        /** @var string|null $langId */
+        /** @var null|string $langId */
         $langId = $this->connection->fetchOne(
             <<<SQL
                 SELECT HEX(`language`.`id`) 
@@ -133,7 +134,7 @@ class CategorySeeder
 
         /** @var EntityRepository $repository */
         $salesChannelRepository = $this->container->get('sales_channel.repository');
+
         return $salesChannelRepository->search($criteria, $this->context)->first();
     }
-
 }

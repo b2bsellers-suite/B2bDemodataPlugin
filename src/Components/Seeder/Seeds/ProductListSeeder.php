@@ -98,14 +98,12 @@ class ProductListSeeder
             }
 
             $payload[] = $this->buildProductListPayload(
-                sprintf('Demo Automated Order List %d', $automatedIndex),
+                sprintf('Demo Automated Order List %d', $automatedIndex++),
                 $customerId,
                 $salesChannel->getId(),
                 $typeId,
                 $productIds
             );
-
-            ++$automatedIndex;
         }
 
         if ($payload === []) {
@@ -122,7 +120,7 @@ class ProductListSeeder
         string $customerId,
         string $salesChannelId,
         string $listTypeId,
-        array $productIds
+        array $productIds,
     ): array {
         $items = [];
 
@@ -136,12 +134,12 @@ class ProductListSeeder
         }
 
         return [
-            'id'            => $this->getExistingProductListId($customerId, $name) ?? Uuid::randomHex(),
-            'name'          => $name,
-            'customerId'    => $customerId,
+            'id'             => $this->getExistingProductListId($customerId, $name) ?? Uuid::randomHex(),
+            'name'           => $name,
+            'customerId'     => $customerId,
             'salesChannelId' => $salesChannelId,
-            'listTypeId'    => $listTypeId,
-            'items'         => $items,
+            'listTypeId'     => $listTypeId,
+            'items'          => $items,
         ];
     }
 
