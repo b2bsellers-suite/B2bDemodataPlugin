@@ -28,6 +28,13 @@
             <tag name="console.command"/>
         </service>
 
+        <service id="B2bDemodata\Command\CustomerAddressGenerateCommand">
+            <argument type="service" id="customer.repository"/>
+            <argument type="service" id="customer_address.repository"/>
+            <argument type="service" id="country.repository"/>
+            <tag name="console.command"/>
+        </service>
+
         <service id="B2bDemodata\Command\CustomerGenerateCommand">
             <argument type="service" id="Shopware\Core\Checkout\Customer\SalesChannel\RegisterRoute"/>
             <argument type="service" id="Shopware\Core\System\SalesChannel\Context\SalesChannelContextFactory"/>
