@@ -15,7 +15,8 @@
     }
   ],
   "require": {
-    "php": "^8.2"
+    "php": "^8.2",
+    "b2b-sellers/core": "^4.0"
   },
   "require-dev": {
     "frosh/shopware-rector": "^0.5.0",
